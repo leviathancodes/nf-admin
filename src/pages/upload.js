@@ -16,7 +16,7 @@ const Upload = () => {
     e.preventDefault();
     const data = new FormData(e.target);
     console.log(data);
-    const res = await axios.post('http://localhost:5000/forumtest', data, {
+    const res = await axios.post('http://localhost:5000/music/upload', data, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
