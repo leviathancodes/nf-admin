@@ -1,11 +1,47 @@
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
 
 const Upload = () => {
   const [fileName, setFileName] = useState('No file uploaded');
   const [submitStatus, setSubmitStatus] = useState(false);
   const [submitMessage, setSubmitMessage] = useState(false);
+  const [moodInput, setMoodInput] = useState('');
+  const [moodTags, setMoodTags] = useState([]);
+  const [genreInput, setGenreInput] = useState('');
+  const [track, setTrack] = useState('');
+
+  const removeTag = e => {
+    console.log(e.target.innerHTML);
+    let tags = moodTags;
+    tags = tags.filter(val => {
+      return val !== e.target.innerHTML;
+    });
+    setMoodTags(tags);
+  };
+
+  const createTags = () => {
+    if (moodTags) {
+      return moodTags.map(tag => {
+        return (
+          <p key={tag} className="control">
+            <button onClick={removeTag} type="button" className="button">
+              {tag}
+            </button>
+          </p>
+        );
+      });
+    }
+  };
+
+  const handleAddMoodTag = () => {
+    if (moodInput) {
+      setMoodTags(moodTags.concat(moodInput));
+      setMoodInput('');
+    }
+  };
 
   const grabFileName = e => {
     console.log(e.target.files, e.target.files[0]);
@@ -15,7 +51,10 @@ const Upload = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     const data = new FormData(e.target);
-    console.log(data);
+    data.append('trackTitle', track);
+    data.append('genre', genreInput);
+    data.append('mood', moodTags);
+    console.log(data.entries());
     const res = await axios.post('http://localhost:5000/music/upload', data, {
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -41,41 +80,62 @@ const Upload = () => {
   return (
     <div className="container form-container">
       <h1 className="title">Upload a track</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="field">
-          <label className="label">Track Title</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              placeholder="Track title..."
-              name="title"
-              required
-            />
-          </div>
-          <label className="label">Genre</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              placeholder="Genre..."
-              name="genre"
-              required
-            />
-          </div>
-          <label className="label">Mood</label>
+
+      <div className="field ">
+        <label className="label is-large">Track Title</label>
+        <div className="control">
+          <input
+            className="input"
+            type="text"
+            placeholder="Track title..."
+            name="title"
+            required
+            onChange={e => setTrack(e.target.value)}
+          />
+        </div>
+        <label className="label is-large">Genre</label>
+        <div className="select">
+          <select
+            name="genre"
+            required
+            onChange={e => setGenreInput(e.target.value)}
+          >
+            <option>Trap</option>
+            <option>Pop</option>
+            <option>Boom-Bap</option>
+            <option>Synthwave</option>
+            <option>Lo-fi</option>
+          </select>
+        </div>
+        <label className="label is-large">Mood</label>
+        <div className="field has-addons">
           <div className="control">
             <input
               className="input"
               type="text"
               placeholder="Mood..."
-              required
               name="mood"
+              value={moodInput}
+              onChange={e => setMoodInput(e.target.value)}
             />
           </div>
+          <p className="control">
+            <button
+              onClick={handleAddMoodTag}
+              type="button"
+              className="button is-primary"
+            >
+              Add
+            </button>
+          </p>
         </div>
+      </div>
+      <div className="field is-grouped is-grouped-multiline">
+        {createTags()}
+      </div>
+      <form onSubmit={handleSubmit}>
         <div className="field">
-          <div className="file has-name">
+          <div className="file is-medium has-name">
             <label className="file-label">
               <input
                 className="file-input"
@@ -86,7 +146,7 @@ const Upload = () => {
               />
               <span className="file-cta">
                 <span className="file-icon">
-                  <i />
+                  <FontAwesomeIcon icon={faUpload} />
                 </span>
                 <span className="file-label">Choose a file...</span>
               </span>
@@ -96,7 +156,7 @@ const Upload = () => {
         </div>
         <div className="field">
           <div className="control">
-            <button type="submit" className="button is-link">
+            <button type="submit" className="button is-primary is-medium">
               Submit
             </button>
           </div>
