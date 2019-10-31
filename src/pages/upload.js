@@ -10,7 +10,7 @@ const Upload = () => {
   const [submitMessage, setSubmitMessage] = useState(false);
   const [moodInput, setMoodInput] = useState('');
   const [moodTags, setMoodTags] = useState([]);
-  const [genreInput, setGenreInput] = useState('');
+  const [genreInput, setGenreInput] = useState('Trap');
   const [track, setTrack] = useState('');
 
   const removeTag = e => {
