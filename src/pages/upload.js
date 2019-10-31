@@ -58,6 +58,7 @@ const Upload = () => {
     data.append('trackTitle', track);
     data.append('genre', genreInput);
     data.append('mood', moodTags);
+    data.append('isPublic', isPublic);
     try {
       const res = await axios.post('http://localhost:5000/music/upload', data, {
         headers: {
