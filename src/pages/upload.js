@@ -14,7 +14,6 @@ const Upload = () => {
   const [track, setTrack] = useState('');
 
   const removeTag = e => {
-    console.log(e.target.innerHTML);
     let tags = moodTags;
     tags = tags.filter(val => {
       return val !== e.target.innerHTML;
@@ -44,7 +43,6 @@ const Upload = () => {
   };
 
   const grabFileName = e => {
-    console.log(e.target.files, e.target.files[0]);
     setFileName(e.target.files[0].name);
   };
 
@@ -54,25 +52,51 @@ const Upload = () => {
     data.append('trackTitle', track);
     data.append('genre', genreInput);
     data.append('mood', moodTags);
-    console.log(data.entries());
-    const res = await axios.post('http://localhost:5000/music/upload', data, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+    try {
+      const res = await axios.post('http://localhost:5000/music/upload', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      setSubmitStatus(res.data.status);
+      setSubmitMessage(res.data.message);
+    } catch (error) {
+      if (error.response) {
+        setSubmitStatus(error.data.status);
+        setSubmitMessage(error.data.message);
+      } else if (error.request) {
+        setSubmitStatus('error');
+        setSubmitMessage(
+          `Track upload failed. ${error.message}: Our servers may be offline or undergoing maintanence.`
+        );
+      } else {
+        setSubmitStatus('error');
+        setSubmitMessage(`Track upload failed. ${error.message}`);
       }
-    });
-    setSubmitStatus(res.data.status);
-    setSubmitMessage(res.data.message);
+    }
   };
+
+  const removeSubmitMessaging = () => {
+    setSubmitStatus(false);
+    setSubmitMessage(false);
+  }
 
   const submitMessaging = () => {
     if (!submitStatus && !submitStatus) {
       return;
     }
     const statusClass =
-      submitStatus === 'success' ? 'message is-success' : 'message is-danger';
+      submitStatus === 'success'
+        ? 'notification is-success'
+        : 'notification is-danger';
     return (
       <article className={statusClass}>
-        <div className="message-body">{submitMessage}</div>
+        <button
+          type="button"
+          className="delete"
+          onClick={removeSubmitMessaging}
+        />
+        {submitMessage}
       </article>
     );
   };
