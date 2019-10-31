@@ -12,6 +12,12 @@ const Upload = () => {
   const [moodTags, setMoodTags] = useState([]);
   const [genreInput, setGenreInput] = useState('Trap');
   const [track, setTrack] = useState('');
+  const [isPublic, setPublic] = useState('No');
+
+  const handlePublic = e => {
+    console.log(e.target.id);
+    e.target.id === 'Yes' ? setPublic('Yes') : setPublic('No');
+  };
 
   const removeTag = e => {
     let tags = moodTags;
@@ -79,7 +85,7 @@ const Upload = () => {
   const removeSubmitMessaging = () => {
     setSubmitStatus(false);
     setSubmitMessage(false);
-  }
+  };
 
   const submitMessaging = () => {
     if (!submitStatus && !submitStatus) {
@@ -104,8 +110,7 @@ const Upload = () => {
   return (
     <div className="container form-container">
       <h1 className="title">Upload a track</h1>
-
-      <div className="field ">
+      <div className="field">
         <label className="label is-large">Track Title</label>
         <div className="control">
           <input
@@ -156,6 +161,31 @@ const Upload = () => {
       </div>
       <div className="field is-grouped is-grouped-multiline">
         {createTags()}
+      </div>
+      <div className="field">
+        <label className="label is-large">Public?</label>
+        <div className="control">
+          <label className="radio is-large">
+            <input
+              type="radio"
+              name="public"
+              id="Yes"
+              checked={isPublic === 'Yes' ? true : false}
+              onChange={handlePublic}
+            />
+            Yes
+          </label>
+          <label className="radio">
+            <input
+              type="radio"
+              name="public"
+              id="No"
+              checked={isPublic === 'No' ? true : false}
+              onChange={handlePublic}
+            />
+            No
+          </label>
+        </div>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="field">
