@@ -13,6 +13,8 @@ const Upload = () => {
   const [genreInput, setGenreInput] = useState('Trap');
   const [track, setTrack] = useState('');
   const [isPublic, setPublic] = useState('No');
+  const [price, setPrice] = useState('');
+  const [bpm, setBPM] = useState('');
 
   const handlePublic = e => {
     console.log(e.target.id);
@@ -59,6 +61,8 @@ const Upload = () => {
     data.append('genre', genreInput);
     data.append('mood', moodTags);
     data.append('isPublic', isPublic);
+    data.append('price', price);
+    data.append('bpm', bpm);
     try {
       const res = await axios.post('http://localhost:5000/music/upload', data, {
         headers: {
@@ -115,7 +119,7 @@ const Upload = () => {
         <label className="label is-large">Track Title</label>
         <div className="control">
           <input
-            className="input"
+            className="input is-rounded"
             type="text"
             placeholder="Track title..."
             name="title"
@@ -138,7 +142,7 @@ const Upload = () => {
           </select>
         </div>
         <label className="label is-large">Mood</label>
-        <div className="field has-addons">
+        <div className="field has-addons ">
           <div className="control">
             <input
               className="input"
@@ -188,6 +192,32 @@ const Upload = () => {
           </label>
         </div>
       </div>
+      <div className="field">
+        <label className="label is-large">Price</label>
+        <div className="control">
+          <input
+            className="input is-rounded"
+            type="number"
+            placeholder="Name your price..."
+            name="price"
+            required
+            onChange={e => setPrice(e.target.value)}
+          />
+        </div>
+      </div>
+      <div className="field">
+        <label className="label is-large">BPM</label>
+        <div className="control">
+          <input
+            className="input is-rounded"
+            type="number"
+            placeholder="BPM.."
+            name="BPM"
+            required
+            onChange={e => setBPM(e.target.value)}
+          />
+        </div>
+        </div>
       <form onSubmit={handleSubmit}>
         <div className="field">
           <div className="file is-medium has-name">
