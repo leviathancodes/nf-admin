@@ -15,6 +15,7 @@ const Upload = () => {
   const [isPublic, setPublic] = useState('No');
   const [price, setPrice] = useState('');
   const [bpm, setBPM] = useState('');
+  const [loading, isLoading] = useState('');
 
   const handlePublic = e => {
     console.log(e.target.id);
@@ -55,6 +56,7 @@ const Upload = () => {
   };
 
   const handleSubmit = async e => {
+    isLoading('is-loading');
     e.preventDefault();
     const data = new FormData(e.target);
     data.append('trackTitle', track);
@@ -85,6 +87,7 @@ const Upload = () => {
         setSubmitMessage(`Track upload failed. ${error.message}`);
       }
     }
+    isLoading('');
   };
 
   const removeSubmitMessaging = () => {
@@ -217,7 +220,7 @@ const Upload = () => {
             onChange={e => setBPM(e.target.value)}
           />
         </div>
-        </div>
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="field">
           <div className="file is-medium has-name">
@@ -241,7 +244,10 @@ const Upload = () => {
         </div>
         <div className="field">
           <div className="control">
-            <button type="submit" className="button is-primary is-medium">
+            <button
+              type="submit"
+              className={`button is-primary is-medium ${loading}`}
+            >
               Submit
             </button>
           </div>
