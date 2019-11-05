@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 
 const Upload = () => {
-  const [fileName, setFileName] = useState('No file uploaded');
+  const [trackFileName, setTrackFileName] = useState('No file uploaded');
+  const [imageFileName, setImageFileName] = useState('No file uploaded');
   const [submitStatus, setSubmitStatus] = useState(false);
   const [submitMessage, setSubmitMessage] = useState(false);
   const [moodInput, setMoodInput] = useState('');
@@ -51,8 +52,12 @@ const Upload = () => {
     }
   };
 
-  const grabFileName = e => {
-    setFileName(e.target.files[0].name);
+  const grabFileName = (e, type) => {
+    if (type === 'track') {
+      setTrackFileName(e.target.files[0].name);
+    } else {
+      setImageFileName(e.target.files[0].name);
+    }
   };
 
   const handleSubmit = async e => {
@@ -223,6 +228,26 @@ const Upload = () => {
       </div>
       <form onSubmit={handleSubmit}>
         <div className="field">
+          <label className="label is-large">Cover Art Upload</label>
+          <div className="file is-medium has-name">
+            <label className="file-label">
+              <input
+                className="file-input"
+                type="file"
+                name="cover"
+                accept="image/jpeg"
+                onChange={e => grabFileName(e)}
+              />
+              <span className="file-cta">
+                <span className="file-icon">
+                  <FontAwesomeIcon icon={faUpload} />
+                </span>
+                <span className="file-label">Upload your cover art...</span>
+              </span>
+              <span className="file-name">{imageFileName}</span>
+            </label>
+          </div>
+          <label className="label is-large">Track Upload</label>
           <div className="file is-medium has-name">
             <label className="file-label">
               <input
@@ -230,15 +255,15 @@ const Upload = () => {
                 type="file"
                 name="track"
                 accept="audio/*"
-                onChange={grabFileName}
+                onChange={e => grabFileName(e, 'track')}
               />
               <span className="file-cta">
                 <span className="file-icon">
                   <FontAwesomeIcon icon={faUpload} />
                 </span>
-                <span className="file-label">Choose a file...</span>
+                <span className="file-label">Upload your track...</span>
               </span>
-              <span className="file-name">{fileName}</span>
+              <span className="file-name">{trackFileName}</span>
             </label>
           </div>
         </div>
