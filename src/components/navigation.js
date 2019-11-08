@@ -1,5 +1,5 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHome,
@@ -8,10 +8,17 @@ import {
   faChartPie
 } from '@fortawesome/free-solid-svg-icons';
 import { ReactComponent as Logo } from '../img/logo.svg';
+import { SearchContext } from '../context/searchContext';
 
 const Nav = () => {
+  const [search, setSearch] = useState('');
+
   return (
-    <nav className="navbar is-spaced" role="navigation" aria-label="main navigation">
+    <nav
+      className="navbar is-spaced"
+      role="navigation"
+      aria-label="main navigation"
+    >
       <div className="navbar-brand">
         <NavLink className="navbar-item" to="/">
           <Logo />
@@ -39,10 +46,35 @@ const Nav = () => {
           </NavLink>
           <NavLink to="/analytics" className="navbar-item is-tab is-size-4">
             <span className="icon">
-              <FontAwesomeIcon className="icon-nav" icon={faChartPie} size="sm" />
+              <FontAwesomeIcon
+                className="icon-nav"
+                icon={faChartPie}
+                size="sm"
+              />
             </span>
             <p>Analytics</p>
           </NavLink>
+        </div>
+        <div className="navbar-end">
+          <div className="field has-addons">
+            <div className="control">
+              <input
+                className="input"
+                type="text"
+                placeholder="Find a track..."
+                onChange={e => setSearch(e.target.value)}
+              />
+            </div>
+            <div className="control">
+              <NavLink
+                type="button"
+                to={`/search/${search}`}
+                className="button is-primary"
+              >
+                Search
+              </NavLink>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
