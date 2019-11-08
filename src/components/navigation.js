@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHome,
@@ -8,12 +8,9 @@ import {
   faChartPie
 } from '@fortawesome/free-solid-svg-icons';
 import { ReactComponent as Logo } from '../img/logo.svg';
+import { SearchContext } from '../context/searchContext';
 
 const Nav = () => {
-  const handleSearch = () => {
-    console.log('Your mom is a pussy');
-  };
-
   const [search, setSearch] = useState('');
 
   return (
@@ -69,9 +66,13 @@ const Nav = () => {
               />
             </div>
             <div className="control">
-              <a className="button is-primary" onClick={handleSearch}>
+              <NavLink
+                type="button"
+                to={`/search/${search}`}
+                className="button is-primary"
+              >
                 Search
-              </a>
+              </NavLink>
             </div>
           </div>
         </div>

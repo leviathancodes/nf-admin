@@ -1,11 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { SearchContext } from '../context/searchContext';
+import TrackCard from '../components/trackCard';
 
-const searchResults = () => {
-  return (
-    <div>
-      <h1>Set up the context API shit</h1>
-    </div>
-  );
+const SearchResults = props => {
+  const [searchResults, setSearchResults] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const res = await axios.get(
+        `http://localhost:5000/music/search?term=${props.match.params.term}`
+      );
+      setSearchResults(res.data);
+    }
+    fetchData();
+  }, []);
+
+  const createResults = () => {
+    console.log(searchResults);
+    return searchResults.map(data => {
+      return (
+        <TrackCard
+          trackTitle={data.trackTitle}
+          genre={data.genre}
+          public={data.isPublic}
+          price={data.price}
+          mood={data.mood}
+          trackUrl={data.trackUrl}
+          coverUrl={data.imageUrl}
+        />
+      );
+    });
+  };
+
+  return <div className="container">{createResults()}</div>;
 };
 
-export default searchResults;
+export default SearchResults;

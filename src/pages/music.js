@@ -11,7 +11,7 @@ const Music = () => {
       setTracks(res.data);
     }
     fetchData();
-  });
+  }, []);
 
   const createTracks = () => {
     return tracks.map(data => {
