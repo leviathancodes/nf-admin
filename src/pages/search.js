@@ -16,7 +16,9 @@ const SearchResults = props => {
   }, []);
 
   const createResults = () => {
-    console.log(searchResults);
+    if (searchResults.length < 1) {
+      return <h1>No results found</h1>;
+    }
     return searchResults.map(data => {
       return (
         <TrackCard
