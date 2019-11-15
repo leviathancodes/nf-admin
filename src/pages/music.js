@@ -14,6 +14,7 @@ const Music = () => {
   }, []);
 
   const createTracks = () => {
+    console.log(tracks)
     return tracks.map(data => {
       return (
         <div className="box">
@@ -28,6 +29,7 @@ const Music = () => {
               genre={data.genre}
               isPublic={data.isPublic}
               mood={data.mood}
+              similarArtists={data.similarArtists.join(', ')}
               price={data.price}
               trackUrl={data.trackUrl}
               coverUrl={data.imageUrl}

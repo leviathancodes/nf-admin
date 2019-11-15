@@ -18,6 +18,7 @@ const TrackCard = props => {
         <p>Price: {props.price}</p>
         <p>Moods:</p>
         <ul>{moodElements()}</ul>
+        <p>Similar Artists: {props.similarArtists}</p>
         <p>Track URL: {props.trackUrl}</p>
         <p>Image URL: {props.coverUrl}</p>
       </div>

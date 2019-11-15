@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -7,6 +8,7 @@ import { faUpload } from '@fortawesome/free-solid-svg-icons';
 const Upload = () => {
   const [trackFileName, setTrackFileName] = useState('No file uploaded');
   const [imageFileName, setImageFileName] = useState('No file uploaded');
+  const [trackoutFileName, setTrackOutFileName] = useState('No file uploaded');
   const [submitStatus, setSubmitStatus] = useState(false);
   const [submitMessage, setSubmitMessage] = useState(false);
   const [moodInput, setMoodInput] = useState('');
@@ -17,13 +19,16 @@ const Upload = () => {
   const [price, setPrice] = useState('');
   const [bpm, setBPM] = useState('');
   const [loading, isLoading] = useState('');
+  const [disabled, isDisabled] = useState(false);
+  const [similarArtistsInput, setSimilarArtistsInput] = useState('');
+  const [similarArtistsTags, setSimilarArtistsTags] = useState([]);
 
   const handlePublic = e => {
     console.log(e.target.id);
     e.target.id === 'Yes' ? setPublic('Yes') : setPublic('No');
   };
 
-  const removeTag = e => {
+  const removeMoodTag = e => {
     let tags = moodTags;
     tags = tags.filter(val => {
       return val !== e.target.innerHTML;
@@ -31,12 +36,38 @@ const Upload = () => {
     setMoodTags(tags);
   };
 
-  const createTags = () => {
+  const removeSimilarArtistTag = e => {
+    let tags = similarArtistsTags;
+    tags = tags.filter(val => {
+      return val !== e.target.innerHTML;
+    });
+    setSimilarArtistsTags(tags);
+  };
+
+  const createMoodTags = () => {
     if (moodTags) {
       return moodTags.map(tag => {
         return (
           <p key={tag} className="control">
-            <button onClick={removeTag} type="button" className="button">
+            <button onClick={removeMoodTag} type="button" className="button">
+              {tag}
+            </button>
+          </p>
+        );
+      });
+    }
+  };
+
+  const createSimilarArtistTags = () => {
+    if (similarArtistsTags) {
+      return similarArtistsTags.map(tag => {
+        return (
+          <p key={tag} className="control">
+            <button
+              onClick={removeSimilarArtistTag}
+              type="button"
+              className="button"
+            >
               {tag}
             </button>
           </p>
@@ -52,9 +83,18 @@ const Upload = () => {
     }
   };
 
+  const handleAddSimilarArtistTag = () => {
+    if (similarArtistsInput) {
+      setSimilarArtistsTags(similarArtistsTags.concat(similarArtistsInput));
+      setSimilarArtistsInput('');
+    }
+  };
+
   const grabFileName = (e, type) => {
     if (type === 'track') {
       setTrackFileName(e.target.files[0].name);
+    } else if (type === 'trackout') {
+      setTrackOutFileName(e.target.files[0].name);
     } else {
       setImageFileName(e.target.files[0].name);
     }
@@ -62,11 +102,13 @@ const Upload = () => {
 
   const handleSubmit = async e => {
     isLoading('is-loading');
+    isDisabled(true);
     e.preventDefault();
     const data = new FormData(e.target);
     data.append('trackTitle', track);
     data.append('genre', genreInput);
     data.append('mood', moodTags);
+    data.append('similarArtists', similarArtistsTags);
     data.append('isPublic', isPublic);
     data.append('price', price);
     data.append('bpm', bpm);
@@ -74,8 +116,13 @@ const Upload = () => {
       const res = await axios.post('http://localhost:5000/music/upload', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
+        },
+        timeout: 600000,
+        onUploadProgress(progressEvent) {
+          console.log(progressEvent);
         }
       });
+      console.log(res);
       setSubmitStatus(res.data.status);
       setSubmitMessage(res.data.message);
     } catch (error) {
@@ -85,14 +132,16 @@ const Upload = () => {
       } else if (error.request) {
         setSubmitStatus('error');
         setSubmitMessage(
-          `Track upload failed. ${error.message}: Our servers may be offline or undergoing maintanence.`
+          `Track upload failed. ${error.toJSON()}: Our servers may be offline or undergoing maintanence. ${error.status}`
         );
       } else {
+        console.log(error);
         setSubmitStatus('error');
-        setSubmitMessage(`Track upload failed. ${error.message}`);
+        setSubmitMessage(`Track upload failed. ${error.message} ${error}`);
       }
     }
     isLoading('');
+    isDisabled('');
   };
 
   const removeSubmitMessaging = () => {
@@ -173,7 +222,32 @@ const Upload = () => {
         </div>
       </div>
       <div className="field is-grouped is-grouped-multiline">
-        {createTags()}
+        {createMoodTags()}
+      </div>
+      <label className="label is-large">Similar Artists</label>
+      <div className="field has-addons ">
+        <div className="control">
+          <input
+            className="input"
+            type="text"
+            placeholder="Similar Artists..."
+            name="similarArtists"
+            value={similarArtistsInput}
+            onChange={e => setSimilarArtistsInput(e.target.value)}
+          />
+        </div>
+        <p className="control">
+          <button
+            onClick={handleAddSimilarArtistTag}
+            type="button"
+            className="button is-primary"
+          >
+            Add
+          </button>
+        </p>
+      </div>
+      <div className="field is-grouped is-grouped-multiline">
+        {createSimilarArtistTags()}
       </div>
       <div className="field">
         <label className="label is-large">Public?</label>
@@ -266,12 +340,32 @@ const Upload = () => {
               <span className="file-name">{trackFileName}</span>
             </label>
           </div>
+          <label className="label is-large">Trackout Upload</label>
+          <div className="file is-medium has-name">
+            <label className="file-label">
+              <input
+                className="file-input"
+                type="file"
+                name="trackout"
+                accept="application/zip"
+                onChange={e => grabFileName(e, 'trackout')}
+              />
+              <span className="file-cta">
+                <span className="file-icon">
+                  <FontAwesomeIcon icon={faUpload} />
+                </span>
+                <span className="file-label">Upload your trackouts...</span>
+              </span>
+              <span className="file-name">{trackoutFileName}</span>
+            </label>
+          </div>
         </div>
         <div className="field">
           <div className="control">
             <button
               type="submit"
               className={`button is-primary is-medium ${loading}`}
+              disabled={disabled}
             >
               Submit
             </button>
