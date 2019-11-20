@@ -25,7 +25,7 @@ const Music = () => {
               </figure>
             </div>
             <TrackCard
-              trackTitle={data.trackTitle}
+              trackTitle={data.presentationTitle}
               genre={data.genre}
               isPublic={data.isPublic}
               mood={data.mood}

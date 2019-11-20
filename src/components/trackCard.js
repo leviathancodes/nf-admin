@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const TrackCard = props => {
   const moodElements = () => {
@@ -21,6 +22,9 @@ const TrackCard = props => {
         <p>Similar Artists: {props.similarArtists}</p>
         <p>Track URL: {props.trackUrl}</p>
         <p>Image URL: {props.coverUrl}</p>
+        <Link to={`/music/${props.trackTitle.replace(/ /g, '_').toLowerCase()}`} type="button" className="button is-button is-primary">
+          Edit
+        </Link>
       </div>
     </div>
   );

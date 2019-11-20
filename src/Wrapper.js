@@ -5,6 +5,7 @@ import Upload from './pages/upload';
 import Music from './pages/music';
 import SearchResults from './pages/search';
 import Error404 from './pages/404';
+import TrackEdit from './pages/trackEdit';
 
 const Wrapper = () => {
   return (
@@ -13,6 +14,7 @@ const Wrapper = () => {
       <Switch>
         <Route path="/upload" exact component={Upload} />
         <Route path="/music" exact component={Music} />
+        <Route path="/music/:track" exact component={TrackEdit} />
         <Route path="/search/:term" exact component={SearchResults} />
         <Route component={Error404} />
       </Switch>

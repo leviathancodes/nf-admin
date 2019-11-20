@@ -1,27 +1,35 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable consistent-return */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
 
-const Upload = () => {
-  const [trackFileName, setTrackFileName] = useState('No file uploaded');
-  const [imageFileName, setImageFileName] = useState('No file uploaded');
-  const [trackoutFileName, setTrackOutFileName] = useState('No file uploaded');
+const EditForm = (props) => {
+
   const [submitStatus, setSubmitStatus] = useState(false);
   const [submitMessage, setSubmitMessage] = useState(false);
   const [moodInput, setMoodInput] = useState('');
-  const [moodTags, setMoodTags] = useState([]);
-  const [genreInput, setGenreInput] = useState('Trap');
-  const [track, setTrack] = useState('');
-  const [isPublic, setPublic] = useState('No');
-  const [price, setPrice] = useState('');
-  const [bpm, setBPM] = useState('');
+  const [moodTags, setMoodTags] = useState(props.moodTags);
+  const [genreInput, setGenreInput] = useState(props.genreInput);
+  const [track, setTrack] = useState(props.trackTitle);
+  const [requestTitle, setRequestTitle] = useState('');
+  const [isPublic, setPublic] = useState(props.isPublic);
+  const [price, setPrice] = useState(props.price);
+  const [bpm, setBPM] = useState(props.bpm);
   const [loading, isLoading] = useState('');
   const [disabled, isDisabled] = useState(false);
   const [similarArtistsInput, setSimilarArtistsInput] = useState('');
-  const [similarArtistsTags, setSimilarArtistsTags] = useState([]);
+  const [similarArtistsTags, setSimilarArtistsTags] = useState(props.similarArtists);
+
+  useEffect(() => {
+    setMoodTags(props.moodTags);
+    setGenreInput(props.genreInput);
+    setSimilarArtistsTags(props.similarArtists);
+    setBPM(props.bpm);
+    setPublic(props.isPublic);
+    setPrice(props.price);
+    setTrack(props.trackTitle);
+    setRequestTitle(props.requestTitle);
+  }, [props]);
 
   const handlePublic = e => {
     console.log(e.target.id);
@@ -59,21 +67,19 @@ const Upload = () => {
   };
 
   const createSimilarArtistTags = () => {
-    if (similarArtistsTags) {
-      return similarArtistsTags.map(tag => {
-        return (
-          <p key={tag} className="control">
-            <button
-              onClick={removeSimilarArtistTag}
-              type="button"
-              className="button"
-            >
-              {tag}
-            </button>
-          </p>
-        );
-      });
-    }
+    return similarArtistsTags.map(tag => {
+      return (
+        <p key={tag} className="control">
+          <button
+            onClick={removeSimilarArtistTag}
+            type="button"
+            className="button"
+          >
+            {tag}
+          </button>
+        </p>
+      );
+    });
   };
 
   const handleAddMoodTag = () => {
@@ -90,54 +96,44 @@ const Upload = () => {
     }
   };
 
-  const grabFileName = (e, type) => {
-    if (type === 'track') {
-      setTrackFileName(e.target.files[0].name);
-    } else if (type === 'trackout') {
-      setTrackOutFileName(e.target.files[0].name);
-    } else {
-      setImageFileName(e.target.files[0].name);
-    }
-  };
-
   const handleSubmit = async e => {
     isLoading('is-loading');
     isDisabled(true);
     e.preventDefault();
-    const data = new FormData(e.target);
-    data.append('trackTitle', track);
-    data.append('genre', genreInput);
-    data.append('mood', moodTags);
-    data.append('similarArtists', similarArtistsTags);
-    data.append('isPublic', isPublic);
-    data.append('price', price);
-    data.append('bpm', bpm);
+
+    const data = {
+      trackTitle: track,
+      genre: genreInput,
+      mood: moodTags,
+      similarArtists: similarArtistsTags,
+      isPublic,
+      price,
+      bpm
+    };
+    console.log(encodeURIComponent(requestTitle));
     try {
-      const res = await axios.post('http://localhost:5000/music/upload', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        timeout: 600000,
-        onUploadProgress(progressEvent) {
-          console.log(progressEvent.loaded + ' / ' + progressEvent.total + ' completed.') ;
-        }
-      });
+      const res = await axios.patch(`http://localhost:5000/music?trackTitle=${encodeURIComponent(requestTitle)}`, data);
       console.log(res);
       setSubmitStatus(res.data.status);
       setSubmitMessage(res.data.message);
     } catch (error) {
       if (error.response) {
-        setSubmitStatus(error.data.status);
-        setSubmitMessage(error.data.message);
+        // setSubmitStatus(error.data.status);
+        // setSubmitMessage(error.data.message);
+        console.log(error);
       } else if (error.request) {
         setSubmitStatus('error');
         setSubmitMessage(
-          `Track upload failed. ${error.toJSON()}: Our servers may be offline or undergoing maintanence. ${error.status}`
+          `Track edit failed. ${error.toJSON()}: Our servers may be offline or undergoing maintanence. ${
+            error.status
+          }`
         );
       } else {
         console.log(error);
         setSubmitStatus('error');
-        setSubmitMessage(`Track upload failed. ${error.message} ${error}`);
+        setSubmitMessage(
+          `Track edit failed. ${error.message} ${String(error)}`
+        );
       }
     }
     isLoading('');
@@ -171,7 +167,9 @@ const Upload = () => {
 
   return (
     <div className="container form-container">
-      <h1 className="title">Upload a track</h1>
+      <h1 className="title" key={props.title}>
+        {track}
+      </h1>
       <div className="field">
         <label className="label is-large">Track Title</label>
         <div className="control">
@@ -181,6 +179,7 @@ const Upload = () => {
             placeholder="Track title..."
             name="title"
             required
+            value={track}
             onChange={e => setTrack(e.target.value)}
           />
         </div>
@@ -278,6 +277,7 @@ const Upload = () => {
         <label className="label is-large">Price</label>
         <div className="control">
           <input
+            value={price}
             className="input is-rounded"
             type="number"
             placeholder="Name your price..."
@@ -291,6 +291,7 @@ const Upload = () => {
         <label className="label is-large">BPM</label>
         <div className="control">
           <input
+            value={bpm}
             className="input is-rounded"
             type="number"
             placeholder="BPM.."
@@ -301,75 +302,14 @@ const Upload = () => {
         </div>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="field">
-          <label className="label is-large">Cover Art Upload</label>
-          <div className="file is-medium has-name">
-            <label className="file-label">
-              <input
-                className="file-input"
-                type="file"
-                name="cover"
-                accept="image/jpeg"
-                onChange={e => grabFileName(e)}
-              />
-              <span className="file-cta">
-                <span className="file-icon">
-                  <FontAwesomeIcon icon={faUpload} />
-                </span>
-                <span className="file-label">Upload your cover art...</span>
-              </span>
-              <span className="file-name">{imageFileName}</span>
-            </label>
-          </div>
-          <label className="label is-large">Track Upload</label>
-          <div className="file is-medium has-name">
-            <label className="file-label">
-              <input
-                className="file-input"
-                type="file"
-                name="track"
-                accept="audio/*"
-                onChange={e => grabFileName(e, 'track')}
-              />
-              <span className="file-cta">
-                <span className="file-icon">
-                  <FontAwesomeIcon icon={faUpload} />
-                </span>
-                <span className="file-label">Upload your track...</span>
-              </span>
-              <span className="file-name">{trackFileName}</span>
-            </label>
-          </div>
-          <label className="label is-large">Trackout Upload</label>
-          <div className="file is-medium has-name">
-            <label className="file-label">
-              <input
-                className="file-input"
-                type="file"
-                name="trackout"
-                accept="application/zip"
-                onChange={e => grabFileName(e, 'trackout')}
-              />
-              <span className="file-cta">
-                <span className="file-icon">
-                  <FontAwesomeIcon icon={faUpload} />
-                </span>
-                <span className="file-label">Upload your trackouts...</span>
-              </span>
-              <span className="file-name">{trackoutFileName}</span>
-            </label>
-          </div>
-        </div>
-        <div className="field">
-          <div className="control">
-            <button
-              type="submit"
-              className={`button is-primary is-medium ${loading}`}
-              disabled={disabled}
-            >
-              Submit
-            </button>
-          </div>
+        <div className="control">
+          <button
+            type="submit"
+            className={`button is-primary is-medium ${loading}`}
+            disabled={disabled}
+          >
+            Submit
+          </button>
         </div>
       </form>
       {submitMessaging()}
@@ -377,4 +317,8 @@ const Upload = () => {
   );
 };
 
-export default Upload;
+EditForm.defaultProps = {
+  presentationTitle: 'Poop',
+  similarArtists: ['hi', 'hello'],
+}
+export default EditForm;

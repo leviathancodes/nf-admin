@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, Redirect } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHome,
@@ -8,7 +8,6 @@ import {
   faChartPie
 } from '@fortawesome/free-solid-svg-icons';
 import { ReactComponent as Logo } from '../img/logo.svg';
-import { SearchContext } from '../context/searchContext';
 
 const Nav = () => {
   const [search, setSearch] = useState('');
