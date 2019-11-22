@@ -13,7 +13,7 @@ const SearchResults = props => {
       setSearchResults(res.data);
     }
     fetchData();
-  }, []);
+  }, [props]);
 
   const createResults = () => {
     if (searchResults.length < 1) {
@@ -22,13 +22,14 @@ const SearchResults = props => {
     return searchResults.map(data => {
       return (
         <TrackCard
-          trackTitle={data.trackTitle}
+          trackTitle={data.presentationTitle}
           genre={data.genre}
-          public={data.isPublic}
+          isPublic={data.isPublic}
           price={data.price}
           mood={data.mood}
           trackUrl={data.trackUrl}
           coverUrl={data.imageUrl}
+          similarArtists={data.similarArtists}
         />
       );
     });

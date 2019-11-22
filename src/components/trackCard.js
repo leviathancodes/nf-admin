@@ -25,6 +25,8 @@ const TrackCard = props => {
         <Link to={`/music/${props.trackTitle.replace(/ /g, '_').toLowerCase()}`} type="button" className="button is-button is-primary">
           Edit
         </Link>
+        <hr />
+        <button type="button" className="button is-danger">Delete</button>
       </div>
     </div>
   );

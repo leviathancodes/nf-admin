@@ -1,4 +1,14 @@
+@import url('https://use.typekit.net/roh8omm.css');
+$family-primary: futura-pt, sans-serif;
+$primary: #FA2E6A;
+
 @import "base/base";
 @import "base/typography";
 @import "components/nav";
-@import "pages/upload"
+@import "pages/upload";
+@import "bulma/sass/utilities/_all.sass";
+@import "bulma/sass/components/navbar.sass";
+@import "bulma/sass/form/_all.sass";
+@import "bulma/sass/elements/button.sass";
+@import "bulma/sass/base/_all.sass";
+
