@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import LargePlayer from '../components/elements/audio-player/largePlayer';
+import Sidebar from '../components/elements/filter/sidebar';
 import styled from 'styled-components';
 
 const Music = () => {
@@ -14,6 +15,12 @@ const Music = () => {
     fetchData();
   }, []);
 
+  const PageLayout = styled.div`
+    width: 100vw;
+    height: auto;
+    display: grid;
+    grid-template-columns: 20% 80%;
+  `;
   const Container = styled.div`
     display: flex;
     justify-content: center;
@@ -46,12 +53,15 @@ const Music = () => {
   };
 
   return (
-    <div>
-      <Heading>Latest Tracks</Heading>
-      <Container>
-        <div className="container">{createTracks()}</div>
-      </Container>
-    </div>
+    <PageLayout>
+      <Sidebar />
+      <div>
+        <Heading>Latest Tracks</Heading>
+        <Container>
+          <div className="container">{createTracks()}</div>
+        </Container>
+      </div>
+    </PageLayout>
   );
 };
 
