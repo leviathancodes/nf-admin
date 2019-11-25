@@ -37,12 +37,6 @@ const LargePlayer = props => {
     padding-top: 2.5px;
   `;
 
-  const HeartContainer = styled.svg`
-    &:hover {
-      fill: #ffa7a6;
-    }
-  `;
-
   const PriceText = styled.span`
     color: #7799fc;
     font-weight: 500;
