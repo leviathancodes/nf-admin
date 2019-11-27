@@ -1,25 +1,20 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import { AudioContext } from '../../../context/audioContext';
 import { ReactComponent as LargePlayIcon } from './playerPlayIcon.svg';
 import { ReactComponent as LargePauseIcon } from './playerPauseIcon.svg';
 import { ReactComponent as VolumeIcon } from './volumeIcon.svg';
 import HeartIcon from './heartIcon';
 
 const LargePlayer = props => {
-  const [playing, isPlaying] = useState(false);
   const [track, setTrack] = useState('');
-  const [title, setTitle] = useState('');
-  const [genre, setGenre] = useState('');
-  const [similarArtists, setSimilarArtists] = useState('');
-  const [cover, setCover] = useState('');
-  const [price, setPrice] = useState('');
-  const [duration, setDuration] = useState('');
   const [progress, setProgress] = useState('');
-  const [volume, setVolume] = useState('');
   const [clicked, setClicked] = useState('#D3D3D3');
+
+  const context = useContext(AudioContext);
 
   const secondsToMinutes = seconds =>
     `${Math.floor(seconds / 60)}:${`0${Math.floor(seconds % 60)}`.slice(-2)}`;
@@ -115,7 +110,7 @@ const LargePlayer = props => {
     width: 95%;
     height: 95%;
     overflow: none;
-    background-image: url(${cover});
+    background-image: url(${props.cover});
     background-size: cover;
     background-position: 50% 50%;
     display: block;
@@ -158,64 +153,60 @@ const LargePlayer = props => {
     }
   `;
 
-  const handlePlaying = async e => {
-    if (playing) {
-      try {
-        isPlaying(false);
-        return track.pause();
-      } catch (err) {
-        return console.log(err);
-      }
-    }
-
-    try {
-      await track.play();
-      console.log('Now playing');
-      isPlaying(true);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleSeeking = (e => {
-    setProgress(e);
-    track.currentTime = e;
-  });
-
-  useEffect(
-    () => {
-      const audio = new Audio(props.trackUrl);
-      audio.onloadedmetadata = function() {
-        setDuration(audio.duration);
-      };
-      setGenre(props.genre);
-      setTitle(props.trackTitle);
-      setSimilarArtists(props.similarArtists);
-      setPrice(props.price);
-      setCover(props.cover);
-      setTrack(audio);
-      audio.ontimeupdate = (e) => {
-        setProgress(audio.currentTime);
-      };
-    },
-    props,
-    []
-  );
+  // useEffect(() => {
+  //   async function grabTrack() {
+  //     if (!track) {
+  //       const audio = new Audio(props.trackUrl);
+  //       audio.oncanplaythrough = () => {
+  //         setTrack(audio);
+  //         console.log('trak set');
+  //       };
+  //     }
+  //   }
+  //   grabTrack();
+  // }, [track]);
 
   return (
     <Container>
       <LargePlayContainer>
-        <LargePlayCircle className="play" onClick={handlePlaying}>
-          {playing ? <LargePauseIcon /> : <LargePlayIcon />}
+        <LargePlayCircle
+          className="play"
+          onClick={e => {
+            if (!context.currentTrack) {
+              return context.handlePlaying(props.trackTitle, props.trackUrl);
+            }
+            if (context.playing && context.currentTrack !== props.trackTitle) {
+              context.handleStopping();
+              return context.handlePausing(props.trackTitle, props.trackUrl);
+            }
+
+            if (context.playing) {
+              console.log('pause track');
+              return context.handlePausing(props.trackTitle, props.trackUrl);
+            }
+            if (context.currentTrack !== props.trackTitle) {
+              console.log('play different track');
+              context.handleStopping();
+              console.log(`the track that will play is ${props.trackTitle}`);
+              return context.handlePlaying(props.trackTitle, props.trackUrl);
+            }
+            return context.handlePlaying(props.trackTitle, props.trackUrl);
+          }}
+        >
+          {context.currentTrack === props.trackTitle ? (
+            <LargePauseIcon />
+          ) : (
+            <LargePlayIcon />
+          )}
         </LargePlayCircle>
       </LargePlayContainer>
       <div className="trackData">
-        <Heading>{title}</Heading>
+        <Heading>{props.trackTitle}</Heading>
         <Paragraph>
-          {genre} | {similarArtists} Type Beat
+          {props.genre} | {props.similarArtists} Type Beat
         </Paragraph>
         <Paragraph>
-          Starting from <PriceText>${price}</PriceText>
+          Starting from <PriceText>${props.price}</PriceText>
         </Paragraph>
         <VolumeProgressContainer>
           <ProgressContainer>
@@ -227,16 +218,18 @@ const LargePlayer = props => {
                 borderColor: '#F15377',
                 cursor: 'pointer'
               }}
-              value={progress}
-              max={Math.round(duration)}
-              onChange={e => handleSeeking(e) }
+              value={context.progress}
+              max={Math.round(props.duration)}
+              onChange={e => context.handleSeeking(e)}
             />
           </ProgressContainer>
           <VolumeIcon />
         </VolumeProgressContainer>
         <TimeContainer>
-          <Paragraph>{secondsToMinutes(progress)}</Paragraph>
-          <Paragraph className="duration">{secondsToMinutes(duration)}</Paragraph>
+          <Paragraph>{secondsToMinutes(context.progress)}</Paragraph>
+          <Paragraph className="duration">
+            {secondsToMinutes(props.duration)}
+          </Paragraph>
         </TimeContainer>
         <SocialContainer>
           <HeartIcon hover="#ffa7a6" clicked={clicked} />
@@ -244,7 +237,7 @@ const LargePlayer = props => {
       </div>
       <Cover>
         <CoverContainer className="trackCover">
-          <Image className={`${title}-cover`} />
+          <Image className={`${props.title}-cover`} />
         </CoverContainer>
       </Cover>
     </Container>

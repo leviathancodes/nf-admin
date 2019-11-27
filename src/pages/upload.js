@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -23,8 +24,12 @@ const Upload = () => {
   const [similarArtistsInput, setSimilarArtistsInput] = useState('');
   const [similarArtistsTags, setSimilarArtistsTags] = useState([]);
 
+  const Heading = styled.h1`
+    font-size: 3em;
+    color: #fa2e6a;
+    font-weight: 500;
+  `;
   const handlePublic = e => {
-    console.log(e.target.id);
     e.target.id === 'Yes' ? setPublic('Yes') : setPublic('No');
   };
 
@@ -122,9 +127,20 @@ const Upload = () => {
           console.log(progressEvent.loaded + ' / ' + progressEvent.total + ' completed.') ;
         }
       });
-      console.log(res);
-      setSubmitStatus(res.data.status);
-      setSubmitMessage(res.data.message);
+      const url = res.data.trackData.trackUrl;
+      console.log(url);
+      const song = new Audio(url);
+      song.onloadedmetadata = async () => {
+        await axios.patch(
+          `http://localhost:5000/music?trackTitle=${track
+            .replace(/ /g, '_')
+            .toLowerCase()}`,
+          { duration: song.duration }
+        );
+        console.log(song.duration);
+        setSubmitStatus(res.data.status);
+        setSubmitMessage(res.data.message);
+      };
     } catch (error) {
       if (error.response) {
         setSubmitStatus(error.data.status);
@@ -171,7 +187,7 @@ const Upload = () => {
 
   return (
     <div className="container form-container">
-      <h1 className="title">Upload a track</h1>
+      <Heading>Upload a track</Heading>
       <div className="field">
         <label className="label is-large">Track Title</label>
         <div className="control">
@@ -193,9 +209,10 @@ const Upload = () => {
           >
             <option>Trap</option>
             <option>Pop</option>
+            <option>Lo-fi</option>
             <option>Boom-Bap</option>
             <option>Synthwave</option>
-            <option>Lo-fi</option>
+            <option>Chillwave</option>
           </select>
         </div>
         <label className="label is-large">Mood</label>
