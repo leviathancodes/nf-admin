@@ -7,6 +7,8 @@ const TrackEdit = (props) => {
 
   useEffect(() => {
     async function fetchData() {
+      console.info(props.match.params.track);
+      console.info(`http://localhost:5000/music/search?term=${props.match.params.track}`);
       const res = await axios.get(
         `http://localhost:5000/music/search?term=${props.match.params.track}`
       );

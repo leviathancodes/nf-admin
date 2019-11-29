@@ -1,18 +1,21 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import Slider from 'rc-slider';
+
 import 'rc-slider/assets/index.css';
-import { AudioContext } from '../../../context/audioContext';
-import { ReactComponent as LargePlayIcon } from './playerPlayIcon.svg';
-import { ReactComponent as LargePauseIcon } from './playerPauseIcon.svg';
-import { ReactComponent as VolumeIcon } from './volumeIcon.svg';
-import HeartIcon from './heartIcon';
+import { AudioContext } from '../../../../context/audioContext';
+import VolumeSlider from '../volumeSlider';
+import { ReactComponent as LargePlayIcon } from '../playerPlayIcon.svg';
+import { ReactComponent as LargePauseIcon } from '../playerPauseIcon.svg';
+import { ReactComponent as VolumeIcon } from '../volumeIcon.svg';
+import HeartIcon from '../heartIcon';
+
+// OG Slider
 
 const LargePlayer = props => {
-  const [track, setTrack] = useState('');
-  const [progress, setProgress] = useState('');
   const [clicked, setClicked] = useState('#D3D3D3');
+  const [displayVolume, setDisplayVolume] = useState('none');
 
   const context = useContext(AudioContext);
 
@@ -95,6 +98,14 @@ const LargePlayer = props => {
     flex-direction: column;
   `;
 
+  const VolumeContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    cursor: pointer;
+  `;
+
   const TimeContainer = styled.div`
     width: 70%;
     display: flex;
@@ -126,45 +137,44 @@ const LargePlayer = props => {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    border: 1px solid black;
-
-    background: #fa2e6a; /* Old browsers */
-    background: -moz-linear-gradient(
+    background: linear-gradient(
       -45deg,
       #fa2e6a 0%,
       #f15377 33%,
       #ffa7a6 65%,
       #ffdbdb 100%
-    ); /* FF3.6-15 */
-    background: -webkit-linear-gradient(
-      -45deg,
-      #fa2e6a 0%,
-      #f15377 33%,
-      #ffa7a6 65%,
-      #ffdbdb 100%
-    ); /* Chrome10-25,Safari5.1-6 */
+    );
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-
     &:hover {
-      background: grey;
+      background: black;
     }
   `;
 
-  // useEffect(() => {
-  //   async function grabTrack() {
-  //     if (!track) {
-  //       const audio = new Audio(props.trackUrl);
-  //       audio.oncanplaythrough = () => {
-  //         setTrack(audio);
-  //         console.log('trak set');
-  //       };
-  //     }
-  //   }
-  //   grabTrack();
-  // }, [track]);
+  const playOrPauseIcon = () => {
+    if (context.currentTrack === props.trackTitle && context.playing) {
+      return <LargePauseIcon />;
+    }
+    if (context.currentTrack === props.trackTitle && !context.playing) {
+      return <LargePlayIcon />;
+    }
+    return <LargePlayIcon />;
+  };
+
+  const handleDisplayVolume = e => {
+    console.log(e.type);
+    if (e.type === 'mouseenter') {
+      setDisplayVolume('flex');
+    }
+    if (e.type === 'mouseleave') {
+      setTimeout(() => {
+        console.log('lost focus');
+        setDisplayVolume('none');
+      }, 3000);
+    }
+  };
 
   return (
     <Container>
@@ -173,31 +183,24 @@ const LargePlayer = props => {
           className="play"
           onClick={e => {
             if (!context.currentTrack) {
-              return context.handlePlaying(props.trackTitle, props.trackUrl);
+              return context.handlePlaying(props.trackTitle, props.trackUrl, props.duration);
             }
             if (context.playing && context.currentTrack !== props.trackTitle) {
               context.handleStopping();
-              return context.handlePausing(props.trackTitle, props.trackUrl);
+              return context.handlePlaying(props.trackTitle, props.trackUrl, props.duration);
             }
 
             if (context.playing) {
-              console.log('pause track');
               return context.handlePausing(props.trackTitle, props.trackUrl);
             }
             if (context.currentTrack !== props.trackTitle) {
-              console.log('play different track');
               context.handleStopping();
-              console.log(`the track that will play is ${props.trackTitle}`);
-              return context.handlePlaying(props.trackTitle, props.trackUrl);
+              return context.handlePlaying(props.trackTitle, props.trackUrl, props.duration);
             }
-            return context.handlePlaying(props.trackTitle, props.trackUrl);
+            return context.handlePlaying(props.trackTitle, props.trackUrl, props.duration);
           }}
         >
-          {context.currentTrack === props.trackTitle ? (
-            <LargePauseIcon />
-          ) : (
-            <LargePlayIcon />
-          )}
+          {playOrPauseIcon()}
         </LargePlayCircle>
       </LargePlayContainer>
       <div className="trackData">
@@ -216,23 +219,44 @@ const LargePlayer = props => {
               handleStyle={{
                 backgroundColor: '#F15377',
                 borderColor: '#F15377',
-                cursor: 'pointer'
+                cursor: 'grab'
               }}
-              value={context.progress}
+              value={
+                context.currentTrack === props.trackTitle ? context.progress : 0
+              }
               max={Math.round(props.duration)}
-              onChange={e => context.handleSeeking(e)}
-            />
+              onInput={e => {
+                if (context.currentTrack === props.trackTitle)
+                  context.handleSeeking(e);
+              }}
+              defaultValue={0}
+            />{' '}
           </ProgressContainer>
-          <VolumeIcon />
+
+          <VolumeContainer
+            className="volume-container"
+            onMouseEnter={handleDisplayVolume}
+            onMouseLeave={handleDisplayVolume}
+          >
+            <VolumeSlider
+              display={displayVolume}
+              onMouseLeave={handleDisplayVolume}
+            />
+            <VolumeIcon />
+          </VolumeContainer>
         </VolumeProgressContainer>
         <TimeContainer>
-          <Paragraph>{secondsToMinutes(context.progress)}</Paragraph>
+          <Paragraph>
+            {context.currentTrack === props.trackTitle
+              ? secondsToMinutes(context.progress)
+              : '0:00'}
+          </Paragraph>
           <Paragraph className="duration">
             {secondsToMinutes(props.duration)}
           </Paragraph>
         </TimeContainer>
         <SocialContainer>
-          <HeartIcon hover="#ffa7a6" clicked={clicked} />
+          <HeartIcon hover="#FFA7A6" clicked={clicked} />
         </SocialContainer>
       </div>
       <Cover>

@@ -5,16 +5,27 @@ const Sidebar = props => {
   const Container = styled.div`
     background-color: #efefef;
     padding: 1em;
+    border-right: 1px solid black;
   `;
 
   const Heading = styled.h3`
     color: #1d1d1d;
     font-size: 2.5em;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
 
-    & > span {
+    & > span.clear {
       font-size: 0.5em;
       color: #fa2e6a;
+      cursor: pointer;
+      transition: 0.05s;
+
+      &: hover {
+        transform: translateY(-2.5px);
+      }
     }
   `;
 
@@ -101,7 +112,8 @@ const Sidebar = props => {
     <>
       <Container>
         <Heading>
-          Filters <span key="clearAll" onClick={props.handleClearAll}>Clear all</span>
+          <span>Filters</span> 
+          <span className="clear" key="clearAll" onClick={props.handleClearAll}>Clear all</span>
         </Heading>
         <Subheading>Genres</Subheading>
         {createCheckboxes(props.genres, 'radio', 'genre')}

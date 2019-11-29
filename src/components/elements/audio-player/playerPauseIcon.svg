@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 173 196">
+<svg xmlns="http://www.w3.org/2000/svg" class="pauseContainer" width="50" height="50" viewBox="0 0 173 196">
   <g id="Group_51" data-name="Group 51" transform="translate(-507 -649)">
-    <rect id="Rectangle_40" data-name="Rectangle 40" width="43" height="196" transform="translate(507 649)" fill="#fff"/>
-    <rect id="Rectangle_39" data-name="Rectangle 39" width="43" height="196" transform="translate(637 649)" fill="#fff"/>
+    <rect id="Rectangle_40" class="pauseRectangle" data-name="Rectangle 40" width="43" height="196" transform="translate(507 649)" fill="#fff"/>
+    <rect id="Rectangle_39" class="pauseRectangle" data-name="Rectangle 39" width="43" height="196" transform="translate(637 649)" fill="#fff"/>
   </g>
 </svg>

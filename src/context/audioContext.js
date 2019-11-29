@@ -6,21 +6,17 @@ export const AudioProvider = props => {
   const [audio, setAudio] = useState(new Audio());
   const [trackUrl, setTrackUrl] = useState('');
   const [currentTrack, setCurrentTrack] = useState('');
-  const [playList, setPlayList] = useState([]);
+  const [playlist, setPlaylist] = useState([]);
   const [title, setTitle] = useState('');
   const [playing, isPlaying] = useState(false);
-  const [duration, setDuration] = useState('');
   const [progress, setProgress] = useState('');
-  const [volume, setVolume] = useState('');
+  const [volume, setVolume] = useState(0.5);
+  const [duration, setDuration] = useState(0);
 
-  const handleSeeking = e => {
-    setProgress(e);
-    audio.currentTime = e;
-  };
-
-  const handlePlaying = async (trackTitle, url) => {
+  const handlePlaying = async (trackTitle, url, trackLength) => {
     try {
       if (!currentTrack) {
+        setDuration(trackLength);
         audio.src = url;
         audio.oncanplaythrough = () => {
           audio.play();
@@ -38,7 +34,6 @@ export const AudioProvider = props => {
 
   const handlePausing = async () => {
     try {
-      console.log(audio);
       audio.pause();
       return isPlaying(false);
     } catch (err) {
@@ -52,6 +47,7 @@ export const AudioProvider = props => {
       audio.pause();
       audio.currentTime = 0;
       audio.src = '';
+      setDuration(0);
       setCurrentTrack('');
       return isPlaying(false);
     } catch (err) {
@@ -60,16 +56,29 @@ export const AudioProvider = props => {
     }
   };
 
+  const handleSeeking = e => {
+    audio.currentTime = e;
+    setProgress(e);
+  };
+
+  audio.ontimeupdate = (e) => {
+    setProgress(audio.currentTime);
+  };
+
+  audio.onended = () => {
+    handleStopping();
+  };
+
+  audio.volume = volume;
+
   const handlePlaylist = async () => {};
 
   const audioState = {
-    message: 'hello world',
+    message: 'Latest tracks',
     audio,
     setAudio,
     playing,
     isPlaying,
-    duration,
-    setDuration,
     progress,
     setProgress,
     volume,
@@ -82,6 +91,8 @@ export const AudioProvider = props => {
     handlePausing,
     handleStopping,
     handleSeeking,
+    duration,
+    setDuration,
     trackUrl,
     setTrackUrl
   };

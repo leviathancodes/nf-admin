@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { AudioContext } from '../context/audioContext';
-import LargePlayer from '../components/elements/audio-player/largePlayer';
+import LargePlayer from '../components/elements/audio-player/largePlayer/largePlayer';
 import Sidebar from '../components/elements/filter/sidebar';
 
 const Music = () => {
