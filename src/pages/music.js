@@ -34,17 +34,22 @@ const Music = () => {
   const [genre, setGenre] = useState([]);
   const [selectedMoods, setSelectedMoods] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState('');
+  const [bpm, setBPM] = useState([0, 200]);
+  const [price, setPrice] = useState([]);
 
   const context = useContext(AudioContext);
 
-  // Returns new tracks bassed on selected filters
+  // Returns new tracks based on selected filters
   useEffect(() => {
     async function fetchFilteredTracks() {
-      if (!selectedGenre) {
-        return;
+      if (!selectedMoods && !selectedGenre) {
+        const res = await axios.get('http://localhost:5000/music');
+        return setTracks(res.data);
       }
+
       const params = {
-        genre: selectedGenre
+        genre: selectedGenre,
+        mood: selectedMoods
       };
 
       const res = await axios.request({
@@ -53,10 +58,12 @@ const Music = () => {
         params
       });
 
-      setTracks(res.data);
+      console.log('request sent');
+
+      return setTracks(res.data);
     }
     fetchFilteredTracks();
-  }, [selectedGenre]);
+  }, [selectedMoods, selectedGenre]);
 
   // Initial fetch for tracks
   useEffect(() => {
@@ -93,8 +100,8 @@ const Music = () => {
   );
 
   const handleCheckboxChange = useCallback(
-    (category, option) => {
-      console.log(selectedMoods, selectedGenre);
+    (category, option, priceOption) => {
+      console.log(price);
       if (category === 'genre') {
         if (selectedGenre === option) return setSelectedGenre('');
         return setSelectedGenre(option);
@@ -106,9 +113,15 @@ const Music = () => {
           );
         }
       }
+      if (category === 'price') {
+        if (option[0] === price[0] && option[1] === price[1]) {
+          return setPrice([]);
+        }
+        return setPrice(option);
+      }
       return handleAddMood(option);
     },
-    [handleAddMood, selectedMoods, selectedGenre]
+    [price, handleAddMood, selectedGenre, selectedMoods]
   );
 
   const handleSelected = useCallback(
@@ -121,8 +134,12 @@ const Music = () => {
         if (selectedMoods.includes(option)) return true;
         return false;
       }
+      if (category === 'price') {
+        if (option[0] === price[0] && option[1] === price[1]) return true;
+        return false;
+      }
     },
-    [selectedGenre, selectedMoods]
+    [price, selectedGenre, selectedMoods]
   );
 
   const createTracks = () => {
@@ -151,6 +168,8 @@ const Music = () => {
           handleCheckboxChange={handleCheckboxChange}
           handleSelected={handleSelected}
           handleAddMood={handleAddMood}
+          bpm={bpm}
+          setBPM={setBPM}
         />
       )}
       <div>

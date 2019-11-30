@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import Slider, { Range } from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
 const Container = styled.div`
   background-color: #efefef;
@@ -80,21 +82,55 @@ const Checkbox = styled.input`
     border: 1px solid #fa2e6a;
   }
 `;
+const prices = [[0, 25], [25, 50], [50, 75], [75, 100], [100, 125], [125, 150]];
+
+const BPMSlider = props => {
+  return (
+    <div>
+      <Range
+        min={0}
+        max={200}
+        value={props.bpm}
+        onChange={e => props.setBPM(e)}
+        step={10}
+        trackStyle={[{ backgroundColor: '#FA2E6A', padding: 0 }]}
+        railStyle={{ backgroundColor: '#707070', padding: 0 }}
+        handleStyle={[
+          {
+            backgroundColor: '#FA2E6A',
+            border: '1px solid white'
+          },
+          {
+            backgroundColor: '#FA2E6A',
+            border: '1px solid white'
+          }
+        ]}
+      />
+      <p>
+        {props.bpm[0]} - {props.bpm[1]}
+      </p>
+    </div>
+  );
+};
 
 const Sidebar = props => {
   const createCheckboxes = (data, type, category) => {
     return data.map(option => {
+      let priceOption = '';
+      if (category === 'price') {
+        priceOption = `$${option[0]} - $${option[1] - 0.01}`;
+      }
       return (
         <div>
           <Label for={category}>
             <Checkbox
-              key={option}
+              key={priceOption || option}
               type={type}
               name={category}
               onClick={() => props.handleCheckboxChange(category, option)}
               checked={props.handleSelected(category, option)}
             />
-            <Paragraph>{option}</Paragraph>
+            <Paragraph>{priceOption || option}</Paragraph>
           </Label>
         </div>
       );
@@ -116,6 +152,10 @@ const Sidebar = props => {
       {createCheckboxes(props.genres, 'radio', 'genre')}
       <Subheading>Moods</Subheading>
       {createCheckboxes(props.moods, 'checkbox', 'mood')}
+      <Subheading>BPM</Subheading>
+      <BPMSlider bpm={props.bpm} setBPM={props.setBPM} />
+      <Subheading>Price</Subheading>
+      {createCheckboxes(prices, 'radio', 'price')}
     </Container>
   );
 };
