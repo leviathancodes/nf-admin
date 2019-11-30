@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import Slider from 'rc-slider';
 
 import 'rc-slider/assets/index.css';
-import { AudioContext } from '../../../../context/audioContext';
+import { AudioContext } from '../../../context/audioContext';
 import VolumeSlider from '../volumeSlider';
-import { ReactComponent as LargePlayIcon } from '../playerPlayIcon.svg';
-import { ReactComponent as LargePauseIcon } from '../playerPauseIcon.svg';
-import { ReactComponent as VolumeIcon } from '../volumeIcon.svg';
-import HeartIcon from '../heartIcon';
+import { ReactComponent as LargePlayIcon } from './playerPlayIcon.svg';
+import { ReactComponent as LargePauseIcon } from './playerPauseIcon.svg';
+import { ReactComponent as VolumeIcon } from './volumeIcon.svg';
+import HeartIcon from './heartIcon';
 
 const Heading = styled.h3`
   font-size: 3em;

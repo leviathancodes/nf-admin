@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { SearchContext } from '../context/searchContext';
-import TrackCard from '../components/trackCard';
 
 const SearchResults = props => {
   const [searchResults, setSearchResults] = useState([]);
@@ -21,16 +19,7 @@ const SearchResults = props => {
     }
     return searchResults.map(data => {
       return (
-        <TrackCard
-          trackTitle={data.presentationTitle}
-          genre={data.genre}
-          isPublic={data.isPublic}
-          price={data.price}
-          mood={data.mood}
-          trackUrl={data.trackUrl}
-          coverUrl={data.imageUrl}
-          similarArtists={data.similarArtists}
-        />
+        <h1>Hello World</h1>
       );
     });
   };

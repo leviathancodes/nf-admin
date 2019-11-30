@@ -2,8 +2,8 @@ import React, { useEffect, useState, useCallback, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { AudioContext } from '../context/audioContext';
-import LargePlayer from '../components/elements/audio-player/largePlayer/largePlayer';
-import Sidebar from '../components/elements/filter/sidebar';
+import LargePlayer from '../components/audio-player/largePlayer/largePlayer';
+import Sidebar from '../components/filter/sidebar';
 
 const PageLayout = styled.div`
   width: 100vw;
@@ -49,7 +49,9 @@ const Music = () => {
 
       const params = {
         genre: selectedGenre,
-        mood: selectedMoods
+        mood: selectedMoods,
+        bpm,
+        price
       };
 
       const res = await axios.request({
@@ -63,7 +65,7 @@ const Music = () => {
       return setTracks(res.data);
     }
     fetchFilteredTracks();
-  }, [selectedMoods, selectedGenre]);
+  }, [selectedMoods, selectedGenre, bpm, price]);
 
   // Initial fetch for tracks
   useEffect(() => {
@@ -100,7 +102,7 @@ const Music = () => {
   );
 
   const handleCheckboxChange = useCallback(
-    (category, option, priceOption) => {
+    (category, option) => {
       console.log(price);
       if (category === 'genre') {
         if (selectedGenre === option) return setSelectedGenre('');

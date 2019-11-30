@@ -4,7 +4,7 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRandom } from '@fortawesome/free-solid-svg-icons';
-import { AudioContext } from '../../../../context/audioContext';
+import { AudioContext } from '../../../context/audioContext';
 
 const greyMain = '#818181';
 

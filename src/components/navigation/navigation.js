@@ -7,7 +7,7 @@ import {
   faMusic,
   faChartPie
 } from '@fortawesome/free-solid-svg-icons';
-import { ReactComponent as Logo } from '../img/logo.svg';
+import { ReactComponent as Logo } from '../../img/logo.svg';
 
 const Nav = () => {
   const [search, setSearch] = useState('');

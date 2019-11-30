@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Nav from './components/navigation';
-import FooterPlayer from './components/elements/audio-player/footerPlayer/footerPlayer';
+import Nav from './components/navigation/navigation';
+import FooterPlayer from './components/audio-player/footerPlayer/footerPlayer';
 import Upload from './pages/upload';
 import Music from './pages/music';
 import SearchResults from './pages/search';

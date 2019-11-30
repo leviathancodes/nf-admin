@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { AudioContext } from '../../../context/audioContext';
+import { AudioContext } from '../../context/audioContext';
 
 const Wrapper = styled.div`
   clip-path: polygon(
