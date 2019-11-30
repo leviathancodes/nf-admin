@@ -14,6 +14,7 @@ export const AudioProvider = props => {
   const [duration, setDuration] = useState(0);
 
   const handlePlaying = async (trackTitle, url, trackLength) => {
+    console.log('clicked play');
     try {
       if (!currentTrack) {
         setDuration(trackLength);
@@ -33,6 +34,7 @@ export const AudioProvider = props => {
   };
 
   const handlePausing = async () => {
+    console.log('clicked pause');
     try {
       audio.pause();
       return isPlaying(false);

@@ -5,6 +5,29 @@ import { AudioContext } from '../context/audioContext';
 import LargePlayer from '../components/elements/audio-player/largePlayer/largePlayer';
 import Sidebar from '../components/elements/filter/sidebar';
 
+const PageLayout = styled.div`
+  width: 100vw;
+  height: auto;
+  display: grid;
+  grid-template-columns: 20% 80%;
+  padding-bottom: 6em;
+`;
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+`;
+
+const Heading = styled.h3`
+  font-size: 5em;
+  color: #fa2e6a;
+  font-family: futura-pt, sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  text-align: center;
+  margin-bottom: 100px;
+`;
+
 const Music = () => {
   const [tracks, setTracks] = useState([]);
   const [moods, setMoods] = useState([]);
@@ -14,13 +37,34 @@ const Music = () => {
 
   const context = useContext(AudioContext);
 
-  // Fetch data for tracks
+  // Returns new tracks bassed on selected filters
+  useEffect(() => {
+    async function fetchFilteredTracks() {
+      if (!selectedGenre) {
+        return;
+      }
+      const params = {
+        genre: selectedGenre
+      };
+
+      const res = await axios.request({
+        method: 'GET',
+        url: 'http://localhost:5000/music/search',
+        params
+      });
+
+      setTracks(res.data);
+    }
+    fetchFilteredTracks();
+  }, [selectedGenre]);
+
+  // Initial fetch for tracks
   useEffect(() => {
     async function fetchData() {
       const res = await axios.get('http://localhost:5000/music');
       setTracks(res.data);
     }
-    console.log('rendered fetch data for tracks in music.js')
+    console.log('rendered fetch data for tracks in music.js');
     fetchData();
   }, []);
 
@@ -41,7 +85,8 @@ const Music = () => {
     setSelectedGenre('');
   };
 
-  const handleAddMood = useCallback(mood => {
+  const handleAddMood = useCallback(
+    mood => {
       setSelectedMoods(selectedMoods.concat([mood]));
     },
     [selectedMoods]
@@ -49,7 +94,7 @@ const Music = () => {
 
   const handleCheckboxChange = useCallback(
     (category, option) => {
-      console.log(option);
+      console.log(selectedMoods, selectedGenre);
       if (category === 'genre') {
         if (selectedGenre === option) return setSelectedGenre('');
         return setSelectedGenre(option);
@@ -79,28 +124,6 @@ const Music = () => {
     },
     [selectedGenre, selectedMoods]
   );
-
-  const PageLayout = styled.div`
-    width: 100vw;
-    height: auto;
-    display: grid;
-    grid-template-columns: 20% 80%;
-  `;
-  const Container = styled.div`
-    display: flex;
-    justify-content: center;
-    min-height: 100vh;
-  `;
-
-  const Heading = styled.h3`
-    font-size: 5em;
-    color: #fa2e6a;
-    font-family: futura-pt, sans-serif;
-    font-weight: 500;
-    font-style: normal;
-    text-align: center;
-    margin-bottom: 100px;
-  `;
 
   const createTracks = () => {
     return tracks.map(data => {

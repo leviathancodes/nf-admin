@@ -1,20 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 
+const Icon = styled.svg`
+  cursor: pointer;
+  &:hover {
+    fill: #ffa7a6;
+  }
+`;
+
+const Path = styled.path`
+  &:hover {
+    fill: #ffa7a6;
+  }
+`;
+
 const HeartIcon = props => {
-  const Icon = styled.svg`
-    cursor: pointer;
-    &:hover {
-      fill: #ffa7a6;
-    }
-  `;
-
-  const Path = styled.path`
-    &:hover {
-      fill: #ffa7a6;
-    }
-  `;
-
   return (
     <Icon
       xmlns="http://www.w3.org/2000/svg"

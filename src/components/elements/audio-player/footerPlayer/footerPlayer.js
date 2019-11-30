@@ -2,37 +2,40 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import { AudioContext } from '../../../../context/audioContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRandom } from '@fortawesome/free-solid-svg-icons';
+import { AudioContext } from '../../../../context/audioContext';
+
+const greyMain = '#818181';
+
+const Nav = styled.nav`
+  box-shadow: 0 -4px 5px 0 #0000004b;
+  justify-content: center;
+  align-items: center;
+  background-color: #f7f7f7;
+`;
+const SVGStyles = styled.svg`
+  margin-left: 40px;
+  margin-right: 40px;
+  cursor: pointer;
+`;
+
+const Shuffle = styled(FontAwesomeIcon)`
+  font-size: 2em;
+  margin-left: 40px;
+  color: ${greyMain};
+`;
+
+const secondsToMinutes = seconds =>
+  `${Math.floor(seconds / 60)}:${`0${Math.floor(seconds % 60)}`.slice(-2)}`;
 
 const FooterPlayer = () => {
-  const secondsToMinutes = seconds =>
-    `${Math.floor(seconds / 60)}:${`0${Math.floor(seconds % 60)}`.slice(-2)}`;
-
   const context = useContext(AudioContext);
-  const greyMain = '#818181';
-
-  const Nav = styled.nav`
-    box-shadow: 0 -4px 5px 0 #0000004b;
-    justify-content: center;
-    align-items: center;
-    background-color: #f7f7f7;
-  `;
-  const SVGStyles = styled.svg`
-    margin-left: 40px;
-    margin-right: 40px;
-  `;
-
-  const Shuffle = styled(FontAwesomeIcon)`
-    font-size: 2em;
-    margin-left: 40px;
-    color: ${greyMain};
-  `;
 
   const playIcon = (height, width, fill) => {
     return (
       <SVGStyles
+        onClick={e => context.handlePlaying()}
         xmlns="http://www.w3.org/2000/svg"
         width={width}
         height={height}
@@ -56,6 +59,7 @@ const FooterPlayer = () => {
         width={width}
         height={height}
         viewBox="0 0 29 34"
+        onClick={e => context.handlePausing()}
       >
         <g id="Group_78" data-name="Group 78" transform="translate(-562 -310)">
           <rect
