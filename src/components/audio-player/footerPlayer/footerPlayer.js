@@ -230,7 +230,7 @@ const FooterPlayer = () => {
                 cursor: 'pointer'
               }}
               trackStyle={{
-                backgroundColor: '#FA2E6A',
+                backgroundColor: '#FFA7A6',
                 width: '50vw',
                 position: 'absolute',
                 top: 5,

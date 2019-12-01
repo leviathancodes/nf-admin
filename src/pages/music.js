@@ -35,12 +35,14 @@ const Music = () => {
   const [selectedMoods, setSelectedMoods] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState('');
   const [bpm, setBPM] = useState([0, 200]);
-  const [price, setPrice] = useState([]);
+  const [price, setPrice] = useState([0, 25]);
 
   const context = useContext(AudioContext);
 
   // Returns new tracks based on selected filters
   useEffect(() => {
+    console.log(bpm);
+    console.log(price);
     async function fetchFilteredTracks() {
       if (!selectedMoods && !selectedGenre) {
         const res = await axios.get('http://localhost:5000/music');
@@ -92,6 +94,8 @@ const Music = () => {
   const handleClearAll = () => {
     setSelectedMoods([]);
     setSelectedGenre('');
+    setPrice([0, 200]);
+    setBPM([0, 200]);
   };
 
   const handleAddMood = useCallback(
@@ -117,7 +121,7 @@ const Music = () => {
       }
       if (category === 'price') {
         if (option[0] === price[0] && option[1] === price[1]) {
-          return setPrice([]);
+          return setPrice([0, 200]);
         }
         return setPrice(option);
       }

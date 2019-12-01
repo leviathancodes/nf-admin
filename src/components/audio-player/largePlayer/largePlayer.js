@@ -215,7 +215,7 @@ const LargePlayer = props => {
           <ProgressContainer>
             <Slider
               railStyle={{ backgroundColor: '#707070', padding: 0 }}
-              trackStyle={{ backgroundColor: '#FA2E6A', padding: 0 }}
+              trackStyle={{ backgroundColor: '#FFA7A6', padding: 0 }}
               handleStyle={{
                 backgroundColor: '#F15377',
                 borderColor: '#F15377',
