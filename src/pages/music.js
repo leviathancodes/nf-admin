@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { AudioContext } from '../context/audioContext';
+import SmallPlayer from '../components/audio-player/smallPlayer/smallPlayer';
 import LargePlayer from '../components/audio-player/largePlayer/largePlayer';
 import Sidebar from '../components/filter/sidebar';
 
@@ -9,23 +10,32 @@ const PageLayout = styled.div`
   width: 100vw;
   height: auto;
   display: grid;
-  grid-template-columns: 20% 80%;
+  grid-template-columns: 25% 75%;
   padding-bottom: 6em;
 `;
 const Container = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  width: 100%;
   min-height: 100vh;
 `;
 
 const Heading = styled.h3`
   font-size: 5em;
-  color: #fa2e6a;
-  font-family: futura-pt, sans-serif;
-  font-weight: 500;
-  font-style: normal;
-  text-align: center;
-  margin-bottom: 100px;
+  color: ${props => props.theme.color.primaryPink};
+  font-family: ${props => props.theme.font.family};
+  font-weight: ${props => props.theme.font.weight};
+  font-style: ${props => props.theme.font.style};
+  padding: 40px;
+`;
+
+const Subheading = styled.p`
+  color: ${props => props.theme.color.primaryGrey};
+  font-family: ${props => props.theme.font.family};
+  font-weight: ${props => props.theme.font.weight};
+  font-style: ${props => props.theme.font.style};
+  padding: 40px;
+  font-size: 2em;
 `;
 
 const Music = () => {
@@ -151,14 +161,15 @@ const Music = () => {
   const createTracks = () => {
     return tracks.map(data => {
       return (
-        <LargePlayer
+        <SmallPlayer
           trackTitle={data.presentationTitle}
           genre={data.genre}
-          similarArtists={data.similarArtists.join(' X ')}
+          similarArtists={data.similarArtists.join(', ')}
           price={data.price}
           trackUrl={data.trackUrl}
           cover={data.imageUrl}
           duration={data.duration}
+          moods={data.mood}
         />
       );
     });
@@ -180,9 +191,13 @@ const Music = () => {
       )}
       <div>
         <Heading>{context.message}</Heading>
-        <Container>
-          <div className="container">{createTracks()}</div>
-        </Container>
+        <Subheading>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim{' '}
+        </Subheading>
+
+        <Container>{createTracks()}</Container>
       </div>
     </PageLayout>
   );

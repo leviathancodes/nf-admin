@@ -13,19 +13,19 @@ import HeartIcon from './heartIcon';
 
 const Heading = styled.h3`
   font-size: 3em;
-  color: #fa2e6a;
+  color: ${props => props.theme.color.primaryPink};
   font-family: futura-pt, sans-serif;
   font-weight: 500;
   font-style: normal;
 `;
 
 const Paragraph = styled.p`
-  color: #1d1d1d;
+  color: ${props => props.theme.color.black};
   padding-top: 2.5px;
 `;
 
 const PriceText = styled.span`
-  color: #7799fc;
+  color: ${props => props.theme.color.primaryBlue};
   font-weight: 500;
 `;
 
@@ -36,7 +36,6 @@ const Container = styled.div`
   grid-template-columns: 20% 55% 25%;
   box-shadow: 0 4px 6px 0 #0000004b;
   margin-bottom: 25px;
-  border: 1px solid black;
 `;
 
 const CoverContainer = styled.div`
@@ -45,13 +44,7 @@ const CoverContainer = styled.div`
   align-items: center;
   width: 200px;
   height: 200px;
-  background: linear-gradient(
-    135deg,
-    #fa2e6a 0%,
-    #ffa7a6 32%,
-    #7799fc 69%,
-    #d7e4f0 100%
-  );
+  background: ${props => props.theme.color.largeBorderGradient};
 `;
 
 const LargePlayContainer = styled.div`
@@ -112,19 +105,15 @@ const LargePlayCircle = styled.div`
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background: linear-gradient(
-    -45deg,
-    #fa2e6a 0%,
-    #f15377 33%,
-    #ffa7a6 65%,
-    #ffdbdb 100%
-  );
+  background: ${props => props.theme.color.playGradient}
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   &:hover {
-    background: black;
+    background: ${props => props.theme.color.black};
+    transition: all 0.5s ease-out;
+
   }
 `;
 
@@ -160,46 +149,44 @@ const LargePlayer = props => {
     }
   };
 
+  const handlePlaying = () => {
+    if (!context.currentTrack) {
+      return context.handlePlaying(
+        props.trackTitle,
+        props.trackUrl,
+        props.duration
+      );
+    }
+    if (context.playing && context.currentTrack !== props.trackTitle) {
+      context.handleStopping();
+      return context.handlePlaying(
+        props.trackTitle,
+        props.trackUrl,
+        props.duration
+      );
+    }
+
+    if (context.playing) {
+      return context.handlePausing(props.trackTitle, props.trackUrl);
+    }
+    if (context.currentTrack !== props.trackTitle) {
+      context.handleStopping();
+      return context.handlePlaying(
+        props.trackTitle,
+        props.trackUrl,
+        props.duration
+      );
+    }
+    return context.handlePlaying(
+      props.trackTitle,
+      props.trackUrl,
+      props.duration
+    );
+  };
   return (
     <Container>
       <LargePlayContainer>
-        <LargePlayCircle
-          className="play"
-          onClick={e => {
-            if (!context.currentTrack) {
-              return context.handlePlaying(
-                props.trackTitle,
-                props.trackUrl,
-                props.duration
-              );
-            }
-            if (context.playing && context.currentTrack !== props.trackTitle) {
-              context.handleStopping();
-              return context.handlePlaying(
-                props.trackTitle,
-                props.trackUrl,
-                props.duration
-              );
-            }
-
-            if (context.playing) {
-              return context.handlePausing(props.trackTitle, props.trackUrl);
-            }
-            if (context.currentTrack !== props.trackTitle) {
-              context.handleStopping();
-              return context.handlePlaying(
-                props.trackTitle,
-                props.trackUrl,
-                props.duration
-              );
-            }
-            return context.handlePlaying(
-              props.trackTitle,
-              props.trackUrl,
-              props.duration
-            );
-          }}
-        >
+        <LargePlayCircle className="play" onClick={handlePlaying}>
           {playOrPauseIcon()}
         </LargePlayCircle>
       </LargePlayContainer>

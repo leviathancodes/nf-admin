@@ -208,9 +208,9 @@ const FooterPlayer = () => {
       <div className="navbar-menu">
         <div
           className="navbar-start"
-          style={{ 'flex-grow': '1', 'justify-content': 'center' }}
+          style={{ 'flexGrow': '1', 'justifyContent': 'center' }}
         >
-          <div class="navbar-item">
+          <div className="navbar-item">
             {prevTrackIcon('#818181', '#d3d3d3')}
             {context.playing
               ? pauseIcon('29', '34')
@@ -242,7 +242,7 @@ const FooterPlayer = () => {
                 cursor: 'grab',
                 top: 5
               }}
-              value={context.progress}
+              value={Number(context.progress)}
               max={Math.round(context.duration)}
               onChange={e => {
                 context.handleSeeking(e);

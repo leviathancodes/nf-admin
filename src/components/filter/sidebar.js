@@ -9,7 +9,7 @@ const Container = styled.div`
 `;
 
 const Heading = styled.h3`
-  color: #1d1d1d;
+  color: ${props => props.theme.color.black};
   font-size: 2.5em;
   font-weight: 500;
   display: flex;
@@ -19,9 +19,9 @@ const Heading = styled.h3`
 
   & > span.clear {
     font-size: 0.5em;
-    color: #fa2e6a;
+    color: ${props => props.theme.color.primaryPink};
     cursor: pointer;
-    transition: 0.05s;
+    transition: 0.5s;
 
     &: hover {
       transform: translateY(-2.5px);
@@ -34,7 +34,7 @@ const Paragraph = styled.p`
 `;
 
 const Subheading = styled.h3`
-  color: #1d1d1d;
+  color: ${props => props.theme.color.black};
   font-size: 2em;
   font-weight: 500;
 `;
@@ -48,7 +48,7 @@ const Checkbox = styled.input`
   appearance: none;
   height: 25px;
   width: 25px;
-  border: 1px solid #4a4a4a;
+  border: 1px solid ${props => props.theme.color.darkGrey};
   border-radius: 50%;
   outline: none;
   cursor: pointer;
@@ -56,10 +56,10 @@ const Checkbox = styled.input`
   justify-content: center;
   align-items: center;
   margin-right: 1em;
-  transition-duration: 0.3s;
+  transition: 0.3s;
 
   &:hover {
-    border: 1px solid #fa2e6a;
+    border: 1px solid ${props => props.theme.color.primaryPink};
   }
 
   ${({ checked }) =>
@@ -73,13 +73,13 @@ const Checkbox = styled.input`
     width: 15px;
     border-radius: 50%;
     background-color: #fa2e6a;
-    transition:  0.2s;
+    transition: all 0.2s;
 
   }
 `}
 
   &:selected {
-    border: 1px solid #fa2e6a;
+    border: 1px solid ${props => props.theme.color.primaryPink};
   }
 `;
 const prices = [[0, 25], [25, 50], [50, 75], [75, 100], [100, 125], [125, 150]];
