@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRandom } from '@fortawesome/free-solid-svg-icons';
+import { faRandom, faList } from '@fortawesome/free-solid-svg-icons';
 import { AudioContext } from '../../../context/audioContext';
 
 const greyMain = '#818181';
@@ -24,6 +24,13 @@ const Shuffle = styled(FontAwesomeIcon)`
   font-size: 2em;
   margin-left: 40px;
   color: ${greyMain};
+`;
+
+const Playlist = styled(FontAwesomeIcon)`
+  font-size: 2em;
+  margin-left: 40px;
+  color: ${greyMain};
+  cursor: pointer;
 `;
 
 const secondsToMinutes = seconds =>
@@ -253,6 +260,7 @@ const FooterPlayer = () => {
             <p>{secondsToMinutes(context.duration)}</p>
           </div>
           <div className="navbar-item">{volumeIcon()}</div>
+          <div className="navbar-item"><Playlist icon={faList} onClick={e => context.setPlaylistActive(true)} /></div>
         </div>
       </div>
     </Nav>

@@ -7,10 +7,12 @@ import Music from './pages/music';
 import SearchResults from './pages/search';
 import Error404 from './pages/404';
 import TrackEdit from './pages/trackEdit';
+import Playlist from './components/playlist/playlist';
 
 const Wrapper = () => {
   return (
     <Router>
+      <Playlist open={true} />
       <Nav />
       <Switch>
         <Route path="/upload" exact component={Upload} />

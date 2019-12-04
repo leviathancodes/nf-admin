@@ -5,6 +5,7 @@ import { AudioContext } from '../context/audioContext';
 import SmallPlayer from '../components/audio-player/smallPlayer/smallPlayer';
 import LargePlayer from '../components/audio-player/largePlayer/largePlayer';
 import Sidebar from '../components/filter/sidebar';
+import Playlist from '../components/playlist/playlist';
 
 const PageLayout = styled.div`
   width: 100vw;
@@ -51,8 +52,6 @@ const Music = () => {
 
   // Returns new tracks based on selected filters
   useEffect(() => {
-    console.log(bpm);
-    console.log(price);
     async function fetchFilteredTracks() {
       if (!selectedMoods && !selectedGenre) {
         const res = await axios.get('http://localhost:5000/music');
@@ -74,7 +73,8 @@ const Music = () => {
 
       console.log('request sent');
 
-      return setTracks(res.data);
+      setTracks(res.data);
+
     }
     fetchFilteredTracks();
   }, [selectedMoods, selectedGenre, bpm, price]);
@@ -84,8 +84,9 @@ const Music = () => {
     async function fetchData() {
       const res = await axios.get('http://localhost:5000/music');
       setTracks(res.data);
+      context.setPlaylist(context.playlist.push(res.data));
     }
-    console.log('rendered fetch data for tracks in music.js');
+    console.log('rendered fetch data for tracks in music.js', context.playlist);
     fetchData();
   }, []);
 

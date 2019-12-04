@@ -7,6 +7,7 @@ export const AudioProvider = props => {
   const [trackUrl, setTrackUrl] = useState('');
   const [currentTrack, setCurrentTrack] = useState('');
   const [playlist, setPlaylist] = useState([]);
+  const [playlistActive, setPlaylistActive] = useState(false);
   const [title, setTitle] = useState('');
   const [playing, isPlaying] = useState(false);
   const [progress, setProgress] = useState('');
@@ -14,7 +15,6 @@ export const AudioProvider = props => {
   const [duration, setDuration] = useState(0);
 
   const handlePlaying = async (trackTitle, url, trackLength) => {
-    console.log('clicked play');
     try {
       if (!currentTrack) {
         setDuration(trackLength);
@@ -93,10 +93,14 @@ export const AudioProvider = props => {
     handlePausing,
     handleStopping,
     handleSeeking,
+    playlistActive,
+    setPlaylistActive,
     duration,
     setDuration,
     trackUrl,
-    setTrackUrl
+    setTrackUrl,
+    playlist,
+    setPlaylist
   };
 
   return (
