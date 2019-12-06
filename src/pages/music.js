@@ -3,9 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { AudioContext } from '../context/audioContext';
 import SmallPlayer from '../components/audio-player/smallPlayer/smallPlayer';
-import LargePlayer from '../components/audio-player/largePlayer/largePlayer';
 import Sidebar from '../components/filter/sidebar';
-import Playlist from '../components/playlist/playlist';
 
 const PageLayout = styled.div`
   width: 100vw;
@@ -46,7 +44,7 @@ const Music = () => {
   const [selectedMoods, setSelectedMoods] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState('');
   const [bpm, setBPM] = useState([0, 200]);
-  const [price, setPrice] = useState([0, 25]);
+  const [price, setPrice] = useState([0, 150]);
 
   const context = useContext(AudioContext);
 
@@ -71,10 +69,7 @@ const Music = () => {
         params
       });
 
-      console.log('request sent');
-
       setTracks(res.data);
-
     }
     fetchFilteredTracks();
   }, [selectedMoods, selectedGenre, bpm, price]);
@@ -84,7 +79,9 @@ const Music = () => {
     async function fetchData() {
       const res = await axios.get('http://localhost:5000/music');
       setTracks(res.data);
-      context.setPlaylist(context.playlist.push(res.data));
+      if (context.playlist.length < 1 || !context.playing) {
+        context.setPlaylist(res.data);
+      }
     }
     console.log('rendered fetch data for tracks in music.js', context.playlist);
     fetchData();

@@ -13,6 +13,9 @@ const Nav = styled.nav`
   justify-content: center;
   align-items: center;
   background-color: #f7f7f7;
+  transition: all 1s ease-in;
+  position: ${props => (props.playlist ? 'relative' : 'fixed')}
+  height: ${props => (props.playlist ? '0px' : 'auto')};
 `;
 const SVGStyles = styled.svg`
   margin-left: 40px;
@@ -31,6 +34,10 @@ const Playlist = styled(FontAwesomeIcon)`
   margin-left: 40px;
   color: ${greyMain};
   cursor: pointer;
+  transition: 0.3s;
+  &:hover {
+    color: ${props => props.theme.color.pastelPink};
+  }
 `;
 
 const secondsToMinutes = seconds =>
@@ -42,7 +49,7 @@ const FooterPlayer = () => {
   const playIcon = (height, width, fill) => {
     return (
       <SVGStyles
-        onClick={e => context.handlePlaying()}
+        onClick={() => context.handlePlaying()}
         xmlns="http://www.w3.org/2000/svg"
         width={width}
         height={height}
@@ -66,7 +73,7 @@ const FooterPlayer = () => {
         width={width}
         height={height}
         viewBox="0 0 29 34"
-        onClick={e => context.handlePausing()}
+        onClick={() => context.handlePausing()}
       >
         <g id="Group_78" data-name="Group 78" transform="translate(-562 -310)">
           <rect
@@ -211,11 +218,12 @@ const FooterPlayer = () => {
       className="navbar is-fixed-bottom is-spaced"
       role="navigation"
       aria-label="main navigation"
+      playlist={context.playlistActive}
     >
       <div className="navbar-menu">
         <div
           className="navbar-start"
-          style={{ 'flexGrow': '1', 'justifyContent': 'center' }}
+          style={{ flexGrow: '1', justifyContent: 'center' }}
         >
           <div className="navbar-item">
             {prevTrackIcon('#818181', '#d3d3d3')}

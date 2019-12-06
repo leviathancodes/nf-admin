@@ -7,6 +7,7 @@ export const AudioProvider = props => {
   const [trackUrl, setTrackUrl] = useState('');
   const [currentTrack, setCurrentTrack] = useState('');
   const [playlist, setPlaylist] = useState([]);
+  const [shuffledPlaylist, setShuffledPlaylist] = useState([]);
   const [playlistActive, setPlaylistActive] = useState(false);
   const [title, setTitle] = useState('');
   const [playing, isPlaying] = useState(false);
@@ -16,7 +17,7 @@ export const AudioProvider = props => {
 
   const handlePlaying = async (trackTitle, url, trackLength) => {
     try {
-      if (!currentTrack) {
+      if (!currentTrack || (trackTitle && currentTrack !== trackTitle)) {
         setDuration(trackLength);
         audio.src = url;
         audio.oncanplaythrough = () => {
@@ -29,6 +30,7 @@ export const AudioProvider = props => {
       console.info(`Playing ${trackTitle}`);
       isPlaying(true);
     } catch (err) {
+      console.log('could not play')
       console.log(err);
     }
   };
@@ -48,7 +50,6 @@ export const AudioProvider = props => {
     try {
       audio.pause();
       audio.currentTime = 0;
-      audio.src = '';
       setDuration(0);
       setCurrentTrack('');
       return isPlaying(false);
@@ -63,17 +64,36 @@ export const AudioProvider = props => {
     setProgress(e);
   };
 
-  audio.ontimeupdate = (e) => {
+  audio.ontimeupdate = () => {
     setProgress(audio.currentTime);
   };
 
   audio.onended = () => {
-    handleStopping();
+    if (!playlist) {
+      handleStopping();
+    }
+    console.log('playing next track');
+    playlist.forEach((track, i) => {
+      if (track.presentationTitle === currentTrack) {
+        handleStopping();
+        const nextTrack = playlist[i + 1];
+        handlePlaying(nextTrack.presentationTitle, nextTrack.trackUrl, nextTrack.duration);
+      }
+    });
   };
 
   audio.volume = volume;
 
   const handlePlaylist = async () => {};
+
+  // Fisher-Yates Algorithm for shuffling / randomizing
+  const handleShuffle = array => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return setShuffledPlaylist(array);
+  };
 
   const audioState = {
     message: 'Latest tracks',
@@ -93,6 +113,8 @@ export const AudioProvider = props => {
     handlePausing,
     handleStopping,
     handleSeeking,
+    handleShuffle,
+    shuffledPlaylist,
     playlistActive,
     setPlaylistActive,
     duration,
