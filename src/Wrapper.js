@@ -15,6 +15,7 @@ const PageWrapper = styled.div`
   filter: ${props => (props.blurred ? 'blur(4px)' : 'none')};
   transition: all 0.2s ease-in;
   pointer-events: ${props => (props.blurred ? 'none' : 'auto')};
+  position: ${props => (props.blurred ? 'fixed' : 'auto')};
 `;
 
 const Wrapper = () => {

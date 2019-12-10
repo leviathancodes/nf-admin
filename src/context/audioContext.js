@@ -9,7 +9,6 @@ export const AudioProvider = props => {
   const [playlist, setPlaylist] = useState([]);
   const [shuffledPlaylist, setShuffledPlaylist] = useState([]);
   const [playlistActive, setPlaylistActive] = useState(false);
-  const [title, setTitle] = useState('');
   const [playing, isPlaying] = useState(false);
   const [progress, setProgress] = useState('');
   const [volume, setVolume] = useState(0.5);
@@ -17,6 +16,9 @@ export const AudioProvider = props => {
 
   const handlePlaying = async (trackTitle, url, trackLength) => {
     try {
+      if (!currentTrack && !url) {
+        return console.log('no song selected');
+      }
       if (!currentTrack || (trackTitle && currentTrack !== trackTitle)) {
         setDuration(trackLength);
         audio.src = url;
@@ -30,7 +32,7 @@ export const AudioProvider = props => {
       console.info(`Playing ${trackTitle}`);
       isPlaying(true);
     } catch (err) {
-      console.log('could not play')
+      console.log('could not play');
       console.log(err);
     }
   };
@@ -64,27 +66,60 @@ export const AudioProvider = props => {
     setProgress(e);
   };
 
+  const handleNextTrack = title => {
+    if (currentTrack) {
+      playlist.forEach((track, i) => {
+        if (track.presentationTitle === title) {
+          if (i === playlist.length - 1) {
+            audio.src = '';
+            return handleStopping();
+          }
+          const nextTrack = playlist[i + 1];
+          return handlePlaying(
+            nextTrack.presentationTitle,
+            nextTrack.trackUrl,
+            nextTrack.duration
+          );
+        }
+      });
+    }
+  };
+
+  const handlePreviousTrack = title => {
+    if (currentTrack) {
+      if (title === playlist[0].presentationTitle) {
+        audio.src = '';
+        return handleStopping();
+      }
+      playlist.forEach((track, i) => {
+        if (track.presentationTitle === title) {
+          const nextTrack = playlist[i - 1];
+          return handlePlaying(
+            nextTrack.presentationTitle,
+            nextTrack.trackUrl,
+            nextTrack.duration
+          );
+        }
+      });
+    }
+  };
+
   audio.ontimeupdate = () => {
     setProgress(audio.currentTime);
   };
 
   audio.onended = () => {
-    if (!playlist) {
+    if (
+      !playlist ||
+      currentTrack === playlist[playlist.length - 1].presentationTitle
+    ) {
       handleStopping();
     }
     console.log('playing next track');
-    playlist.forEach((track, i) => {
-      if (track.presentationTitle === currentTrack) {
-        handleStopping();
-        const nextTrack = playlist[i + 1];
-        handlePlaying(nextTrack.presentationTitle, nextTrack.trackUrl, nextTrack.duration);
-      }
-    });
+    return handleNextTrack(currentTrack);
   };
 
   audio.volume = volume;
-
-  const handlePlaylist = async () => {};
 
   // Fisher-Yates Algorithm for shuffling / randomizing
   const handleShuffle = array => {
@@ -105,8 +140,6 @@ export const AudioProvider = props => {
     setProgress,
     volume,
     setVolume,
-    title,
-    setTitle,
     currentTrack,
     setCurrentTrack,
     handlePlaying,
@@ -117,6 +150,8 @@ export const AudioProvider = props => {
     shuffledPlaylist,
     playlistActive,
     setPlaylistActive,
+    handleNextTrack,
+    handlePreviousTrack,
     duration,
     setDuration,
     trackUrl,

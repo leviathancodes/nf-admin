@@ -16,6 +16,7 @@ const Title = styled.h1`
   margin: 0.5em;
   color: white;
   font-weight: 500;
+  position: fixed;
 `;
 
 const Container = styled.div`
@@ -29,6 +30,7 @@ const Container = styled.div`
   right: 0;
   background-color: ${props => props.theme.color.darkGrey};
   transition: 1s;
+  transition-property: all;
   z-index: 1000;
   overflow: scroll;
 `;
@@ -56,11 +58,13 @@ const CloseButtonContainer = styled.div`
 `;
 
 const TrackContainer = styled.div`
-  width: 100%;
   height: auto;
   background-color: ${props => props.theme.color.playlistTrack};
   border: ${props => props.theme.color.smallBorderGradient};
+  width: 700px
+  display: flex;
   box-shadow: 0 4px 6px 0 black;
+  transition: all 0.3s ease-out;
   &:hover {
     background-color: #626262;
   }
@@ -95,7 +99,7 @@ const Playlist = props => {
     if (context.playlist.length > 1) {
       return context.playlist.map(track => {
         return (
-          <TrackContainer>
+          <TrackContainer open={context.playlistActive}>
             <ThumbnailContainer
               onClick={() =>
                 context.playing

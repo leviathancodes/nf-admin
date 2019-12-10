@@ -71,7 +71,7 @@ const SmallPlayer = props => {
     return (
       <MoodContainer>
         {props.moods.map(mood => {
-          return <MoodTag mood={mood} />;
+          return <MoodTag key={mood} mood={mood} />;
         })}
       </MoodContainer>
     );
@@ -113,13 +113,14 @@ const SmallPlayer = props => {
   };
 
   return (
-    <Container>
+    <Container id="smallPlayerContainer">
       <ThumbnailContainer onClick={handlePlaying}>
         <ThumbnailBorder height="100px" width="100px">
-          <ThumbnailImage active={active} imageUrl={props.cover}>
+          <ThumbnailImage id="trackThumbnail" active={active} imageUrl={props.cover}>
             <SmallPlayIcon
               active={active}
               className="playIcon"
+              id={context.playing && props.trackTitle === context.currentTrack ? "pause" : "play"}
               icon={
                 context.playing && props.trackTitle === context.currentTrack
                   ? faPause

@@ -40,6 +40,10 @@ const Playlist = styled(FontAwesomeIcon)`
   }
 `;
 
+const NextPrevTrack = styled.svg`
+  cursor: pointer;
+`;
+
 const secondsToMinutes = seconds =>
   `${Math.floor(seconds / 60)}:${`0${Math.floor(seconds % 60)}`.slice(-2)}`;
 
@@ -99,11 +103,12 @@ const FooterPlayer = () => {
 
   const prevTrackIcon = (triangleFill, rectangleFill) => {
     return (
-      <svg
+      <NextPrevTrack
         xmlns="http://www.w3.org/2000/svg"
         width="32.635"
         height="33.84"
         viewBox="0 0 32.635 33.84"
+        onClick={() => context.handlePreviousTrack(context.currentTrack)}
       >
         <g
           id="Group_79"
@@ -130,17 +135,18 @@ const FooterPlayer = () => {
             </g>
           </g>
         </g>
-      </svg>
+      </NextPrevTrack>
     );
   };
 
   const nextTrackIcon = (rectangleFill, triangleFill) => {
     return (
-      <svg
+      <NextPrevTrack
         xmlns="http://www.w3.org/2000/svg"
         width="32.368"
         height="34.5"
         viewBox="0 0 32.368 34.5"
+        onClick={() => context.handleNextTrack(context.currentTrack)}
       >
         <g
           id="Group_75"
@@ -163,7 +169,7 @@ const FooterPlayer = () => {
             transform="translate(314 1018)"
           />
         </g>
-      </svg>
+      </NextPrevTrack>
     );
   };
 
