@@ -87,6 +87,7 @@ const TrackTitle = styled.h1`
 const Playlist = props => {
   const context = useContext(AudioContext);
   const [active, setActive] = useState(false);
+  const [shuffled, setShuffled] = useState(false);
 
   useEffect(() => {
     if (context.currentTrack === props.trackTitle) {
@@ -95,9 +96,9 @@ const Playlist = props => {
     return setActive(false);
   }, [context.currentTrack, props.trackTitle]);
 
-  const createTracks = () => {
-    if (context.playlist.length > 1) {
-      return context.playlist.map(track => {
+  const createTracks = list => {
+    if (list.length > 1) {
+      return list.map(track => {
         return (
           <TrackContainer open={context.playlistActive}>
             <ThumbnailContainer
@@ -149,7 +150,9 @@ const Playlist = props => {
           open={context.playlistActive}
         />
       </CloseButtonContainer>
-      {createTracks()}
+      {context.shuffled
+        ? createTracks(context.shuffledPlaylist)
+        : createTracks(context.playlist)}
     </Container>
   );
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { AudioContext } from '../context/audioContext';
+import { NavigationContext } from '../context/navigationContext';
 import SmallPlayer from '../components/audio-player/smallPlayer/smallPlayer';
 import Sidebar from '../components/filter/sidebar';
 
@@ -47,6 +48,7 @@ const Music = () => {
   const [price, setPrice] = useState([0, 150]);
 
   const context = useContext(AudioContext);
+  const navigationContext = useContext(NavigationContext);
 
   // Returns new tracks based on selected filters
   useEffect(() => {
@@ -74,16 +76,19 @@ const Music = () => {
     fetchFilteredTracks();
   }, [selectedMoods, selectedGenre, bpm, price]);
 
-  // Initial fetch for tracks
+  // Initial fetch for tracks, sets footer visibility
   useEffect(() => {
+    context.setFooterVisibility('auto');
+    navigationContext.setBackgroundColor('auto');
     async function fetchData() {
       const res = await axios.get('http://localhost:5000/music');
+      console.log(res);
       setTracks(res.data);
       if (context.playlist.length < 1 || !context.playing) {
         context.setPlaylist(res.data);
       }
     }
-    console.log('rendered fetch data for tracks in music.js', context.playlist);
+    console.log('rendered fetch data for tracks in music.js');
     fetchData();
   }, []);
 

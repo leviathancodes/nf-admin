@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import _ from 'underscore';
 
 export const AudioContext = createContext();
 
@@ -7,12 +8,14 @@ export const AudioProvider = props => {
   const [trackUrl, setTrackUrl] = useState('');
   const [currentTrack, setCurrentTrack] = useState('');
   const [playlist, setPlaylist] = useState([]);
-  const [shuffledPlaylist, setShuffledPlaylist] = useState([]);
+  const [shuffled, setShuffled] = useState(false);
+  const [shuffledPlaylist, setShuffledPlaylist] = useState(false);
   const [playlistActive, setPlaylistActive] = useState(false);
   const [playing, isPlaying] = useState(false);
   const [progress, setProgress] = useState('');
   const [volume, setVolume] = useState(0.5);
   const [duration, setDuration] = useState(0);
+  const [footerVisibility, setFooterVisibility] = useState('auto');
 
   const handlePlaying = async (trackTitle, url, trackLength) => {
     try {
@@ -25,12 +28,12 @@ export const AudioProvider = props => {
         audio.oncanplaythrough = () => {
           audio.play();
           setCurrentTrack(trackTitle);
-          isPlaying(true);
+          return isPlaying(true);
         };
       }
       audio.play();
       console.info(`Playing ${trackTitle}`);
-      isPlaying(true);
+      return isPlaying(true);
     } catch (err) {
       console.log('could not play');
       console.log(err);
@@ -68,13 +71,14 @@ export const AudioProvider = props => {
 
   const handleNextTrack = title => {
     if (currentTrack) {
-      playlist.forEach((track, i) => {
+      const list = shuffled ? shuffledPlaylist : playlist;
+      list.forEach((track, i) => {
         if (track.presentationTitle === title) {
-          if (i === playlist.length - 1) {
+          if (i === list.length - 1) {
             audio.src = '';
             return handleStopping();
           }
-          const nextTrack = playlist[i + 1];
+          const nextTrack = list[i + 1];
           return handlePlaying(
             nextTrack.presentationTitle,
             nextTrack.trackUrl,
@@ -87,13 +91,14 @@ export const AudioProvider = props => {
 
   const handlePreviousTrack = title => {
     if (currentTrack) {
-      if (title === playlist[0].presentationTitle) {
+      const list = shuffled ? shuffledPlaylist : playlist;
+      if (title === list[0].presentationTitle) {
         audio.src = '';
         return handleStopping();
       }
-      playlist.forEach((track, i) => {
+      list.forEach((track, i) => {
         if (track.presentationTitle === title) {
-          const nextTrack = playlist[i - 1];
+          const nextTrack = list[i - 1];
           return handlePlaying(
             nextTrack.presentationTitle,
             nextTrack.trackUrl,
@@ -121,13 +126,13 @@ export const AudioProvider = props => {
 
   audio.volume = volume;
 
-  // Fisher-Yates Algorithm for shuffling / randomizing
-  const handleShuffle = array => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
-      [array[i], array[j]] = [array[j], array[i]];
+  const handleShuffle = arr => {
+    if (!shuffled) {
+      const array = _.shuffle(arr);
+      setShuffled(true);
+      return setShuffledPlaylist(array);
     }
-    return setShuffledPlaylist(array);
+    setShuffled(false);
   };
 
   const audioState = {
@@ -148,6 +153,8 @@ export const AudioProvider = props => {
     handleSeeking,
     handleShuffle,
     shuffledPlaylist,
+    setShuffledPlaylist,
+    shuffled,
     playlistActive,
     setPlaylistActive,
     handleNextTrack,
@@ -157,7 +164,9 @@ export const AudioProvider = props => {
     trackUrl,
     setTrackUrl,
     playlist,
-    setPlaylist
+    setPlaylist,
+    footerVisibility,
+    setFooterVisibility
   };
 
   return (

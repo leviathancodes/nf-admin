@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -8,15 +9,47 @@ import {
   faChartPie
 } from '@fortawesome/free-solid-svg-icons';
 import { ReactComponent as Logo } from '../../img/logo.svg';
+import { NavigationContext } from '../../context/navigationContext';
 
-const Nav = () => {
-  const [search, setSearch] = useState('');
+const Container = styled.nav`
+  &.navbar {
+    background: ${props => (props.color ? props.color : 'auto')};
+    box-shadow: ${props => (props.color !== 'auto' ? 'none' : 'auto')};
+  }
+`;
+
+const Nav = props => {
+  const context = useContext(NavigationContext);
+
+  const createPageOptions = () => {
+    const { pages } = context.menuOptions;
+    return pages.map(page => {
+      return (
+        <NavLink to={page.route} className="navbar-item is-tab is-size-4">
+          <p>{page.name}</p>
+        </NavLink>
+      );
+    });
+  };
+
+  const createAuthOptions = () => {
+    const { auth } = context.menuOptions;
+    return auth.map(link => {
+      return (
+        <NavLink to={link.route} className="navbar-item is-tab is-size-4">
+          <p>{link.name}</p>
+        </NavLink>
+      );
+    });
+  };
 
   return (
-    <nav
+    <Container
       className="navbar is-spaced"
       role="navigation"
       aria-label="main navigation"
+      id="navigation"
+      color={props.color}
     >
       <div className="navbar-brand">
         <NavLink className="navbar-item" to="/">
@@ -24,59 +57,10 @@ const Nav = () => {
         </NavLink>
       </div>
       <div className="navbar-menu">
-        <div className="navbar-start">
-          <NavLink to="/" className="navbar-item is-tab is-size-4">
-            <span className="icon">
-              <FontAwesomeIcon className="icon-nav" icon={faHome} size="sm" />
-            </span>
-            <p>Home</p>
-          </NavLink>
-          <NavLink to="/music" className="navbar-item is-tab is-size-4">
-            <span className="icon">
-              <FontAwesomeIcon className="icon-nav" icon={faMusic} size="sm" />
-            </span>
-            <p>Music</p>
-          </NavLink>
-          <NavLink to="/upload" className="navbar-item is-tab is-size-4">
-            <span className="icon">
-              <FontAwesomeIcon className="icon-nav" icon={faUpload} size="sm" />
-            </span>
-            <p>Upload</p>
-          </NavLink>
-          <NavLink to="/analytics" className="navbar-item is-tab is-size-4">
-            <span className="icon">
-              <FontAwesomeIcon
-                className="icon-nav"
-                icon={faChartPie}
-                size="sm"
-              />
-            </span>
-            <p>Analytics</p>
-          </NavLink>
-        </div>
-        <div className="navbar-end">
-          <div className="field has-addons">
-            <div className="control">
-              <input
-                className="input"
-                type="text"
-                placeholder="Find a track..."
-                onChange={e => setSearch(e.target.value)}
-              />
-            </div>
-            <div className="control">
-              <NavLink
-                type="button"
-                to={`/search/${search}`}
-                className="button is-primary"
-              >
-                Search
-              </NavLink>
-            </div>
-          </div>
-        </div>
+        <div className="navbar-start">{createPageOptions()}</div>
+        <div className="navbar-end">{createAuthOptions()}</div>
       </div>
-    </nav>
+    </Container>
   );
 };
 

@@ -9,6 +9,8 @@ const theme = {
     secondaryGrey: '#818181',
     darkGrey: '#4A4A4A',
     playlistTrack: '#737373',
+    landingGradient:
+      'linear-gradient(180deg, rgba(216,228,240,1) 0%, rgba(200,223,244,1) 100%);',
     largeBorderGradient:
       'linear-gradient( 135deg, #fa2e6a 0%,#ffa7a6 32%, #7799fc 69%, #d7e4f0 100%);',
     playGradient:

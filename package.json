@@ -14,6 +14,7 @@
     "jest-environment-enzyme": "^7.1.2",
     "jest-enzyme": "^7.1.2",
     "jest-styled-components": "^6.3.4",
+    "jwt-decode": "^2.2.0",
     "node-sass": "^4.13.0",
     "prop-types": "^15.7.2",
     "rc-slider": "^8.7.1",
@@ -21,7 +22,8 @@
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
-    "styled-components": "^4.4.1"
+    "styled-components": "^4.4.1",
+    "underscore": "^1.9.1"
   },
   "scripts": {
     "start": "react-scripts start",

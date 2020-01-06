@@ -16,7 +16,11 @@ const Nav = styled.nav`
   transition: all 1s ease-in;
   position: ${props => (props.playlist ? 'relative' : 'fixed')}
   height: ${props => (props.playlist ? '0px' : 'auto')};
+  &.navbar {
+    display: ${props => props.visibility};  
+  }
 `;
+
 const SVGStyles = styled.svg`
   margin-left: 40px;
   margin-right: 40px;
@@ -27,6 +31,10 @@ const Shuffle = styled(FontAwesomeIcon)`
   font-size: 2em;
   margin-left: 40px;
   color: ${greyMain};
+  cursor: pointer;
+  &:hover {
+    color: ${props => props.theme.color.pastelPink};
+  }
 `;
 
 const Playlist = styled(FontAwesomeIcon)`
@@ -47,7 +55,7 @@ const NextPrevTrack = styled.svg`
 const secondsToMinutes = seconds =>
   `${Math.floor(seconds / 60)}:${`0${Math.floor(seconds % 60)}`.slice(-2)}`;
 
-const FooterPlayer = () => {
+const FooterPlayer = props => {
   const context = useContext(AudioContext);
 
   const playIcon = (height, width, fill) => {
@@ -225,6 +233,8 @@ const FooterPlayer = () => {
       role="navigation"
       aria-label="main navigation"
       playlist={context.playlistActive}
+      id="footer-player"
+      visibility={props.visibility}
     >
       <div className="navbar-menu">
         <div
@@ -237,7 +247,10 @@ const FooterPlayer = () => {
               ? pauseIcon('29', '34')
               : playIcon('30', '34', '#818181')}
             {nextTrackIcon('#d3d3d3', '#818181')}
-            <Shuffle icon={faRandom} />
+            <Shuffle
+              onClick={() => context.handleShuffle(context.playlist)}
+              icon={faRandom}
+            />
           </div>
           <div className="navbar-item">
             <p>{secondsToMinutes(context.progress)}</p>

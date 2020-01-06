@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { AudioContext } from './context/audioContext';
+import { NavigationContext } from './context/navigationContext';
+import Landing from './pages/landing';
 import Nav from './components/navigation/navigation';
 import FooterPlayer from './components/audio-player/footerPlayer/footerPlayer';
 import Upload from './pages/upload';
@@ -9,6 +11,8 @@ import Music from './pages/music';
 import SearchResults from './pages/search';
 import Error404 from './pages/404';
 import TrackEdit from './pages/trackEdit';
+import SignUp from './pages/signup';
+import Login from './pages/login';
 import Playlist from './components/playlist/playlist';
 
 const PageWrapper = styled.div`
@@ -19,20 +23,24 @@ const PageWrapper = styled.div`
 `;
 
 const Wrapper = () => {
-  const context = useContext(AudioContext);
+  const audioContext = useContext(AudioContext);
+  const navigationContext = useContext(NavigationContext);
   return (
     <Router>
       <Playlist />
-      <PageWrapper blurred={context.playlistActive}>
-        <Nav />
+      <PageWrapper blurred={audioContext.playlistActive}>
+        <Nav color={navigationContext.backgroundColor} />
         <Switch>
+          <Route path="/" exact component={Landing} />
           <Route path="/upload" exact component={Upload} />
           <Route path="/music" exact component={Music} />
           <Route path="/music/:track" exact component={TrackEdit} />
           <Route path="/search/:term" exact component={SearchResults} />
+          <Route path="/signup" exact component={SignUp} />
+          <Route path="/login" exact component={Login} />
           <Route component={Error404} />
         </Switch>
-        <FooterPlayer />
+        <FooterPlayer visibility={audioContext.footerVisibility} />
       </PageWrapper>
     </Router>
   );
