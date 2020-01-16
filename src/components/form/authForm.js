@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { AuthContext } from '../../context/authContext';
 
 const Container = styled.div`
   display: flex;
@@ -53,7 +54,7 @@ const AuthMessaging = props => {
   return <div />;
 };
 
-const FirstNameLastName = () => {
+const FirstNameLastName = props => {
   return (
     <div className="field is-grouped is-grouped-centered">
       <div className="field-body">
@@ -67,10 +68,13 @@ const FirstNameLastName = () => {
           </label>
           <div className="control">
             <input
+              id="form-firstName"
               required
               type="text"
               className="input is-large"
               placeholder="John"
+              onChange={e => props.setFirstName(e.target.value)}
+              value={props.firstName}
             />
           </div>
         </div>
@@ -80,10 +84,13 @@ const FirstNameLastName = () => {
           </label>
           <div className="control">
             <input
+              id="form-lastName"
               required
               type="text"
               className="input is-large"
               placeholder="Doe"
+              onChange={e => props.setLastName(e.target.value)}
+              value={props.lastName}
             />
           </div>
         </div>
@@ -93,22 +100,52 @@ const FirstNameLastName = () => {
 };
 
 const SignUp = props => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const authContext = useContext(AuthContext);
+  const data = {
+    name: `${firstName} ${lastName}`,
+    email,
+    password
+  };
+
   return (
     <Container>
-      <Heading>{props.heading}</Heading>
-      <Subheading>{props.subheading}</Subheading>
+      <Heading id="form-heading">{props.heading}</Heading>
+      <Subheading id="form-subheading">{props.subheading}</Subheading>
       <Form>
-        {props.register ? <FirstNameLastName /> : <div />}
+        {props.register ? (
+          <FirstNameLastName
+            lastName={lastName}
+            setLastName={setLastName}
+            firstName={firstName}
+            setFirstName={setFirstName}
+          />
+        ) : (
+          <div />
+        )}
         <div className="field">
           <label className="label is-large" htmlFor="email" name="email">
             Email
           </label>
           <div className="control is-expanded">
             <input
-              className="input is-large is-fullwidth"
+              id="form-email"
+              className={`input is-large is-fullwidth ${authContext.submitStatus.email.class}`}
               type="email"
               placeholder="johndoe@example.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
             />
+            {
+              <p className={`help ${authContext.submitStatus.email.class}`}>
+                {authContext.submitStatus.email.message}
+              </p>
+            }
           </div>
         </div>
 
@@ -119,20 +156,30 @@ const SignUp = props => {
 
           <div className="control is-expanded">
             <input
-              className="input is-large is-fullwidth"
+              id="form-password"
+              className={`input is-large is-fullwidth ${authContext.submitStatus.password.class}`}
               type="password"
               minLength="8"
               required
               placeholder="Your password..."
+              onChange={e => setPassword(e.target.value)}
+              value={password}
             />
+            {
+              <p className={`help ${authContext.submitStatus.password.class}`}>
+                {authContext.submitStatus.password.message}
+              </p>
+            }
           </div>
         </div>
         <div className="field is-grouped is-grouped-centered">
           <div className="control">
             <Submit
+              id="form-submit"
               className="button is-primary is-large"
-              onClick={props.authHandler}
               type="submit"
+              formnovalidate
+              onClick={e => props.authHandler(data)}
               value={props.authOption}
             />
           </div>

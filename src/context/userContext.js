@@ -11,6 +11,7 @@ export const UserProvider = props => {
     purchases: [],
     admin: false
   });
+  const [isAuthenticated, setIsAuthenticated] = useState('false');
 
   const userState = {
     user,

@@ -70,7 +70,6 @@ const Music = () => {
         url: 'http://localhost:5000/music/search',
         params
       });
-
       setTracks(res.data);
     }
     fetchFilteredTracks();
