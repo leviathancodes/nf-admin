@@ -70,31 +70,38 @@ export const AuthProvider = props => {
     [initialStatus, submitStatus]
   );
 
-  const loginUserLocal = useCallback(async data => {
-    try {
-      const reqBody = {
-        user: {
-          local: {
-            email: data.email,
-            password: data.password
+  const loginUserLocal = useCallback(
+    async data => {
+      try {
+        const reqBody = {
+          user: {
+            local: {
+              email: data.email,
+              password: data.password
+            }
           }
-        }
-      };
-      const res = await axios.post('/user/login/local', reqBody);
-      console.log(res.data);
-      const { token } = res.data;
-      localStorage.setItem('jwtToken', token);
-      setAuthToken(token);
-      const decoded = jwt_decode(token);
-      console.log(decoded);
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
+        };
+        const res = await axios.post('/user/login/local', reqBody);
+        const { token } = res.data;
+        localStorage.setItem('jwtToken', token);
+        setAuthToken(token);
+        const decoded = jwt_decode(token);
+        userContext.setUser(decoded);
+        console.log(
+          'the user has been added to user context',
+          userContext.user
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    [userContext]
+  );
 
   const logoutUserLocal = async () => {
     localStorage.removeItem('jwtToken');
     setAuthToken(false);
+    userContext.setUser({});
   };
 
   const authState = {

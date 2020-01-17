@@ -13,6 +13,7 @@ import Error404 from './pages/404';
 import TrackEdit from './pages/trackEdit';
 import SignUp from './pages/signup';
 import Login from './pages/login';
+import Profile from './pages/profile';
 import Playlist from './components/playlist/playlist';
 
 const PageWrapper = styled.div`
@@ -38,6 +39,7 @@ const Wrapper = () => {
           <Route path="/search/:term" exact component={SearchResults} />
           <Route path="/signup" exact component={SignUp} />
           <Route path="/login" exact component={Login} />
+          <Route path="/profile" exact component={Profile} />
           <Route component={Error404} />
         </Switch>
         <FooterPlayer visibility={audioContext.footerVisibility} />

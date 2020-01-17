@@ -11,8 +11,8 @@ import './styles/scss/main.scss';
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <UserProvider>
+      <UserProvider>
+        <AuthProvider>
           <NavigationProvider>
             <AudioProvider>
               <div className="App">
@@ -20,8 +20,8 @@ function App() {
               </div>
             </AudioProvider>
           </NavigationProvider>
-        </UserProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </UserProvider>
     </ThemeProvider>
   );
 }

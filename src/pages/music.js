@@ -22,7 +22,7 @@ const Container = styled.div`
 
 const Heading = styled.h3`
   font-size: 5em;
-  color: ${props => props.theme.color.primaryPink};
+  color: ${props => props.theme.color.black};
   font-family: ${props => props.theme.font.family};
   font-weight: ${props => props.theme.font.weight};
   font-style: ${props => props.theme.font.style};
