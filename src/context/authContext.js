@@ -87,10 +87,6 @@ export const AuthProvider = props => {
         setAuthToken(token);
         const decoded = jwt_decode(token);
         userContext.setUser(decoded);
-        console.log(
-          'the user has been added to user context',
-          userContext.user
-        );
       } catch (e) {
         console.log(e);
       }

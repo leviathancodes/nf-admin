@@ -1,4 +1,5 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import { UserContext } from './userContext';
 
 export const NavigationContext = createContext();
 
@@ -19,6 +20,19 @@ const initialMenuOptions = {
 export const NavigationProvider = props => {
   const [menuOptions, setMenuOptions] = useState(initialMenuOptions);
   const [backgroundColor, setBackgroundColor] = useState('auto');
+  const userContext = useContext(UserContext);
+
+  useEffect(() => {
+    if (userContext.user) {
+      setMenuOptions({
+        ...menuOptions,
+        auth: [
+          { name: 'Your account', route: '/profile' },
+          { name: 'Log out', route: '/404' }
+        ]
+      });
+    }
+  }, [userContext.user]);
   const navState = {
     menuOptions,
     setMenuOptions,
@@ -26,6 +40,8 @@ export const NavigationProvider = props => {
     setBackgroundColor
   };
   return (
-    <NavigationContext.Provider value={navState}>{props.children}</NavigationContext.Provider>
+    <NavigationContext.Provider value={navState}>
+      {props.children}
+    </NavigationContext.Provider>
   );
 };
