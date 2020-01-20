@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { ReactComponent as Logo } from '../../img/logo.svg';
 import { NavigationContext } from '../../context/navigationContext';
+import { AuthContext } from '../../context/authContext';
 
 const Container = styled.nav`
   &.navbar {
@@ -20,6 +21,7 @@ const Container = styled.nav`
 
 const Nav = props => {
   const context = useContext(NavigationContext);
+  const authContext = useContext(AuthContext);
 
   const createPageOptions = () => {
     const { pages } = context.menuOptions;
@@ -35,6 +37,18 @@ const Nav = props => {
   const createAuthOptions = () => {
     const { auth } = context.menuOptions;
     return auth.map(link => {
+      if (link.name === 'Log out') {
+        return (
+          <NavLink
+            to="/"
+            className="navbar-item is-tab is-size-4"
+            onClick={() => authContext.logoutUserLocal()}
+          >
+            <p>{link.name}</p>
+          </NavLink>
+        );
+      }
+
       return (
         <NavLink to={link.route} className="navbar-item is-tab is-size-4">
           <p>{link.name}</p>

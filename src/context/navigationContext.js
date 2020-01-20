@@ -28,9 +28,11 @@ export const NavigationProvider = props => {
         ...menuOptions,
         auth: [
           { name: 'Your account', route: '/profile' },
-          { name: 'Log out', route: '/404' }
+          { name: 'Log out', route: '/' }
         ]
       });
+    } else {
+      setMenuOptions(initialMenuOptions);
     }
   }, [userContext.user]);
   const navState = {

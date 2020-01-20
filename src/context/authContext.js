@@ -81,6 +81,7 @@ export const AuthProvider = props => {
             }
           }
         };
+        console.log('trying to log in');
         const res = await axios.post('/user/login/local', reqBody);
         const { token } = res.data;
         localStorage.setItem('jwtToken', token);
@@ -94,10 +95,11 @@ export const AuthProvider = props => {
     [userContext]
   );
 
-  const logoutUserLocal = async () => {
+  const logoutUserLocal = () => {
+    console.log('The function has been triggered');
     localStorage.removeItem('jwtToken');
     setAuthToken(false);
-    userContext.setUser({});
+    userContext.setUser(false);
   };
 
   const authState = {

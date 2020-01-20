@@ -11,7 +11,7 @@ export const UserProvider = props => {
 
   useEffect(() => {
     async function fetchData() {
-      if (!user) {
+      if (!user && localStorage.getItem('jwtToken')) {
         try {
           setAuthToken(localStorage.getItem('jwtToken'));
           const decodedToken = jwt_decode(localStorage.getItem('jwtToken'));
@@ -20,7 +20,7 @@ export const UserProvider = props => {
           );
           return setUser(res.data);
         } catch (e) {
-          return console.log(e.message);
+          return console.log(e.message, e);
         }
       }
       console.log('User already set');
