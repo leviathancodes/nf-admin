@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import Pagination from '../components/pagination/pagination';
 import { AudioContext } from '../context/audioContext';
 import { NavigationContext } from '../context/navigationContext';
 import SmallPlayer from '../components/audio-player/smallPlayer/smallPlayer';
@@ -11,13 +12,15 @@ const PageLayout = styled.div`
   height: auto;
   display: grid;
   grid-template-columns: 25% 75%;
-  padding-bottom: 6em;
+  border-bottom: solid 2px ${props => props.theme.color.lightGrey};
+  margin-bottom: 6em;
 `;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   min-height: 100vh;
+  align-items: center;
 `;
 
 const Heading = styled.h3`
@@ -46,15 +49,19 @@ const Music = () => {
   const [selectedGenre, setSelectedGenre] = useState('');
   const [bpm, setBPM] = useState([0, 200]);
   const [price, setPrice] = useState([0, 150]);
+  const [pageCount, setPageCount] = useState(0);
+  const [skip, setSkip] = useState(0);
 
   const context = useContext(AudioContext);
   const navigationContext = useContext(NavigationContext);
 
+  console.log(skip);
   // Returns new tracks based on selected filters
   useEffect(() => {
     async function fetchFilteredTracks() {
-      if (!selectedMoods && !selectedGenre) {
-        const res = await axios.get('http://localhost:5000/music');
+      window.scrollTo(0, 0);
+      if (selectedMoods.length === 0 && !selectedGenre) {
+        const res = await axios.get(`http://localhost:5000/music?skip=${skip}`);
         return setTracks(res.data);
       }
 
@@ -65,6 +72,11 @@ const Music = () => {
         price
       };
 
+      const trackNumber = await axios.get('http://localhost:5000/music/count');
+
+      setPageCount(Math.ceil(trackNumber.data.count / 10));
+      console.log(trackNumber);
+
       const res = await axios.request({
         method: 'GET',
         url: 'http://localhost:5000/music/search',
@@ -73,7 +85,7 @@ const Music = () => {
       setTracks(res.data);
     }
     fetchFilteredTracks();
-  }, [selectedMoods, selectedGenre, bpm, price]);
+  }, [selectedMoods, selectedGenre, bpm, price, skip]);
 
   // Initial fetch for tracks, sets footer visibility
   useEffect(() => {
@@ -81,7 +93,11 @@ const Music = () => {
     navigationContext.setBackgroundColor('auto');
     async function fetchData() {
       const res = await axios.get('http://localhost:5000/music');
-      console.log(res);
+      const trackNumber = await axios.get('http://localhost:5000/music/count');
+
+      setPageCount(Math.ceil(trackNumber.data.count / 10));
+      console.log(trackNumber);
+
       setTracks(res.data);
       if (context.playlist.length < 1 || !context.playing) {
         context.setPlaylist(res.data);
@@ -199,7 +215,13 @@ const Music = () => {
           minim{' '}
         </Subheading>
 
-        <Container>{createTracks()}</Container>
+        <Container>
+          {createTracks()}
+          <Pagination
+            pageCount={pageCount}
+            changeHandler={e => setSkip(Number(`${e.selected  }0`))}
+          />
+        </Container>
       </div>
     </PageLayout>
   );

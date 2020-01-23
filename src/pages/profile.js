@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import ProfileSidebar from '../components/profile/profileSidebar';
@@ -37,9 +38,11 @@ const LikedAndPurchased = styled.div`
 const Profile = () => {
   const userContext = useContext(UserContext);
 
-  useEffect(() => {
+  console.log(userContext.user);
 
-  }, []);
+  if (!userContext.user && !localStorage.getItem('jwtToken')) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <Container>

@@ -6,6 +6,8 @@ import 'rc-slider/assets/index.css';
 const Container = styled.div`
   background-color: #efefef;
   padding: 1em;
+  overflow: scroll;
+  height: inherit;
 `;
 
 const Heading = styled.h3`
@@ -42,6 +44,10 @@ const Subheading = styled.h3`
 const Label = styled.label`
   display: flex;
   align-items: center;
+`;
+
+const CheckboxContainer = styled.div`
+  padding: 0.5em;
 `;
 
 const Checkbox = styled.input`
@@ -82,6 +88,7 @@ const Checkbox = styled.input`
     border: 1px solid ${props => props.theme.color.primaryPink};
   }
 `;
+
 const prices = [[0, 25], [25, 50], [50, 75], [75, 100], [100, 125], [125, 150]];
 
 const BPMSlider = props => {
@@ -121,7 +128,7 @@ const Sidebar = props => {
         priceOption = `$${option[0]} - $${option[1] - 0.01}`;
       }
       return (
-        <div>
+        <CheckboxContainer>
           <Label for={category}>
             <Checkbox
               key={priceOption || option}
@@ -132,7 +139,7 @@ const Sidebar = props => {
             />
             <Paragraph>{priceOption || option}</Paragraph>
           </Label>
-        </div>
+        </CheckboxContainer>
       );
     });
   };
