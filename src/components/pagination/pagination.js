@@ -13,7 +13,7 @@ const PaginateWrap = styled.div`
   }
 
   .pagination__page {
-
+    font-size: 24px;
     display: flex;
     align-items: center;
     justify-content: center;

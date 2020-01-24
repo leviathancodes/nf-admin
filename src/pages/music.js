@@ -62,7 +62,9 @@ const Music = () => {
       window.scrollTo(0, 0);
       if (selectedMoods.length === 0 && !selectedGenre) {
         const res = await axios.get(`http://localhost:5000/music?skip=${skip}`);
-        return setTracks(res.data);
+        setTracks(res.data);
+        const trackNumber = await axios.get('http://localhost:5000/music/count');
+        return setPageCount(Math.ceil(trackNumber.data.count / 10));
       }
 
       const params = {
@@ -72,17 +74,14 @@ const Music = () => {
         price
       };
 
-      const trackNumber = await axios.get('http://localhost:5000/music/count');
-
-      setPageCount(Math.ceil(trackNumber.data.count / 10));
-      console.log(trackNumber);
-
       const res = await axios.request({
         method: 'GET',
-        url: 'http://localhost:5000/music/search',
+        url: `http://localhost:5000/music/search?skip=${skip}`,
         params
       });
-      setTracks(res.data);
+      setTracks(res.data[0]);
+      console.log(res.data[1]);
+      return setPageCount(Math.ceil(res.data[1] / 10));
     }
     fetchFilteredTracks();
   }, [selectedMoods, selectedGenre, bpm, price, skip]);
@@ -97,8 +96,9 @@ const Music = () => {
 
       setPageCount(Math.ceil(trackNumber.data.count / 10));
       console.log(trackNumber);
-
+      console.log(res.data);
       setTracks(res.data);
+
       if (context.playlist.length < 1 || !context.playing) {
         context.setPlaylist(res.data);
       }
