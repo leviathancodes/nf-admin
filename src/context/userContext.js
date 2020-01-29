@@ -7,7 +7,10 @@ export const UserContext = createContext();
 
 export const UserProvider = props => {
   const [user, setUser] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState('false');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthModalActive, setIsAuthModalActive] = useState(false);
+
+  console.log(user);
 
   useEffect(() => {
     async function fetchData() {
@@ -32,7 +35,9 @@ export const UserProvider = props => {
     user,
     setUser,
     isAuthenticated,
-    setIsAuthenticated
+    setIsAuthenticated,
+    isAuthModalActive,
+    setIsAuthModalActive
   };
 
   return (

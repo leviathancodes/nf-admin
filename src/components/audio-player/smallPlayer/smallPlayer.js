@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
 import { AudioContext } from '../../../context/audioContext';
+import { UserContext } from '../../../context/userContext';
 import {
   SmallPlayIcon,
   ThumbnailBorder,
   ThumbnailImage,
   ThumbnailContainer
 } from '../base';
+import HeartIcon from '../largePlayer/heartIcon';
 import PriceButton from '../../../elements/buttons/priceButton';
 import MoodTag from '../../../elements/moodTag/moodTag';
 
@@ -56,16 +58,30 @@ const MoodContainer = styled.div`
   margin-left: 1em;
 `;
 
+const Heart = styled.div`
+  margin-right: 2em;
+`;
+
 const SmallPlayer = props => {
   const context = useContext(AudioContext);
+  const { user } = useContext(UserContext);
   const [active, setActive] = useState(false);
+  const [liked, setLiked] = useState(false);
 
   useEffect(() => {
     if (context.currentTrack === props.trackTitle) {
       return setActive(true);
     }
     setActive(false);
-  }, [context.currentTrack, props.trackTitle]);
+  }, [context, props.trackTitle]);
+
+  useEffect(() => {
+    if (user) {
+      if (user.likedTracks.includes(props.id)) {
+        return setLiked(true);
+      }
+    }
+  }, [props.id, user]);
 
   const tags = () => {
     return (
@@ -112,15 +128,29 @@ const SmallPlayer = props => {
     );
   };
 
+  const handleLike = async () => {
+    if (user) {
+      const res = await context.handleLiking(props.id);
+      return res[1] === 'remove' ? setLiked(false) : setLiked(true);
+    }
+  };
   return (
     <Container id="smallPlayerContainer">
       <ThumbnailContainer onClick={handlePlaying}>
         <ThumbnailBorder height="100px" width="100px">
-          <ThumbnailImage id="trackThumbnail" active={active} imageUrl={props.cover}>
+          <ThumbnailImage
+            id="trackThumbnail"
+            active={active}
+            imageUrl={props.cover}
+          >
             <SmallPlayIcon
               active={active}
               className="playIcon"
-              id={context.playing && props.trackTitle === context.currentTrack ? "pause" : "play"}
+              id={
+                context.playing && props.trackTitle === context.currentTrack
+                  ? 'pause'
+                  : 'play'
+              }
               icon={
                 context.playing && props.trackTitle === context.currentTrack
                   ? faPause
@@ -137,6 +167,9 @@ const SmallPlayer = props => {
       </TrackInfo>
       {tags()}
       <PriceContainer>
+        <Heart>
+          <HeartIcon id={props.id} liked={liked} handleLike={handleLike} />
+        </Heart>
         <PriceButton price={props.price} />
       </PriceContainer>
     </Container>

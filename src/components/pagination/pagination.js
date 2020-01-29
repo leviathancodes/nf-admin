@@ -49,7 +49,7 @@ const Pagination = props => {
           pageLinkClassName="pagination__link"
           pageCount={props.pageCount}
           pageRangeDisplayed={2}
-          marginPagesDisplayed={3}
+          marginPagesDisplayed={2}
           onPageChange={props.changeHandler}
         />
       </PaginateWrap>

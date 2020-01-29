@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { AudioContext } from './context/audioContext';
 import { NavigationContext } from './context/navigationContext';
+import { userContext, UserContext } from './context/userContext';
 import Landing from './pages/landing';
 import Nav from './components/navigation/navigation';
 import FooterPlayer from './components/audio-player/footerPlayer/footerPlayer';

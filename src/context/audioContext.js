@@ -1,5 +1,7 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { useContext, createContext, useState, useEffect } from 'react';
+import axios from 'axios';
 import _ from 'underscore';
+import { UserContext } from './userContext';
 
 export const AudioContext = createContext();
 
@@ -16,6 +18,8 @@ export const AudioProvider = props => {
   const [volume, setVolume] = useState(0.5);
   const [duration, setDuration] = useState(0);
   const [footerVisibility, setFooterVisibility] = useState('auto');
+
+  const { user, setUser } = useContext(UserContext);
 
   const handlePlaying = async (trackTitle, url, trackLength) => {
     try {
@@ -135,6 +139,34 @@ export const AudioProvider = props => {
     setShuffled(false);
   };
 
+  const handleLiking = async trackId => {
+    if (user) {
+      try {
+        if (user.likedTracks.includes(trackId)) {
+          const res = await axios.delete(
+            `http://localhost:5000/user/music/like?id=${user.id}&trackId=${trackId}`
+          );
+          const updateUser = await axios.get(
+            `http://localhost:5000/user?id=${user.id}`
+          );
+          setUser(updateUser.data);
+          return [res.data, 'remove'];
+        }
+        const res = await axios.patch(
+          `http://localhost:5000/user/music/like?id=${user.id}&trackId=${trackId}`
+        );
+        const updateUser = await axios.get(
+          `http://localhost:5000/user?id=${user.id}`
+        );
+        setUser(updateUser.data);
+        return [res.data, 'add'];
+      } catch (e) {
+        console.log('You failed');
+      }
+    }
+    return console.log('Log in');
+  };
+
   const audioState = {
     message: 'Latest tracks',
     audio,
@@ -166,7 +198,8 @@ export const AudioProvider = props => {
     playlist,
     setPlaylist,
     footerVisibility,
-    setFooterVisibility
+    setFooterVisibility,
+    handleLiking
   };
 
   return (

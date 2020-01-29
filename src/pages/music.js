@@ -55,7 +55,6 @@ const Music = () => {
   const context = useContext(AudioContext);
   const navigationContext = useContext(NavigationContext);
 
-  console.log(skip);
   // Returns new tracks based on selected filters
   useEffect(() => {
     async function fetchFilteredTracks() {
@@ -188,6 +187,7 @@ const Music = () => {
           cover={data.imageUrl}
           duration={data.duration}
           moods={data.mood}
+          id={data._id}
         />
       );
     });

@@ -5,7 +5,6 @@ import { AuthContext } from '../../context/authContext';
 
 const Container = styled.div`
   display: flex;
-  height: 70vh;
   align-items: center;
   flex-direction: column;
 `;
