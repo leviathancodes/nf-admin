@@ -112,7 +112,7 @@ const EditForm = (props) => {
     };
     console.log(encodeURIComponent(requestTitle));
     try {
-      const res = await axios.patch(`http://localhost:5000/music?trackTitle=${encodeURIComponent(requestTitle)}`, data);
+      const res = await axios.patch(`/api/music?trackTitle=${encodeURIComponent(requestTitle)}`, data);
       console.log(res);
       setSubmitStatus(res.data.status);
       setSubmitMessage(res.data.message);

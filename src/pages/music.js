@@ -60,9 +60,9 @@ const Music = () => {
     async function fetchFilteredTracks() {
       window.scrollTo(0, 0);
       if (selectedMoods.length === 0 && !selectedGenre) {
-        const res = await axios.get(`http://localhost:5000/music?skip=${skip}`);
+        const res = await axios.get(`/api/music?skip=${skip}`);
         setTracks(res.data);
-        const trackNumber = await axios.get('http://localhost:5000/music/count');
+        const trackNumber = await axios.get('/api/music/count');
         return setPageCount(Math.ceil(trackNumber.data.count / 10));
       }
 
@@ -75,7 +75,7 @@ const Music = () => {
 
       const res = await axios.request({
         method: 'GET',
-        url: `http://localhost:5000/music/search?skip=${skip}`,
+        url: `/api/music/search?skip=${skip}`,
         params
       });
       setTracks(res.data[0]);
@@ -90,8 +90,8 @@ const Music = () => {
     context.setFooterVisibility('auto');
     navigationContext.setBackgroundColor('auto');
     async function fetchData() {
-      const res = await axios.get('http://localhost:5000/music');
-      const trackNumber = await axios.get('http://localhost:5000/music/count');
+      const res = await axios.get('/api/music');
+      const trackNumber = await axios.get('/api/music/count');
 
       setPageCount(Math.ceil(trackNumber.data.count / 10));
       console.log(trackNumber);
@@ -110,8 +110,8 @@ const Music = () => {
   useEffect(() => {
     console.log('rerenderd sidebar');
     async function fetchData() {
-      const moodData = await axios.get('http://localhost:5000/music/mood');
-      const genreData = await axios.get('http://localhost:5000/music/genre');
+      const moodData = await axios.get('/api/music/mood');
+      const genreData = await axios.get('/api/music/genre');
       setMoods(moodData.data.sort());
       setGenre(genreData.data.sort());
     }

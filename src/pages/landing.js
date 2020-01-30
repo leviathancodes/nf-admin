@@ -62,7 +62,7 @@ const Landing = () => {
   const navigationContext = useContext(NavigationContext);
   useEffect(() => {
     audioContext.setFooterVisibility('none');
-    navigationContext.setBackgroundColor('rgba(216,228,240,1)');
+    navigationContext.setBackgroundColor('autoZ');
   }, [audioContext.footerVisibility]);
   return (
     <Container>
@@ -73,7 +73,9 @@ const Landing = () => {
         <CTA>Listen Now</CTA>
       </ContentContainer>
       <ImageContainer>
-        <LandingImage src="https://d3g8t2jk5ak9zp.cloudfront.net/img/002_landing_img.svg"/>
+        <LandingImage
+          src={`${process.env.REACT_APP_NOMAD_MUSIC_S3}/img/002_landing_img.svg`}
+        />
       </ImageContainer>
     </Container>
   );

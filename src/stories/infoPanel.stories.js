@@ -14,7 +14,7 @@ export const YourMusicPanel = () => {
   return (
     <ThemeProvider theme={theme}>
       <InfoPanel
-        src="https://d3g8t2jk5ak9zp.cloudfront.net/icon_assets/iconmonstr-headphones.svg"
+        src={`${process.env.NOMAD_MUSIC_S3}/icon_assets/iconmonstr-headphones.svg`}
         title="Your Music"
         iconAlt="Over-the-ear headphones"
         staticData={{
@@ -38,7 +38,7 @@ export const YourAccountPanel = () => {
   return (
     <ThemeProvider theme={theme}>
       <InfoPanel
-        src="https://d3g8t2jk5ak9zp.cloudfront.net/icon_assets/iconmonstr-wrench.svg"
+        src={`${process.env.NOMAD_MUSIC_S3}/icon_assets/iconmonstr-wrench.svg`}
         title="Your Account"
         iconAlt="A wrench"
         staticData={{

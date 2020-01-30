@@ -37,7 +37,7 @@ export const AuthProvider = props => {
       };
       try {
         const req = await axios.post(
-          'http://localhost:5000/user/signup/local',
+          '/api/user/signup/local',
           reqBody
         );
         console.log('', req.data);

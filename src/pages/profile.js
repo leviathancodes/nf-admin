@@ -55,7 +55,7 @@ const Profile = () => {
           Manage your account, review your liked and purchased tracks, and more.
         </MainSubheading>
         <InfoPanel
-          src="https://d3g8t2jk5ak9zp.cloudfront.net/icon_assets/iconmonstr-wrench.svg"
+          src={`${process.env.REACT_APP_NOMAD_MUSIC_S3}/icon_assets/iconmonstr-wrench.svg`}
           title="Your Account"
           iconAlt="A wrench"
           staticData={{
@@ -72,7 +72,7 @@ const Profile = () => {
           }}
         />
         <InfoPanel
-          src="https://d3g8t2jk5ak9zp.cloudfront.net/icon_assets/iconmonstr-headphones.svg"
+          src={`${process.env.REACT_APP_NOMAD_MUSIC_S3}/icon_assets/iconmonstr-headphones.svg`}
           title="Your Music"
           iconAlt="Over-the-ear headphones"
           staticData={{

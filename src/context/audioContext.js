@@ -144,20 +144,16 @@ export const AudioProvider = props => {
       try {
         if (user.likedTracks.includes(trackId)) {
           const res = await axios.delete(
-            `http://localhost:5000/user/music/like?id=${user.id}&trackId=${trackId}`
+            `/api/user/music/like?id=${user.id}&trackId=${trackId}`
           );
-          const updateUser = await axios.get(
-            `http://localhost:5000/user?id=${user.id}`
-          );
+          const updateUser = await axios.get(`/api/user?id=${user.id}`);
           setUser(updateUser.data);
           return [res.data, 'remove'];
         }
         const res = await axios.patch(
-          `http://localhost:5000/user/music/like?id=${user.id}&trackId=${trackId}`
+          `/api/user/music/like?id=${user.id}&trackId=${trackId}`
         );
-        const updateUser = await axios.get(
-          `http://localhost:5000/user?id=${user.id}`
-        );
+        const updateUser = await axios.get(`/api/user?id=${user.id}`);
         setUser(updateUser.data);
         return [res.data, 'add'];
       } catch (e) {

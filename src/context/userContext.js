@@ -18,9 +18,7 @@ export const UserProvider = props => {
         try {
           setAuthToken(localStorage.getItem('jwtToken'));
           const decodedToken = jwt_decode(localStorage.getItem('jwtToken'));
-          const res = await axios.get(
-            `http://localhost:5000/user?id=${decodedToken.id}`
-          );
+          const res = await axios.get(`/api/user?id=${decodedToken.id}`);
           return setUser(res.data);
         } catch (e) {
           return console.log(e.message, e);

@@ -8,7 +8,6 @@ import {
   faMusic,
   faChartPie
 } from '@fortawesome/free-solid-svg-icons';
-import { ReactComponent as Logo } from '../../img/logo.svg';
 import { NavigationContext } from '../../context/navigationContext';
 import { AuthContext } from '../../context/authContext';
 
@@ -17,6 +16,10 @@ const Container = styled.nav`
     background: ${props => (props.color ? props.color : 'auto')};
     box-shadow: ${props => (props.color !== 'auto' ? 'none' : 'auto')};
   }
+`;
+
+const Logo = styled.object`
+  width: 125px;
 `;
 
 const Nav = props => {
@@ -67,7 +70,7 @@ const Nav = props => {
     >
       <div className="navbar-brand">
         <NavLink className="navbar-item" to="/">
-          <Logo />
+          <Logo data="https://d3g8t2jk5ak9zp.cloudfront.net/icon_assets/logo_no_text.svg" />
         </NavLink>
       </div>
       <div className="navbar-menu">
