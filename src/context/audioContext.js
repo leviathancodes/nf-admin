@@ -41,6 +41,7 @@ export const AudioProvider = props => {
     } catch (err) {
       console.log('could not play');
       console.log(err);
+      return err;
     }
   };
 
@@ -136,7 +137,7 @@ export const AudioProvider = props => {
       setShuffled(true);
       return setShuffledPlaylist(array);
     }
-    setShuffled(false);
+    return setShuffled(false);
   };
 
   const handleLiking = async trackId => {

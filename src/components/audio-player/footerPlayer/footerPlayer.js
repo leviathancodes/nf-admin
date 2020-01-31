@@ -234,7 +234,7 @@ const FooterPlayer = props => {
       aria-label="main navigation"
       playlist={context.playlistActive}
       id="footer-player"
-      visibility={props.visibility}
+      visibility={context.footerVisibility}
     >
       <div className="navbar-menu">
         <div

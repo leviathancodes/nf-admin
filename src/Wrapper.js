@@ -5,6 +5,7 @@ import { AudioContext } from './context/audioContext';
 import { NavigationContext } from './context/navigationContext';
 import { userContext, UserContext } from './context/userContext';
 import Landing from './pages/landing';
+import Landing2 from './pages/landing2';
 import Nav from './components/navigation/navigation';
 import FooterPlayer from './components/audio-player/footerPlayer/footerPlayer';
 import Upload from './pages/upload';
@@ -31,9 +32,16 @@ const Wrapper = () => {
     <Router>
       <Playlist />
       <PageWrapper blurred={audioContext.playlistActive}>
-        <Nav color={navigationContext.backgroundColor} />
+        {navigationContext.visibility ? (
+          <Nav
+            visibility={navigationContext.visibility}
+            color={navigationContext.backgroundColor}
+          />
+        ) : (
+          <div />
+        )}
         <Switch>
-          <Route path="/" exact component={Landing} />
+          <Route path="/" exact component={Landing2} />
           <Route path="/upload" exact component={Upload} />
           <Route path="/music" exact component={Music} />
           <Route path="/music/:track" exact component={TrackEdit} />

@@ -13,9 +13,14 @@ import { AuthContext } from '../../context/authContext';
 
 const Container = styled.nav`
   &.navbar {
-    background: ${props => (props.color ? props.color : 'auto')};
+    background-color: ${props => (props.color ? props.color : 'auto')};
     box-shadow: ${props => (props.color !== 'auto' ? 'none' : 'auto')};
+    visibility: ${props => (props.visibility ? props.visibility : 'auto')};
   }
+`;
+
+const LinkName = styled.p`
+  color: ${props => (props.fontColor ? props.fontColor : 'auto')};
 `;
 
 const Logo = styled.object`
@@ -31,7 +36,7 @@ const Nav = props => {
     return pages.map(page => {
       return (
         <NavLink to={page.route} className="navbar-item is-tab is-size-4">
-          <p>{page.name}</p>
+          <LinkName fontColor={props.fontColor}>{page.name}</LinkName>
         </NavLink>
       );
     });
@@ -47,14 +52,14 @@ const Nav = props => {
             className="navbar-item is-tab is-size-4"
             onClick={() => authContext.logoutUserLocal()}
           >
-            <p>{link.name}</p>
+            <LinkName fontColor={props.fontColor}>{link.name}</LinkName>
           </NavLink>
         );
       }
 
       return (
         <NavLink to={link.route} className="navbar-item is-tab is-size-4">
-          <p>{link.name}</p>
+          <LinkName fontColor={props.fontColor}>{link.name}</LinkName>
         </NavLink>
       );
     });
@@ -62,7 +67,7 @@ const Nav = props => {
 
   return (
     <Container
-      className="navbar is-spaced"
+      className="navbar is-spaced is-transparent"
       role="navigation"
       aria-label="main navigation"
       id="navigation"
@@ -70,7 +75,9 @@ const Nav = props => {
     >
       <div className="navbar-brand">
         <NavLink className="navbar-item" to="/">
-          <Logo data="https://d3g8t2jk5ak9zp.cloudfront.net/icon_assets/logo_no_text.svg" />
+          <Logo
+            data={`${process.env.REACT_APP_NOMAD_MUSIC_S3}/icon_assets/logo_no_text.svg`}
+          />
         </NavLink>
       </div>
       <div className="navbar-menu">
