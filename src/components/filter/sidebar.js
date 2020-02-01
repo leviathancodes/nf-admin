@@ -12,7 +12,7 @@ const Container = styled.div`
 
 const Heading = styled.h3`
   color: ${props => props.theme.color.black};
-  font-size: 2.5em;
+  font-size: 2em;
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -32,12 +32,12 @@ const Heading = styled.h3`
 `;
 
 const Paragraph = styled.p`
-  font-size: 1.5em;
+  font-size: 1em;
 `;
 
 const Subheading = styled.h3`
   color: ${props => props.theme.color.black};
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: 500;
 `;
 

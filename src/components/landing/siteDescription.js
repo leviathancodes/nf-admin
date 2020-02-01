@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const Container = styled.div`
-  height: 85vh;
+  height: 75vh;
   position: relative;
 `;
 const ClipPath = styled.div`

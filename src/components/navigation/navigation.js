@@ -17,6 +17,7 @@ const Container = styled.nav`
     box-shadow: ${props => (props.color !== 'auto' ? 'none' : 'auto')};
     visibility: ${props => (props.visibility ? props.visibility : 'auto')};
   }
+  padding: 1em;
 `;
 
 const LinkName = styled.p`
@@ -24,7 +25,7 @@ const LinkName = styled.p`
 `;
 
 const Logo = styled.object`
-  width: 125px;
+  width: 100px;
 `;
 
 const Nav = props => {
@@ -67,7 +68,7 @@ const Nav = props => {
 
   return (
     <Container
-      className="navbar is-spaced is-transparent"
+      className="navbar is-transparent"
       role="navigation"
       aria-label="main navigation"
       id="navigation"

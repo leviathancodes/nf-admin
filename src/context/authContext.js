@@ -82,7 +82,7 @@ export const AuthProvider = props => {
           }
         };
         console.log('trying to log in');
-        const res = await axios.post('/user/login/local', reqBody);
+        const res = await axios.post('/api/user/login/local', reqBody);
         const { token } = res.data;
         localStorage.setItem('jwtToken', token);
         setAuthToken(token);

@@ -7,6 +7,10 @@ import { NavigationContext } from '../context/navigationContext';
 import SmallPlayer from '../components/audio-player/smallPlayer/smallPlayer';
 import Sidebar from '../components/filter/sidebar';
 
+const Main = styled.div`
+  margin: 3em;
+`;
+
 const PageLayout = styled.div`
   width: 100vw;
   height: auto;
@@ -24,12 +28,12 @@ const Container = styled.div`
 `;
 
 const Heading = styled.h3`
-  font-size: 5em;
+  font-size: 2em;
   color: ${props => props.theme.color.black};
   font-family: ${props => props.theme.font.family};
   font-weight: ${props => props.theme.font.weight};
   font-style: ${props => props.theme.font.style};
-  padding: 40px;
+  margin-bottom: 10px;
 `;
 
 const Subheading = styled.p`
@@ -37,8 +41,14 @@ const Subheading = styled.p`
   font-family: ${props => props.theme.font.family};
   font-weight: ${props => props.theme.font.weight};
   font-style: ${props => props.theme.font.style};
-  padding: 40px;
-  font-size: 2em;
+  font-size: 1em;
+  width: 50%;
+  margin-bottom: 1em;
+`;
+
+const SmallPlayerWrap = styled.div`
+  margin-bottom: 1em;
+  width: 100%;
 `;
 
 const Music = () => {
@@ -178,17 +188,19 @@ const Music = () => {
   const createTracks = () => {
     return tracks.map(data => {
       return (
-        <SmallPlayer
-          trackTitle={data.presentationTitle}
-          genre={data.genre}
-          similarArtists={data.similarArtists.join(', ')}
-          price={data.price}
-          trackUrl={data.trackUrl}
-          cover={data.imageUrl}
-          duration={data.duration}
-          moods={data.mood}
-          id={data._id}
-        />
+        <SmallPlayerWrap>
+          <SmallPlayer
+            trackTitle={data.presentationTitle}
+            genre={data.genre}
+            similarArtists={data.similarArtists.join(', ')}
+            price={data.price}
+            trackUrl={data.trackUrl}
+            cover={data.imageUrl}
+            duration={data.duration}
+            moods={data.mood}
+            id={data._id}
+          />
+        </SmallPlayerWrap>
       );
     });
   };
@@ -207,7 +219,7 @@ const Music = () => {
           setBPM={setBPM}
         />
       )}
-      <div>
+      <Main>
         <Heading>{context.message}</Heading>
         <Subheading>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -222,7 +234,7 @@ const Music = () => {
             changeHandler={e => setSkip(Number(`${e.selected  }0`))}
           />
         </Container>
-      </div>
+      </Main>
     </PageLayout>
   );
 };

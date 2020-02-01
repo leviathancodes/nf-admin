@@ -10,6 +10,7 @@ import { ReactComponent as LargePlayIcon } from './playerPlayIcon.svg';
 import { ReactComponent as LargePauseIcon } from './playerPauseIcon.svg';
 import { ReactComponent as VolumeIcon } from './volumeIcon.svg';
 import HeartIcon from './heartIcon';
+import PriceButton from '../../../elements/buttons/priceButton';
 
 const Heading = styled.h3`
   font-size: 3em;
@@ -30,12 +31,14 @@ const PriceText = styled.span`
 `;
 
 const Container = styled.div`
-  display: grid;
+  display: flex;
+  justify-content: space-around;
   width: 1000px;
-  height: 250px;
-  grid-template-columns: 20% 55% 25%;
+  height: auto;
   box-shadow: 0 4px 6px 0 #0000004b;
   margin-bottom: 25px;
+  background-color: white;
+  border-radius: 5px;
 `;
 
 const CoverContainer = styled.div`
@@ -45,10 +48,22 @@ const CoverContainer = styled.div`
   width: 200px;
   height: 200px;
   background: ${props => props.theme.color.largeBorderGradient};
+  margin: 1em;
+`;
+
+const PriceButtonContainer = styled.div`
+  margin: 1em 0 1em 0;
+`;
+
+const PlayerContainer = styled.div`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
 `;
 
 const LargePlayContainer = styled.div`
   display: flex;
+  flex-grow: 2;
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -56,7 +71,6 @@ const LargePlayContainer = styled.div`
 
 const VolumeProgressContainer = styled.div`
   display: flex;
-  align-items: center;
 `;
 
 const ProgressContainer = styled.div`
@@ -66,23 +80,26 @@ const ProgressContainer = styled.div`
   flex-direction: column;
 `;
 
-const VolumeContainer = styled.div`
-  display: flex;
+const TrackDataContainer = styled.div`
+  flex-grow: 3;
   flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-  cursor: pointer;
+  display: flex;
 `;
 
 const TimeContainer = styled.div`
-  width: 70%;
+  width: 75%;
   display: flex;
   justify-content: space-between;
+  margin: 0.25em 0 0.25em 0;
 `;
 
 const SocialContainer = styled.div`
+  width: 25%;
   display: flex;
-  padding-top: 1.5em;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  margin-bottom: 0.5em;
 `;
 
 const Image = styled.div`
@@ -99,6 +116,14 @@ const Cover = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const BPMIcon = styled.div`
+  background: ${props => props.theme.color.secondaryGrey};
+  padding: 0.25em;
+  color: white;
+  border-radius: 2px;
+  margin-right: 0.25em;
 `;
 
 const LargePlayCircle = styled.div`
@@ -118,7 +143,6 @@ const LargePlayCircle = styled.div`
 `;
 
 const LargePlayer = props => {
-  const [clicked, setClicked] = useState('#D3D3D3');
   const [displayVolume, setDisplayVolume] = useState('none');
 
   const context = useContext(AudioContext);
@@ -185,67 +209,82 @@ const LargePlayer = props => {
   };
   return (
     <Container>
-      <LargePlayContainer>
-        <LargePlayCircle className="play" onClick={handlePlaying}>
-          {playOrPauseIcon()}
-        </LargePlayCircle>
-      </LargePlayContainer>
-      <div className="trackData">
-        <Heading>{props.trackTitle}</Heading>
-        <Paragraph>
-          {props.genre} | {props.similarArtists} Type Beat
-        </Paragraph>
-        <Paragraph>
-          Starting from <PriceText>${props.price}</PriceText>
-        </Paragraph>
-        <VolumeProgressContainer>
-          <ProgressContainer>
-            <Slider
-              railStyle={{ backgroundColor: '#707070', padding: 0 }}
-              trackStyle={{ backgroundColor: '#FFA7A6', padding: 0 }}
-              handleStyle={{
-                backgroundColor: '#F15377',
-                borderColor: '#F15377',
-                cursor: 'grab'
-              }}
-              value={
-                context.currentTrack === props.trackTitle ? context.progress : 0
-              }
-              max={Math.round(props.duration)}
-              onChange={e => {
-                if (context.currentTrack === props.trackTitle)
-                  context.handleSeeking(e);
-              }}
-              defaultValue={0}
-            />{' '}
-          </ProgressContainer>
-
-          <VolumeContainer
-            className="volume-container"
-            onMouseEnter={handleDisplayVolume}
-            onMouseLeave={handleDisplayVolume}
-          >
-            <VolumeSlider
-              display={displayVolume}
-              onMouseLeave={handleDisplayVolume}
-            />
-            <VolumeIcon />
-          </VolumeContainer>
-        </VolumeProgressContainer>
-        <TimeContainer>
+      <PlayerContainer>
+        <LargePlayContainer>
+          <LargePlayCircle className="play" onClick={handlePlaying}>
+            {playOrPauseIcon()}
+          </LargePlayCircle>
+        </LargePlayContainer>
+        <TrackDataContainer className="trackData">
+          <Heading>{props.trackTitle}</Heading>
           <Paragraph>
-            {context.currentTrack === props.trackTitle
-              ? secondsToMinutes(context.progress)
-              : '0:00'}
+            {props.genre} | {props.similarArtists}
           </Paragraph>
-          <Paragraph className="duration">
-            {secondsToMinutes(props.duration)}
+          <Paragraph>
+            Starting from <PriceText>${props.price}</PriceText>
           </Paragraph>
-        </TimeContainer>
-        <SocialContainer>
-          <HeartIcon />
-        </SocialContainer>
-      </div>
+          <PriceButtonContainer>
+            <PriceButton price={props.price} />
+          </PriceButtonContainer>
+          <VolumeProgressContainer>
+            <ProgressContainer>
+              <Slider
+                railStyle={{ backgroundColor: '#707070', padding: 0 }}
+                trackStyle={{ backgroundColor: '#FFA7A6', padding: 0 }}
+                handleStyle={{
+                  backgroundColor: '#F15377',
+                  borderColor: '#F15377',
+                  cursor: 'grab'
+                }}
+                value={
+                  context.currentTrack === props.trackTitle
+                    ? context.progress
+                    : 0
+                }
+                max={Math.round(props.duration)}
+                onChange={e => {
+                  if (context.currentTrack === props.trackTitle)
+                    context.handleSeeking(e);
+                }}
+                defaultValue={0}
+              />{' '}
+            </ProgressContainer>
+          </VolumeProgressContainer>
+          <TimeContainer>
+            <Paragraph>
+              {context.currentTrack === props.trackTitle
+                ? secondsToMinutes(context.progress)
+                : '0:00'}
+            </Paragraph>
+            <Paragraph className="duration">
+              {secondsToMinutes(props.duration)}
+            </Paragraph>
+          </TimeContainer>
+          <SocialContainer>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginRight: '0.5em'
+              }}
+            >
+              {' '}
+              <HeartIcon style={{ marginRight: '1em' }} />
+              {props.likedBy.length}
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginRight: '1em'
+              }}
+            >
+              <BPMIcon>BPM</BPMIcon>
+              {props.bpm}
+            </div>
+          </SocialContainer>
+        </TrackDataContainer>
+      </PlayerContainer>
       <Cover>
         <CoverContainer className="trackCover">
           <Image cover={props.cover} lassName={`${props.title}-cover`} />

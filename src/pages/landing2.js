@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react';
-import styled from 'styled-components';
 import { AudioContext } from '../context/audioContext';
 import { NavigationContext } from '../context/navigationContext';
 import Jumbotron from '../components/landing/jumbotron';
 import Features from '../components/landing/features';
 import SiteDescription from '../components/landing/siteDescription';
+import LandingCarousel from '../components/landing/latestCarousel';
+import ContactSection from '../components/landing/contact';
 
 const Landing2 = () => {
   const audioContext = useContext(AudioContext);
@@ -25,6 +26,8 @@ const Landing2 = () => {
       <Jumbotron />
       <SiteDescription />
       <Features />
+      <LandingCarousel />
+      <ContactSection />
     </div>
   );
 };
