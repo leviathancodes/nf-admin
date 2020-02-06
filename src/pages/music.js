@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Pagination from '../components/pagination/pagination';
 import { AudioContext } from '../context/audioContext';
 import { NavigationContext } from '../context/navigationContext';
+import { ShoppingCartContext } from '../context/shoppingCartContext';
 import SmallPlayer from '../components/audio-player/smallPlayer/smallPlayer';
 import Sidebar from '../components/filter/sidebar';
 

@@ -10,6 +10,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { NavigationContext } from '../../context/navigationContext';
 import { AuthContext } from '../../context/authContext';
+import { ShoppingCartContext } from '../../context/shoppingCartContext';
+import NavCart from './cart';
 
 const Container = styled.nav`
   &.navbar {
@@ -17,7 +19,8 @@ const Container = styled.nav`
     box-shadow: ${props => (props.color !== 'auto' ? 'none' : 'auto')};
     visibility: ${props => (props.visibility ? props.visibility : 'auto')};
   }
-  padding: 1em;
+  padding: 0.5em;
+  font-size: 16px;
 `;
 
 const LinkName = styled.p`
@@ -28,13 +31,25 @@ const Logo = styled.object`
   width: 100px;
 `;
 
+// <LinkName fontColor={props.fontColor}>{page.name}</LinkName>
+// <p>{cart.length}</p>
+
+
 const Nav = props => {
   const context = useContext(NavigationContext);
   const authContext = useContext(AuthContext);
+  const { cart } = useContext(ShoppingCartContext);
 
   const createPageOptions = () => {
     const { pages } = context.menuOptions;
     return pages.map(page => {
+      if (page.name === 'Cart') {
+        return (
+          <NavLink to={page.route} className="navbar-item is-tab is-size-4">
+            <NavCart fontColor={props.fontColor} name={page.name} count={cart.length} />
+          </NavLink>
+        );
+      }
       return (
         <NavLink to={page.route} className="navbar-item is-tab is-size-4">
           <LinkName fontColor={props.fontColor}>{page.name}</LinkName>

@@ -37,6 +37,7 @@ const Container = styled.div`
   height: auto;
   box-shadow: 0 4px 6px 0 #0000004b;
   margin-bottom: 25px;
+  padding: 1em;
   background-color: white;
   border-radius: 5px;
 `;
@@ -63,8 +64,8 @@ const PlayerContainer = styled.div`
 
 const LargePlayContainer = styled.div`
   display: flex;
-  flex-grow: 2;
   flex-direction: row;
+  margin: 1em;
   justify-content: center;
   align-items: center;
 `;
@@ -84,6 +85,7 @@ const TrackDataContainer = styled.div`
   flex-grow: 3;
   flex-direction: column;
   display: flex;
+  justify-content: center;
 `;
 
 const TimeContainer = styled.div`
@@ -265,7 +267,7 @@ const LargePlayer = props => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                marginRight: '0.5em'
+                marginRight: '1em'
               }}
             >
               {' '}

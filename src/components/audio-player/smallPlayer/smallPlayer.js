@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
 import { AudioContext } from '../../../context/audioContext';
 import { UserContext } from '../../../context/userContext';
+import { ShoppingCartContext } from '../../../context/shoppingCartContext';
 import {
   SmallPlayIcon,
   ThumbnailBorder,
@@ -67,6 +68,8 @@ const SmallPlayer = props => {
   const { user } = useContext(UserContext);
   const [active, setActive] = useState(false);
   const [liked, setLiked] = useState(false);
+
+  const { addItemToCart, removeItemFromCart } = useContext(ShoppingCartContext);
 
   useEffect(() => {
     if (context.currentTrack === props.trackTitle) {
@@ -170,7 +173,7 @@ const SmallPlayer = props => {
         <Heart>
           <HeartIcon id={props.id} liked={liked} handleLike={handleLike} />
         </Heart>
-        <PriceButton price={props.price} />
+        <PriceButton price={props.price} id={props.id} />
       </PriceContainer>
     </Container>
   );

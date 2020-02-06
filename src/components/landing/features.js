@@ -73,12 +73,12 @@ const Features = () => {
           these packs today."
         />
         <Row
-        iconSrc={`${process.env.REACT_APP_NOMAD_MUSIC_S3}/icon_assets/landing/landing_features_king_icon.svg`}
-        title="Custom Made."
-        body="Have something specific in mind that you can’t find?  You can contact me with
+          iconSrc={`${process.env.REACT_APP_NOMAD_MUSIC_S3}/icon_assets/landing/landing_features_king_icon.svg`}
+          title="Custom Made."
+          body="Have something specific in mind that you can’t find?  You can contact me with
         a request of the type of music you want made so we can try and work together
         to get it done."
-      />
+        />
       </Rows>
       <LandingImage
         src={`${process.env.REACT_APP_NOMAD_MUSIC_S3}/icon_assets/landing/landing_feature_studio.svg`}

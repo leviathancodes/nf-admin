@@ -17,6 +17,7 @@ import SignUp from './pages/signup';
 import Login from './pages/login';
 import Profile from './pages/profile';
 import Playlist from './components/playlist/playlist';
+import Checkout from './pages/checkout';
 
 const PageWrapper = styled.div`
   filter: ${props => (props.blurred ? 'blur(4px)' : 'none')};
@@ -49,6 +50,7 @@ const Wrapper = () => {
           <Route path="/signup" exact component={SignUp} />
           <Route path="/login" exact component={Login} />
           <Route path="/profile" exact component={Profile} />
+          <Route path="/checkout" exact component={Checkout} />
           <Route component={Error404} />
         </Switch>
         <FooterPlayer visibility={audioContext.footerVisibility} />

@@ -9,7 +9,7 @@ const Container = styled.div`
   background-position: 25% 25%;
   background-size: 100%;
   position: relative;
-  height: 100vh;
+  height: 90vh;
 `;
 
 const FirstOverlay = styled.div`

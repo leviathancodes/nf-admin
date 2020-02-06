@@ -2002,6 +2002,18 @@
     telejson "^3.2.0"
     util-deprecate "^1.0.2"
 
+"@stripe/react-stripe-js@^1.0.0-beta.3":
+  version "1.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-1.0.0-beta.3.tgz#1d07c3d4bc2feaa1dc3580852559057afc6383d4"
+  integrity sha512-5GaKixgvG6lh+R1RGAjR5FyiwzOE4QjSYtdC85O1+VZ0ny4pTtKxX1u3aOwCjKFzGcwvVbFdd/P4qstIAypk+Q==
+  dependencies:
+    prop-types "^15.7.2"
+
+"@stripe/stripe-js@^1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-1.0.0-beta.4.tgz#7974474816949b264f3881e01abec0167a46cd7a"
+  integrity sha512-fpjXzOEqp4Xs5rmNOpLTb//jr/4R6wmyzhtSZ++ePBzB5ucnt656zeb6iCvG+xJQaVCgngeTs7+Ig2ACroaHsw==
+
 "@svgr/babel-plugin-add-jsx-attribute@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-4.2.0.tgz#dadcb6218503532d6884b210e7f3c502caaa44b1"
@@ -12250,6 +12262,11 @@ react-sizeme@^2.6.7:
     invariant "^2.2.4"
     shallowequal "^1.1.0"
     throttle-debounce "^2.1.0"
+
+react-stripe-checkout@^2.6.3:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/react-stripe-checkout/-/react-stripe-checkout-2.6.3.tgz#3173a870b04e5a3c321a06d24cd53c6030111c45"
+  integrity sha1-MXOocLBOWjwyGgbSTNU8YDARHEU=
 
 react-syntax-highlighter@^11.0.2:
   version "11.0.2"

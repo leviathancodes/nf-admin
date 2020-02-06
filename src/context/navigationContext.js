@@ -3,25 +3,25 @@ import { UserContext } from './userContext';
 
 export const NavigationContext = createContext();
 
-const initialMenuOptions = {
-  pages: [
-    { name: 'Home', route: '/' },
-    { name: 'About', route: '/about' },
-    { name: 'Beats', route: '/music' },
-    { name: 'Projects', route: 'projects' },
-    { name: 'Contact', route: '/contact' }
-  ],
-  auth: [
-    { name: 'Log in', route: '/login' },
-    { name: 'Sign up', route: '/signup' }
-  ]
-};
-
 export const NavigationProvider = props => {
+  const userContext = useContext(UserContext);
+
+  const initialMenuOptions = {
+    pages: [
+      { name: 'Home', route: '/' },
+      { name: 'About', route: '/about' },
+      { name: 'Beats', route: '/music' },
+      { name: 'Cart', route: '/checkout' }
+    ],
+    auth: [
+      { name: 'Log in', route: '/login' },
+      { name: 'Sign up', route: '/signup' }
+    ]
+  };
+
   const [menuOptions, setMenuOptions] = useState(initialMenuOptions);
   const [backgroundColor, setBackgroundColor] = useState('auto');
   const [visibility, setVisibility] = useState(true);
-  const userContext = useContext(UserContext);
 
   useEffect(() => {
     if (userContext.user) {

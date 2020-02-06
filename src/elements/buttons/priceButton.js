@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { ShoppingCartContext } from '../../context/shoppingCartContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -39,8 +40,9 @@ const Cart = styled(FontAwesomeIcon)`
 `;
 
 const PriceButton = props => {
+  const { addItemToCart } = useContext(ShoppingCartContext);
   return (
-    <Container>
+    <Container onClick={() => addItemToCart(props.id)}>
       <Cart icon={faCartPlus} />
       <PriceText>${props.price}</PriceText>
     </Container>

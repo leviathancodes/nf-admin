@@ -6,6 +6,7 @@ import { AudioProvider } from './context/audioContext';
 import { NavigationProvider } from './context/navigationContext';
 import { AuthProvider } from './context/authContext';
 import { UserProvider } from './context/userContext';
+import { ShoppingCartProvider } from './context/shoppingCartContext';
 import './styles/scss/main.scss';
 
 function App() {
@@ -14,11 +15,13 @@ function App() {
       <UserProvider>
         <AuthProvider>
           <NavigationProvider>
-            <AudioProvider>
-              <div className="App">
-                <Wrapper />
-              </div>
-            </AudioProvider>
+            <ShoppingCartProvider>
+              <AudioProvider>
+                <div className="App">
+                  <Wrapper />
+                </div>
+              </AudioProvider>
+            </ShoppingCartProvider>
           </NavigationProvider>
         </AuthProvider>
       </UserProvider>

@@ -18,7 +18,7 @@ const TrackContainer = styled.div`
   background-position: 25% 25%;
   background-size: 100%;
   position: relative;
-  height: 50vh;
+  height: 65vh;
   display: flex;
   align-items: center;
   justify-content: center;
