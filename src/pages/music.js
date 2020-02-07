@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import Pagination from '../components/pagination/pagination';
@@ -50,6 +51,10 @@ const Subheading = styled.p`
 const SmallPlayerWrap = styled.div`
   margin-bottom: 1em;
   width: 100%;
+`;
+
+const TrackLink = styled(Link)`
+  color: black;
 `;
 
 const Music = () => {
@@ -105,8 +110,6 @@ const Music = () => {
       const trackNumber = await axios.get('/api/music/count');
 
       setPageCount(Math.ceil(trackNumber.data.count / 10));
-      console.log(trackNumber);
-      console.log(res.data);
       setTracks(res.data);
 
       if (context.playlist.length < 1 || !context.playing) {
@@ -200,6 +203,7 @@ const Music = () => {
             duration={data.duration}
             moods={data.mood}
             id={data._id}
+            route={data.trackTitle}
           />
         </SmallPlayerWrap>
       );
@@ -232,7 +236,7 @@ const Music = () => {
           {createTracks()}
           <Pagination
             pageCount={pageCount}
-            changeHandler={e => setSkip(Number(`${e.selected  }0`))}
+            changeHandler={e => setSkip(Number(`${e.selected}0`))}
           />
         </Container>
       </Main>

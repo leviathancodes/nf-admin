@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { AudioContext } from './context/audioContext';
 import { NavigationContext } from './context/navigationContext';
 import { userContext, UserContext } from './context/userContext';
-import Landing from './pages/landing';
 import Landing2 from './pages/landing2';
 import Nav from './components/navigation/navigation';
 import FooterPlayer from './components/audio-player/footerPlayer/footerPlayer';
@@ -18,6 +17,7 @@ import Login from './pages/login';
 import Profile from './pages/profile';
 import Playlist from './components/playlist/playlist';
 import Checkout from './pages/checkout';
+import SingleTrack from './pages/singleTrack';
 
 const PageWrapper = styled.div`
   filter: ${props => (props.blurred ? 'blur(4px)' : 'none')};
@@ -45,7 +45,7 @@ const Wrapper = () => {
           <Route path="/" exact component={Landing2} />
           <Route path="/upload" exact component={Upload} />
           <Route path="/music" exact component={Music} />
-          <Route path="/music/:track" exact component={TrackEdit} />
+          <Route path="/music/:track" exact component={SingleTrack} />
           <Route path="/search/:term" exact component={SearchResults} />
           <Route path="/signup" exact component={SignUp} />
           <Route path="/login" exact component={Login} />

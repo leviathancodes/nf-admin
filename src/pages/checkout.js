@@ -1,15 +1,25 @@
-import React from 'react';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
+import React, { useContext, useEffect } from 'react';
 import CheckoutForm from '../components/checkout/checkoutForm';
-
-const stripePromise = loadStripe(process.env.REACT_APP_PUBLIC_STRIPE_KEY);
+import { AudioContext } from '../context/audioContext';
+import { ShoppingCartContext } from '../context/shoppingCartContext'
 
 const Checkout = () => {
+  const { setFooterVisibility } = useContext(AudioContext);
+  const { cart } = useContext(ShoppingCartContext);
+
+  useEffect(() => {
+    setFooterVisibility('none');
+
+    return () => {
+      setFooterVisibility('auto');
+    };
+  }, [setFooterVisibility]);
+
+  if (cart.length === 0) {
+    return <h1>Your cart is empty.</h1>;
+  }
   return (
-    <Elements stripe={stripePromise}>
-      <CheckoutForm />
-    </Elements>
+    <CheckoutForm />
   );
 };
 

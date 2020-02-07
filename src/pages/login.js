@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import AuthForm from '../components/form/authForm';
 import { AuthContext } from '../context/authContext';
-
+import { AudioContext } from '../context/audioContext';
 
 const Container = styled.div`
   height: 100vh;
@@ -10,6 +10,14 @@ const Container = styled.div`
 
 const Login = () => {
   const authContext = useContext(AuthContext);
+  const { setFooterVisibility } = useContext(AudioContext);
+
+  useEffect(() => {
+    setFooterVisibility('none');
+    return () => {
+      setFooterVisibility('auto');
+    };
+  }, [setFooterVisibility]);
 
   return (
     <Container>

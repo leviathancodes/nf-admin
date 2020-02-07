@@ -39,12 +39,12 @@ const Cart = styled(FontAwesomeIcon)`
   font-size: 24px;
 `;
 
-const PriceButton = props => {
+const PriceButton = ({ id, price }) => {
   const { addItemToCart } = useContext(ShoppingCartContext);
   return (
-    <Container onClick={() => addItemToCart(props.id)}>
+    <Container onClick={() => addItemToCart(id)}>
       <Cart icon={faCartPlus} />
-      <PriceText>${props.price}</PriceText>
+      <PriceText>${price}</PriceText>
     </Container>
   );
 };

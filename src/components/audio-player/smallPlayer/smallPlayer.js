@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
@@ -17,13 +18,15 @@ import MoodTag from '../../../elements/moodTag/moodTag';
 
 const Container = styled.div`
   width: 100%;
-  height: 125px;
+  padding: 1em;
   border: ${props => props.theme.color.smallBorderGradient};
   display: flex;
+  align-items: center;
   transition: all 0.1s ease-in;
   &:hover {
     background-color: #ededed;
   }
+  cursor: pointer;
 `;
 
 const PriceContainer = styled(ThumbnailContainer)`
@@ -63,33 +66,45 @@ const Heart = styled.div`
   margin-right: 2em;
 `;
 
-const SmallPlayer = props => {
+const SmallPlayer = ({
+  trackTitle,
+  id,
+  moods,
+  cover,
+  genre,
+  similarArtists,
+  price,
+  trackUrl,
+  duration,
+  route
+}) => {
   const context = useContext(AudioContext);
   const { user } = useContext(UserContext);
   const [active, setActive] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [redirect, setRedirect] = useState(false);
 
   const { addItemToCart, removeItemFromCart } = useContext(ShoppingCartContext);
 
   useEffect(() => {
-    if (context.currentTrack === props.trackTitle) {
+    if (context.currentTrack === trackTitle) {
       return setActive(true);
     }
     setActive(false);
-  }, [context, props.trackTitle]);
+  }, [context, trackTitle]);
 
   useEffect(() => {
     if (user) {
-      if (user.likedTracks.includes(props.id)) {
+      if (user.likedTracks.includes(id)) {
         return setLiked(true);
       }
     }
-  }, [props.id, user]);
+  }, [id, user]);
 
   const tags = () => {
     return (
       <MoodContainer>
-        {props.moods.map(mood => {
+        {moods.map(mood => {
           return <MoodTag key={mood} mood={mood} />;
         })}
       </MoodContainer>
@@ -98,64 +113,53 @@ const SmallPlayer = props => {
 
   const handlePlaying = () => {
     if (!context.currentTrack) {
-      return context.handlePlaying(
-        props.trackTitle,
-        props.trackUrl,
-        props.duration
-      );
+      return context.handlePlaying(trackTitle, trackUrl, duration);
     }
-    if (context.playing && context.currentTrack !== props.trackTitle) {
+    if (context.playing && context.currentTrack !== trackTitle) {
       context.handleStopping();
-      return context.handlePlaying(
-        props.trackTitle,
-        props.trackUrl,
-        props.duration
-      );
+      return context.handlePlaying(trackTitle, trackUrl, duration);
     }
 
     if (context.playing) {
-      return context.handlePausing(props.trackTitle, props.trackUrl);
+      return context.handlePausing(trackTitle, trackUrl);
     }
-    if (context.currentTrack !== props.trackTitle) {
+    if (context.currentTrack !== trackTitle) {
       context.handleStopping();
-      return context.handlePlaying(
-        props.trackTitle,
-        props.trackUrl,
-        props.duration
-      );
+      return context.handlePlaying(trackTitle, trackUrl, duration);
     }
-    return context.handlePlaying(
-      props.trackTitle,
-      props.trackUrl,
-      props.duration
-    );
+    return context.handlePlaying(trackTitle, trackUrl, duration);
   };
 
   const handleLike = async () => {
     if (user) {
-      const res = await context.handleLiking(props.id);
+      const res = await context.handleLiking(id);
       return res[1] === 'remove' ? setLiked(false) : setLiked(true);
     }
   };
+
+  const handleRedirect = e => {
+    if (e.target.id === 'smallPlayerContainer') {
+      setRedirect(true);
+    }
+  };
+  if (redirect) {
+    return <Redirect to={`/music/${route}`} />;
+  }
   return (
-    <Container id="smallPlayerContainer">
+    <Container onClick={handleRedirect} id="smallPlayerContainer">
       <ThumbnailContainer onClick={handlePlaying}>
         <ThumbnailBorder height="100px" width="100px">
-          <ThumbnailImage
-            id="trackThumbnail"
-            active={active}
-            imageUrl={props.cover}
-          >
+          <ThumbnailImage id="trackThumbnail" active={active} imageUrl={cover}>
             <SmallPlayIcon
               active={active}
               className="playIcon"
               id={
-                context.playing && props.trackTitle === context.currentTrack
+                context.playing && trackTitle === context.currentTrack
                   ? 'pause'
                   : 'play'
               }
               icon={
-                context.playing && props.trackTitle === context.currentTrack
+                context.playing && trackTitle === context.currentTrack
                   ? faPause
                   : faPlay
               }
@@ -164,16 +168,16 @@ const SmallPlayer = props => {
         </ThumbnailBorder>
       </ThumbnailContainer>
       <TrackInfo>
-        <Title>{props.trackTitle}</Title>
-        <TrackDetail>{props.genre}</TrackDetail>
-        <TrackDetail>Similar Artists: {props.similarArtists}</TrackDetail>
+        <Title>{trackTitle}</Title>
+        <TrackDetail>{genre}</TrackDetail>
+        <TrackDetail>Similar Artists: {similarArtists}</TrackDetail>
       </TrackInfo>
       {tags()}
       <PriceContainer>
         <Heart>
-          <HeartIcon id={props.id} liked={liked} handleLike={handleLike} />
+          <HeartIcon id={id} liked={liked} handleLike={handleLike} />
         </Heart>
-        <PriceButton price={props.price} id={props.id} />
+        <PriceButton price={price} id={id} />
       </PriceContainer>
     </Container>
   );
