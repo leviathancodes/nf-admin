@@ -95,7 +95,7 @@ const SmallPlayer = ({
 
   useEffect(() => {
     if (user) {
-      if (user.likedTracks.includes(id)) {
+      if (user.likedTracks && user.likedTracks.includes(id)) {
         return setLiked(true);
       }
     }
@@ -133,6 +133,7 @@ const SmallPlayer = ({
   const handleLike = async () => {
     if (user) {
       const res = await context.handleLiking(id);
+      console.log(res);
       return res[1] === 'remove' ? setLiked(false) : setLiked(true);
     }
   };
