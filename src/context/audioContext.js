@@ -143,7 +143,7 @@ export const AudioProvider = props => {
   const handleLiking = async trackId => {
     if (user) {
       try {
-        if (user.likedTracks.includes(trackId)) {
+        if (user.likedTracks && user.likedTracks.includes(trackId)) {
           const res = await axios.delete(
             `/api/user/music/like?id=${user.id}&trackId=${trackId}`
           );
@@ -161,7 +161,7 @@ export const AudioProvider = props => {
         console.log('You failed');
       }
     }
-    return console.log('Log in');
+    return console.log('You must be logged in in order to like a track!');
   };
 
   const audioState = {
