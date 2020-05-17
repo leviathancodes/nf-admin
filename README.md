@@ -1,3 +1,8 @@
+# Nomad Fox UI
+The client side of he Nomad Fox website.  Intention of the site is a platofrom for me to sell my music, and later on to use this framework as a platform for other artists to sell and share their music.
+
+[Projectr Trello Board](https://trello.com/b/bah9Ko4j/nomad-fox-website)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
