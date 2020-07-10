@@ -10,6 +10,11 @@ const Container = styled.div`
   background-size: 100%;
   position: relative;
   height: 90vh;
+  @media (max-width: 992px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const FirstOverlay = styled.div`

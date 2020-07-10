@@ -6,6 +6,9 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media (max-width: 992px) {
+    flex-wrap: wrap-reverse;
+  }
 `;
 
 const Rows = styled.div`
@@ -18,6 +21,9 @@ const Rows = styled.div`
 const LandingImage = styled.img`
   width: 400px;
   margin-right: 3em;
+  @media (max-width: 992px) {
+    width: 200px;
+  }
 `;
 
 const RowContainer = styled.div`
@@ -41,13 +47,13 @@ const RowParagraph = styled.p`
   width: 80%;
 `;
 
-const Row = props => {
+const Row = ({ iconSrc, title, body }) => {
   return (
     <RowContainer>
-      <RowIcon src={props.iconSrc} />
+      <RowIcon src={iconSrc} />
       <RowBody>
-        <RowTitle>{props.title}</RowTitle>
-        <RowParagraph>{props.body}</RowParagraph>
+        <RowTitle>{title}</RowTitle>
+        <RowParagraph>{body}</RowParagraph>
       </RowBody>
     </RowContainer>
   );

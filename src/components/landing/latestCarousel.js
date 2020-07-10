@@ -84,7 +84,7 @@ const LandingCarousel = () => {
                       price={track.price}
                       duration={track.duration}
                       cover={track.imageUrl}
-                      trackUrl={track.trackUrl}
+                      trackUrl={track.mp3Url || track.wavUrl}
                       bpm={track.bpm}
                       likedBy={track.likedBy}
                     />{' '}

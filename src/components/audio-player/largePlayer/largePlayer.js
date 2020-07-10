@@ -40,6 +40,7 @@ const Container = styled.div`
   padding: 1em;
   background-color: white;
   border-radius: 5px;
+  border: ${props => props.theme.color.smallBorderGradient};
 `;
 
 const CoverContainer = styled.div`

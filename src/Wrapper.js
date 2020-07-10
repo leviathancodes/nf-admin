@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { AudioContext } from './context/audioContext';
 import { NavigationContext } from './context/navigationContext';
-import { userContext, UserContext } from './context/userContext';
+import { ShoppingCartContext } from './context/shoppingCartContext';
 import Landing2 from './pages/landing2';
 import Nav from './components/navigation/navigation';
 import FooterPlayer from './components/audio-player/footerPlayer/footerPlayer';
@@ -18,6 +18,7 @@ import Profile from './pages/profile';
 import Playlist from './components/playlist/playlist';
 import Checkout from './pages/checkout';
 import SingleTrack from './pages/singleTrack';
+import PurchaseModal from './components/modal/purchaseModal';
 
 const PageWrapper = styled.div`
   filter: ${props => (props.blurred ? 'blur(4px)' : 'none')};
@@ -29,10 +30,12 @@ const PageWrapper = styled.div`
 const Wrapper = () => {
   const audioContext = useContext(AudioContext);
   const navigationContext = useContext(NavigationContext);
+  const { licenseModal } = useContext(ShoppingCartContext);
   return (
     <Router>
+      <PurchaseModal />
       <Playlist />
-      <PageWrapper blurred={audioContext.playlistActive}>
+      <PageWrapper blurred={audioContext.playlistActive || licenseModal}>
         {navigationContext.visibility ? (
           <Nav
             visibility={navigationContext.visibility}

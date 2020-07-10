@@ -7,7 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 
 const Upload = () => {
-  const [trackFileName, setTrackFileName] = useState('No file uploaded');
+  const [mp3FileName, setMP3FileName] = useState('No file uploaded');
+  const [wavFileName, setWavFileName] = useState('No file uploaded');
   const [imageFileName, setImageFileName] = useState('No file uploaded');
   const [trackoutFileName, setTrackOutFileName] = useState('No file uploaded');
   const [submitStatus, setSubmitStatus] = useState(false);
@@ -96,8 +97,10 @@ const Upload = () => {
   };
 
   const grabFileName = (e, type) => {
-    if (type === 'track') {
-      setTrackFileName(e.target.files[0].name);
+    if (type === 'mp3') {
+      setMP3FileName(e.target.files[0].name);
+    } else if (type === 'wav') {
+      setWavFileName(e.target.files[0].name);
     } else if (type === 'trackout') {
       setTrackOutFileName(e.target.files[0].name);
     } else {
@@ -118,21 +121,23 @@ const Upload = () => {
     data.append('price', price);
     data.append('bpm', bpm);
     try {
-      const res = await axios.post('http://localhost:5000/music/upload', data, {
+      const res = await axios.post('/api/music/upload', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
         timeout: 600000,
         onUploadProgress(progressEvent) {
-          console.log(progressEvent.loaded + ' / ' + progressEvent.total + ' completed.') ;
+          console.log(
+            `${progressEvent.loaded} / ${progressEvent.total} completed.`
+          );
         }
       });
-      const url = res.data.trackData.trackUrl;
+      const url = res.data.trackData.mp3Url || res.data.trackData.wavUrl;
       console.log(url);
       const song = new Audio(url);
       song.onloadedmetadata = async () => {
         await axios.patch(
-          `http://localhost:5000/music?trackTitle=${track
+          `/api/music?trackTitle=${track
             .replace(/ /g, '_')
             .toLowerCase()}`,
           { duration: song.duration }
@@ -148,7 +153,9 @@ const Upload = () => {
       } else if (error.request) {
         setSubmitStatus('error');
         setSubmitMessage(
-          `Track upload failed. ${error.toJSON()}: Our servers may be offline or undergoing maintanence. ${error.status}`
+          `Track upload failed. ${error.toJSON()}: Our servers may be offline or undergoing maintanence. ${
+            error.status
+          }`
         );
       } else {
         console.log(error);
@@ -274,7 +281,7 @@ const Upload = () => {
               type="radio"
               name="public"
               id="Yes"
-              checked={isPublic === 'Yes' ? true : false}
+              checked={isPublic === 'Yes'}
               onChange={handlePublic}
             />
             Yes
@@ -284,7 +291,7 @@ const Upload = () => {
               type="radio"
               name="public"
               id="No"
-              checked={isPublic === 'No' ? true : false}
+              checked={isPublic === 'No'}
               onChange={handlePublic}
             />
             No
@@ -338,15 +345,15 @@ const Upload = () => {
               <span className="file-name">{imageFileName}</span>
             </label>
           </div>
-          <label className="label is-large">Track Upload</label>
+          <label className="label is-large">MP3 Upload</label>
           <div className="file is-medium has-name">
             <label className="file-label">
               <input
                 className="file-input"
                 type="file"
-                name="track"
-                accept="audio/*"
-                onChange={e => grabFileName(e, 'track')}
+                name="mp3"
+                accept="audio/mp3"
+                onChange={e => grabFileName(e, 'mp3')}
               />
               <span className="file-cta">
                 <span className="file-icon">
@@ -354,9 +361,29 @@ const Upload = () => {
                 </span>
                 <span className="file-label">Upload your track...</span>
               </span>
-              <span className="file-name">{trackFileName}</span>
+              <span className="file-name">{mp3FileName}</span>
             </label>
           </div>
+          <label className="label is-large">WAV Upload</label>
+          <div className="file is-medium has-name">
+            <label className="file-label">
+              <input
+                className="file-input"
+                type="file"
+                name="wav"
+                accept="audio/wav"
+                onChange={e => grabFileName(e, 'wav')}
+              />
+              <span className="file-cta">
+                <span className="file-icon">
+                  <FontAwesomeIcon icon={faUpload} />
+                </span>
+                <span className="file-label">Upload your track...</span>
+              </span>
+              <span className="file-name">{wavFileName}</span>
+            </label>
+          </div>
+
           <label className="label is-large">Trackout Upload</label>
           <div className="file is-medium has-name">
             <label className="file-label">

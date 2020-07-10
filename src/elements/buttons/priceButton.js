@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { ShoppingCartContext } from '../../context/shoppingCartContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
+import { ShoppingCartContext } from '../../context/shoppingCartContext';
 
 const Container = styled.div`
   height: 62.5px;
@@ -40,9 +40,14 @@ const Cart = styled(FontAwesomeIcon)`
 `;
 
 const PriceButton = ({ id, price }) => {
-  const { addItemToCart } = useContext(ShoppingCartContext);
+  const { setLicenseModal, setModalPrice } = useContext(ShoppingCartContext);
   return (
-    <Container onClick={() => addItemToCart(id)}>
+    <Container
+      onClick={() => {
+        setModalPrice(price);
+        setLicenseModal(true);
+      }}
+    >
       <Cart icon={faCartPlus} />
       <PriceText>${price}</PriceText>
     </Container>

@@ -2,24 +2,23 @@ import React, { useEffect, useState, useCallback, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
+import _ from 'underscore';
 import Pagination from '../components/pagination/pagination';
 import { AudioContext } from '../context/audioContext';
 import { NavigationContext } from '../context/navigationContext';
 import { ShoppingCartContext } from '../context/shoppingCartContext';
 import SmallPlayer from '../components/audio-player/smallPlayer/smallPlayer';
 import Sidebar from '../components/filter/sidebar';
+import { SideBarPageContainer } from '../components/shared/shared';
 
 const Main = styled.div`
   margin: 3em;
 `;
 
-const PageLayout = styled.div`
-  width: 100vw;
-  height: auto;
-  display: grid;
-  grid-template-columns: 25% 75%;
+const PageLayout = styled(SideBarPageContainer)`
   border-bottom: solid 2px ${props => props.theme.color.lightGrey};
   margin-bottom: 6em;
+  height: auto;
 `;
 const Container = styled.div`
   display: flex;
@@ -68,15 +67,25 @@ const Music = () => {
   const [pageCount, setPageCount] = useState(0);
   const [skip, setSkip] = useState(0);
 
-  const context = useContext(AudioContext);
+  const {
+    setFooterVisibility,
+    playlist,
+    setPlaylist,
+    playing,
+    message
+  } = useContext(AudioContext);
   const navigationContext = useContext(NavigationContext);
 
   // Returns new tracks based on selected filters
   useEffect(() => {
     async function fetchFilteredTracks() {
-      window.scrollTo(0, 0);
-      if (selectedMoods.length === 0 && !selectedGenre) {
-        const res = await axios.get(`/api/music?skip=${skip}`);
+      if (
+        selectedMoods.length === 0 &&
+        !selectedGenre &&
+        _.difference(bpm, [0, 200].length === 0) &&
+        _.difference(price, [0, 200].length === 0)
+      ) {
+        const res = await axios.get(`/api/music/?skip=${skip}&limit=10`);
         setTracks(res.data);
         const trackNumber = await axios.get('/api/music/count');
         return setPageCount(Math.ceil(trackNumber.data.count / 10));
@@ -91,7 +100,7 @@ const Music = () => {
 
       const res = await axios.request({
         method: 'GET',
-        url: `/api/music/search?skip=${skip}`,
+        url: `/api/music/search?skip=${skip}&limit=10`,
         params
       });
       setTracks(res.data[0]);
@@ -103,7 +112,7 @@ const Music = () => {
 
   // Initial fetch for tracks, sets footer visibility
   useEffect(() => {
-    context.setFooterVisibility('auto');
+    setFooterVisibility('auto');
     navigationContext.setBackgroundColor('auto');
     async function fetchData() {
       const res = await axios.get('/api/music');
@@ -112,13 +121,19 @@ const Music = () => {
       setPageCount(Math.ceil(trackNumber.data.count / 10));
       setTracks(res.data);
 
-      if (context.playlist.length < 1 || !context.playing) {
-        context.setPlaylist(res.data);
+      if (playlist.length < 1 || !playing) {
+        setPlaylist(res.data);
       }
     }
     console.log('rendered fetch data for tracks in music.js');
     fetchData();
-  }, []);
+  }, [
+    navigationContext,
+    playing,
+    playlist.length,
+    setFooterVisibility,
+    setPlaylist
+  ]);
 
   // Fetch sidebar options
   useEffect(() => {
@@ -198,7 +213,7 @@ const Music = () => {
             genre={data.genre}
             similarArtists={data.similarArtists.join(', ')}
             price={data.price}
-            trackUrl={data.trackUrl}
+            trackUrl={data.mp3Url || data.wavUrl}
             cover={data.imageUrl}
             duration={data.duration}
             moods={data.mood}
@@ -211,7 +226,7 @@ const Music = () => {
   };
 
   return (
-    <PageLayout>
+    <PageLayout division="25% 75%">
       {moods && genre && (
         <Sidebar
           moods={moods}
@@ -225,7 +240,7 @@ const Music = () => {
         />
       )}
       <Main>
-        <Heading>{context.message}</Heading>
+        <Heading>{message}</Heading>
         <Subheading>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad

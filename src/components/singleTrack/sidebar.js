@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Bullet } from '../shared/shared';
 
 const Container = styled.div`
   background-color: ${props => props.theme.color.primaryGrey};
   background-color: #efefef;
   padding: 1em;
   overflow: scroll;
-  height: inherit;
+  height: 100%;
 `;
 
 const Paragraph = styled.p`
@@ -36,21 +37,14 @@ const PriceListItem = styled.li`
   flex-direction: row;
 `;
 
-const Bullet = styled.div`
-  width: 0.5em;
-  height: 0.5em;
-  border-radius: 50%;
-  background: ${props => props.theme.color.primaryBlue};
-  margin: 0 0.25em 0 0.25em;
-`;
-
 const TrackInformation = ({
   title,
   genre,
   similarArtists,
   price,
   bpm,
-  release
+  release,
+  moods
 }) => {
   return (
     <Container>

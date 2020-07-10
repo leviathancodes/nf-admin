@@ -7,6 +7,7 @@ const CheckoutForm = () => {
   };
 
   return (
+    <div>
     <StripeCheckout
       name="Fire beat"
       description="AIDS"
@@ -15,6 +16,7 @@ const CheckoutForm = () => {
       amount={1000000}
       token={onToken}
     />
+    </div>
   );
 };
 

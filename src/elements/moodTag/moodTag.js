@@ -17,10 +17,10 @@ const Paragraph = styled.p`
   padding: 5px;
 `;
 
-const MoodTag = props => {
+const MoodTag = ({ mood }) => {
   return (
     <Container>
-      <Paragraph>{props.mood}</Paragraph>
+      <Paragraph>{mood}</Paragraph>
     </Container>
   );
 };
