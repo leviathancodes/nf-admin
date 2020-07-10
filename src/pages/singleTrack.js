@@ -40,11 +40,11 @@ const SingleTrack = ({ match }) => {
         console.log(data);
         setTrack(data);
       } catch (e) {
-        return console.log('Dam');
+        return console.log(e);
       }
     };
     fetchTrack();
-  }, [qsp]);
+  }, []);
 
   const tags = () => {
     return (

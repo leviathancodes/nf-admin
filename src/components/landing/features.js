@@ -9,6 +9,8 @@ const Container = styled.div`
   @media (max-width: 992px) {
     flex-wrap: wrap-reverse;
   }
+  position: static;
+  overflow: hidden;
 `;
 
 const Rows = styled.div`
@@ -30,6 +32,7 @@ const RowContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: 2em;
+  position: relative;
 `;
 
 const RowIcon = styled.img`
@@ -37,7 +40,9 @@ const RowIcon = styled.img`
   margin-right: 1em;
 `;
 
-const RowBody = styled.div``;
+const RowBody = styled.div`
+  position: relative;
+`;
 
 const RowTitle = styled.h3`
   font-size: 32px;
