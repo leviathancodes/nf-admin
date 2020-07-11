@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 const Container = styled.div`
   height: 75vh;
   position: relative;
+  background: transparent;
+  overflow: hidden;
 `;
 const ClipPath = styled.div`
   height: 100%;
@@ -18,6 +20,11 @@ const ClipPath = styled.div`
 const Heading = styled.h1`
   font-size: 64px;
   margin: 1.5em 0 0.5em 0;
+
+  @media (max-width: 992px) {
+    text-align: center;
+    font-size: 32px;
+  }
 `;
 
 const Pink = styled.span`
@@ -28,6 +35,10 @@ const Description = styled.p`
   width: 50%;
   font-weight: 500;
   text-align: center;
+
+  @media (max-width: 992px) {
+    width: 80%;
+  }
 `;
 
 const CTA = styled(Link)`
@@ -49,6 +60,10 @@ const CTA = styled(Link)`
   top: 60%;
   left: 50%;
   transform: translate(-50%, 50%);
+  @media (max-width: 992px) {
+    text-align: center;
+    font-size: 24px;
+  }
   `;
 
 const SiteDescription = () => {

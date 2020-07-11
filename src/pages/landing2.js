@@ -8,9 +8,10 @@ import SiteDescription from '../components/landing/siteDescription';
 import LandingCarousel from '../components/landing/latestCarousel';
 import ContactSection from '../components/landing/contact';
 
-const Container  = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
+  position: absolute;
 `;
 
 const Landing2 = () => {

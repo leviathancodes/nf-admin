@@ -2,12 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  height: 75vh;
+  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
   @media (max-width: 992px) {
+    margin-top: 3em;
     flex-wrap: wrap-reverse;
+    height: auto;
   }
   position: static;
   overflow: hidden;
@@ -22,6 +24,7 @@ const Rows = styled.div`
 
 const LandingImage = styled.img`
   width: 400px;
+  position: relative;
   margin-right: 3em;
   @media (max-width: 992px) {
     width: 200px;
