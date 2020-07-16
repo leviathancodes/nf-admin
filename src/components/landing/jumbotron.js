@@ -12,9 +12,8 @@ const Container = styled.div`
   height: 90vh;
 
   @media (max-width: 750px) {
-   background-size: cover;
+    background-size: cover;
   }
-
 `;
 
 const FirstOverlay = styled.div`
@@ -45,8 +44,7 @@ const Heading = styled.h1`
 
   @media (max-width: 750px) {
     font-size: 48px;
-   }
- 
+  }
 `;
 
 const Main = styled.div`
@@ -58,7 +56,7 @@ const Main = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center
+    align-items: center;
   }
 `;
 
@@ -69,7 +67,7 @@ const Subheading = styled.h1`
 
   @media (max-width: 750px) {
     font-size: 24px;
-   }
+  }
 `;
 
 const CTA = styled(Link)`

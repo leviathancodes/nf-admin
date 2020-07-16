@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Carousel from 'nuka-carousel';
 import axios from 'axios';
@@ -6,6 +7,9 @@ import LargePlayer from '../audio-player/largePlayer/largePlayer';
 import MobilePlayer from '../audio-player/mobilePlayer/mobilePlayer';
 
 const Container = styled.div``;
+
+const CarouselComponent = styled(Carousel)`
+`;
 
 const Heading = styled.h3`
   font-size: 64px;
@@ -82,7 +86,17 @@ const LandingCarousel = () => {
 
   const createSlides = () => {
     return (
-      <Carousel>
+      <CarouselComponent
+        defaultControlsConfig={{
+          nextButtonText: 'Custom Next',
+          prevButtonText: 'Customn Prev',
+          pagingDotsClassName: 'paginationDot',
+          pagingDotsStyle: {
+            fill: 'white',
+            margin: '0.5em'
+          }
+        }}
+      >
         {latestTracks.map(track => {
           return (
             <TrackContainer backgroundImage={track.imageUrl}>
@@ -135,7 +149,7 @@ const LandingCarousel = () => {
             </TrackContainer>
           );
         })}
-      </Carousel>
+      </CarouselComponent>
     );
   };
   if (latestTracks.length > 1) {
@@ -147,6 +161,18 @@ const LandingCarousel = () => {
     );
   }
   return <p>Loading...</p>;
+};
+
+LandingCarousel.propTypes = {
+  nextButtonClassName: PropTypes.string,
+  nextButtonStyle: PropTypes.object,
+  nextButtonText: PropTypes.string,
+  prevButtonClassName: PropTypes.string,
+  prevButtonStyle: PropTypes.object,
+  prevButtonText: PropTypes.string,
+  pagingDotsContainerClassName: PropTypes.string,
+  pagingDotsClassName: PropTypes.string,
+  pagingDotsStyle: PropTypes.object
 };
 
 export default LandingCarousel;
