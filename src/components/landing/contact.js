@@ -9,6 +9,11 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: relative;
+
+  @media (max-width: 992px) {
+    height: 75vh;
+  }
 `;
 
 const ClipPath = styled.div`
@@ -25,6 +30,10 @@ const Heading = styled.h3`
   font-size: 64px;
   text-align: center;
   margin-top: 1em;
+
+  @media (max-width: 992px) {
+    font-size: 32px;
+  }
 `;
 
 const Subheading = styled.p`
