@@ -28,6 +28,7 @@ const LandingImage = styled.img`
   margin-right: 3em;
   @media (max-width: 992px) {
     width: 200px;
+    margin: 0;
   }
 `;
 
