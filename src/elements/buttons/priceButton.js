@@ -26,12 +26,21 @@ const Container = styled.div`
     transform: translateY(-1px);
     box-shadow: 0 4px 2px 0 #0000004b;
   }
+
+  @media (max-width: 750px) {
+    width: 100px;
+    height: 41.66px;
+  }
 `;
 
 const PriceText = styled.p`
   font-size: 24px;
   color: white;
   margin-right: 10px;
+
+  @media (max-width: 750px) {
+    font-size: 16px;
+  }
 `;
 
 const Cart = styled(FontAwesomeIcon)`

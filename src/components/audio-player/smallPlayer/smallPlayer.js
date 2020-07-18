@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
+import { useMediaQuery } from 'react-responsive';
 import { AudioContext } from '../../../context/audioContext';
 import { UserContext } from '../../../context/userContext';
 import { ShoppingCartContext } from '../../../context/shoppingCartContext';
@@ -27,6 +27,11 @@ const Container = styled.div`
     background-color: #ededed;
   }
   cursor: pointer;
+  overflow: none;
+
+  @media (max-width: 750px) {
+    padding: 0.5em;
+  }
 `;
 
 const PriceContainer = styled(ThumbnailContainer)`
@@ -85,6 +90,8 @@ const SmallPlayer = ({
   const [redirect, setRedirect] = useState(false);
 
   const { addItemToCart, removeItemFromCart } = useContext(ShoppingCartContext);
+
+  const biggerThanMobileWidth = useMediaQuery({ query: '(min-width: 750px)' });
 
   useEffect(() => {
     if (context.currentTrack === trackTitle) {
@@ -149,7 +156,10 @@ const SmallPlayer = ({
   return (
     <Container onClick={handleRedirect} id="smallPlayerContainer">
       <ThumbnailContainer onClick={handlePlaying}>
-        <ThumbnailBorder height="100px" width="100px">
+        <ThumbnailBorder
+          height={biggerThanMobileWidth ? '100px' : '75px'}
+          width={biggerThanMobileWidth ? '100px' : '75px'}
+        >
           <ThumbnailImage id="trackThumbnail" active={active} imageUrl={cover}>
             <SmallPlayIcon
               active={active}
@@ -171,13 +181,17 @@ const SmallPlayer = ({
       <TrackInfo>
         <Title>{trackTitle}</Title>
         <TrackDetail>{genre}</TrackDetail>
-        <TrackDetail>Similar Artists: {similarArtists}</TrackDetail>
+        {biggerThanMobileWidth && (
+          <TrackDetail>Similar Artists: {similarArtists}</TrackDetail>
+        )}
       </TrackInfo>
-      {tags()}
+      {biggerThanMobileWidth && tags()}
       <PriceContainer>
-        <Heart>
-          <HeartIcon id={id} liked={liked} handleLike={handleLike} />
-        </Heart>
+        {biggerThanMobileWidth && (
+          <Heart>
+            <HeartIcon id={id} liked={liked} handleLike={handleLike} />
+          </Heart>
+        )}
         <PriceButton price={price} id={id} />
       </PriceContainer>
     </Container>

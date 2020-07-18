@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import _ from 'underscore';
+import { useMediaQuery } from 'react-responsive';
 import Pagination from '../components/pagination/pagination';
 import { AudioContext } from '../context/audioContext';
 import { NavigationContext } from '../context/navigationContext';
@@ -13,6 +14,10 @@ import { SideBarPageContainer } from '../components/shared/shared';
 
 const Main = styled.div`
   margin: 3em;
+
+  @media (max-width: 750px) {
+    margin: 1em 0 1em 0;
+  }
 `;
 
 const PageLayout = styled(SideBarPageContainer)`
@@ -35,6 +40,10 @@ const Heading = styled.h3`
   font-weight: ${props => props.theme.font.weight};
   font-style: ${props => props.theme.font.style};
   margin-bottom: 10px;
+
+  @media (max-width: 750px) {
+    text-align: center;
+  }
 `;
 
 const Subheading = styled.p`
@@ -45,11 +54,21 @@ const Subheading = styled.p`
   font-size: 1em;
   width: 50%;
   margin-bottom: 1em;
+
+  @media (max-width: 750px) {
+    text-align: center;
+    width: 100%;
+    padding: 0.5em;
+  }
 `;
 
 const SmallPlayerWrap = styled.div`
   margin-bottom: 1em;
   width: 100%;
+
+  @media (max-width: 750px) {
+    margin-bottom: 0;
+  }
 `;
 
 const TrackLink = styled(Link)`
@@ -57,6 +76,10 @@ const TrackLink = styled(Link)`
 `;
 
 const Music = () => {
+  const biggerThanMobileWidth = useMediaQuery({ query: '(min-width: 750px)' });
+  const mobileWidth = useMediaQuery({ query: '(max-width: 750px)' });
+
+
   const [tracks, setTracks] = useState([]);
   const [moods, setMoods] = useState([]);
   const [genre, setGenre] = useState([]);
@@ -226,8 +249,8 @@ const Music = () => {
   };
 
   return (
-    <PageLayout division="25% 75%">
-      {moods && genre && (
+    <PageLayout division={biggerThanMobileWidth ? '25% 75%' : '100%'}>
+      {biggerThanMobileWidth && moods && genre && (
         <Sidebar
           moods={moods}
           genres={genre}
@@ -246,7 +269,7 @@ const Music = () => {
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
           minim{' '}
         </Subheading>
-
+        {mobileWidth && <p>Click here to view filters</p>}
         <Container>
           {createTracks()}
           <Pagination
