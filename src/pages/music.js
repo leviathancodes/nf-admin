@@ -55,7 +55,7 @@ const Subheading = styled.p`
   width: 50%;
   margin-bottom: 1em;
 
-  @media (max-width: 956px) {
+  @media (max-width: 1028px) {
     text-align: center;
     width: 100%;
     padding: 0.5em;
@@ -66,7 +66,7 @@ const SmallPlayerWrap = styled.div`
   margin-bottom: 1em;
   width: 100%;
 
-  @media (max-width: 956px) {
+  @media (max-width: 1028px) {
     margin-bottom: 0;
   }
 `;
@@ -76,8 +76,8 @@ const TrackLink = styled(Link)`
 `;
 
 const Music = () => {
-  const biggerThanMobileWidth = useMediaQuery({ query: '(min-width: 956px)' });
-  const mobileWidth = useMediaQuery({ query: '(max-width: 956px)' });
+  const biggerThanMobileWidth = useMediaQuery({ query: '(min-width: 1028px)' });
+  const mobileWidth = useMediaQuery({ query: '(max-width: 1028px)' });
 
   const [tracks, setTracks] = useState([]);
   const [moods, setMoods] = useState([]);

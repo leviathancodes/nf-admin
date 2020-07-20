@@ -33,7 +33,7 @@ const PriceText = styled.span`
 const Container = styled.div`
   display: flex;
   justify-content: space-around;
-  width: 1000px;
+  width: 80%;
   height: auto;
   box-shadow: 0 4px 6px 0 #0000004b;
   margin-bottom: 25px;

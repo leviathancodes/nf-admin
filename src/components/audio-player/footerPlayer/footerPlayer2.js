@@ -5,22 +5,36 @@ import 'rc-slider/assets/index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRandom, faList } from '@fortawesome/free-solid-svg-icons';
 import { AudioContext } from '../../../context/audioContext';
-import { NavStart, NavMenu, FooterPlayerItem } from '../../shared/shared';
+import {
+  NavStart,
+  NavMenu,
+  FooterPlayerItem,
+  NavItem,
+  NavEnd
+} from '../../shared/shared';
 
 const greyMain = '#818181';
 
 const Container = styled.div`
   display: ${props => props.visibility};
   box-shadow: 0 -4px 5px 0 #0000004b;
-  justify-content: center;
-  align-items: center;
   background-color: #f7f7f7;
   transition: all 1s ease-in;
   position: ${props => (props.playlist ? 'relative' : 'fixed')}
   height: ${props => (props.playlist ? '0px' : 'auto')};
-  padding: 2em;
+  padding: 1em;
   bottom: 0;
+  width: 100%
 `;
+
+const CoverContainer = styled.div`
+  display: flex;
+  width: 65px;
+  height: 65px;
+  background: ${props => props.theme.color.largeBorderGradient};
+  position: relative;
+`;
+
 
 const SVGStyles = styled.svg`
   margin-left: 40px;
@@ -51,6 +65,30 @@ const Playlist = styled(FontAwesomeIcon)`
 
 const NextPrevTrack = styled.svg`
   cursor: pointer;
+`;
+
+const SliderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const TrackProgress = styled.p`
+  padding: 1em;
+`;
+
+const TrackDuration = styled.p`
+  padding: 1em;
+`;
+
+const Image = styled.div`
+  width: 95%;
+  height: 95%;
+  overflow: none;
+  background-image: url(${props => props.cover})};
+  background-size: cover;
+  background-position: 50% 50%;
+  display: block;
 `;
 
 const secondsToMinutes = seconds =>
@@ -228,8 +266,7 @@ const FooterPlayer = props => {
     );
   };
 
-  console.log(context.footerVisibility);
-
+  console.log(context.currentTrack);
   return (
     <Container
       className="navbar is-fixed-bottom is-spaced"
@@ -239,8 +276,11 @@ const FooterPlayer = props => {
       id="footer-player"
       visibility={context.footerVisibility}
     >
+    <CoverContainer>
+      <Image cover={props.cover} lassName={`${props.title}-cover`} />
+    </CoverContainer>
       <NavMenu className="navbar-menu">
-        <NavStart style={{ flexGrow: '1', justifyContent: 'center' }}>
+        <NavStart>
           <FooterPlayerItem className="navbar-item">
             {prevTrackIcon('#818181', '#d3d3d3')}
             {context.playing
@@ -252,50 +292,48 @@ const FooterPlayer = props => {
               icon={faRandom}
             />
           </FooterPlayerItem>
-          <FooterPlayerItem className="navbar-item">
-            <p>{secondsToMinutes(context.progress)}</p>
-          </FooterPlayerItem>
-          <FooterPlayerItem className="navbar-item">
-            <Slider
-              railStyle={{
-                backgroundColor: '#707070',
-                width: '50vw',
-                position: 'relative',
-                cursor: 'pointer'
-              }}
-              trackStyle={{
-                backgroundColor: '#FFA7A6',
-                width: '50vw',
-                position: 'absolute',
-                top: 5,
-                cursor: 'pointer'
-              }}
-              handleStyle={{
-                backgroundColor: '#F15377',
-                borderColor: '#F15377',
-                cursor: 'grab',
-                top: 5
-              }}
-              value={Number(context.progress)}
-              max={Math.round(context.duration)}
-              onChange={e => {
-                context.handleSeeking(e);
-              }}
-            />
-          </FooterPlayerItem>
-          <FooterPlayerItem className="navbar-item">
-            <p>{secondsToMinutes(context.duration)}</p>
-          </FooterPlayerItem>
-          <FooterPlayerItem className="navbar-item">
-            {volumeIcon()}
-          </FooterPlayerItem>
+        </NavStart>
+        <SliderContainer className="navbar-item">
+          <TrackProgress>{secondsToMinutes(context.progress)}</TrackProgress>
+          <Slider
+            railStyle={{
+              backgroundColor: '#707070',
+              width: '40vw',
+              position: 'relative',
+              cursor: 'pointer'
+            }}
+            trackStyle={{
+              backgroundColor: '#FFA7A6',
+              width: '40vw',
+              position: 'absolute',
+              top: 5,
+              cursor: 'pointer'
+            }}
+            handleStyle={{
+              backgroundColor: '#F15377',
+              borderColor: '#F15377',
+              cursor: 'grab',
+              top: 5
+            }}
+            value={Number(context.progress)}
+            max={Math.round(context.duration)}
+            onChange={e => {
+              context.handleSeeking(e);
+            }}
+          />
+          <TrackDuration>{secondsToMinutes(context.duration)}</TrackDuration>
+        </SliderContainer>
+        <FooterPlayerItem className="navbar-item">
+          {volumeIcon()}
+        </FooterPlayerItem>
+        <NavEnd>
           <FooterPlayerItem className="navbar-item">
             <Playlist
               icon={faList}
               onClick={e => context.setPlaylistActive(true)}
             />
           </FooterPlayerItem>
-        </NavStart>
+        </NavEnd>
       </NavMenu>
     </Container>
   );

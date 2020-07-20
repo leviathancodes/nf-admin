@@ -96,6 +96,7 @@ display: flex;
 flex-direction: row;
 jusitfy-content: flex-start
 margin-right: auto;
+align-items: center;
 `;
 
 export const NavEnd = styled.div`

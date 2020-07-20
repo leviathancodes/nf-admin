@@ -146,7 +146,7 @@ const LandingCarousel = () => {
                         </MobileTrackInfo>
                       </MobileInfoContainer>
                     )}
-                    {!mobileWidth ? (
+                    {biggerThanMobileWidth ? (
                       <LargePlayer
                         trackTitle={track.presentationTitle}
                         genre={track.genre}

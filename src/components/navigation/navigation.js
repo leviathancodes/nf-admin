@@ -12,12 +12,14 @@ const Container = styled.nav`
   top: 0;
   z-index: 9999;
   background-color: ${props => (props.color ? props.color : 'white')};
+  box-shadow: 0 4px 6px 0 #0000004b;
   box-shadow: ${props => (props.color !== 'auto' ? 'none' : 'auto')};
   visibility: ${props => (props.visibility ? props.visibility : 'auto')};
   display: flex;
   flex-direction: row;
   padding: 0.5em;
   font-size: 16px;
+  
 `;
 
 const LinkName = styled.p`
