@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { NavLink } from 'react-router-dom';
 
 // Elements for Jumbotron Styline - start
 const JumboContainer = styled.div`
@@ -88,3 +88,44 @@ export const JumboOverlay = ({ url, height, title }) => {
     </JumboContainer>
   );
 };
+
+// Shared navigation 
+
+export const NavStart = styled.div`
+display: flex;
+flex-direction: row;
+jusitfy-content: flex-start
+margin-right: auto;
+`;
+
+export const NavEnd = styled.div`
+  display: flex;  
+  justify-content: flex-end
+  margin-left: auto;
+`;
+
+export const NavMenu = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-grow: 1;
+  flex-shrink: 0;
+`;
+
+export const NavBrand = styled.div``;
+
+export const NavItem = styled(NavLink)`
+  display: block
+  flex-grow: 0
+  flex-shrink: 0
+  padding: 0 1em 0 1em;
+`;
+
+// Footer player
+
+export const FooterPlayerItem = styled.div`
+  display: block
+  flex-grow: 0
+  flex-shrink: 0
+  padding: 0 1em 0 1em;
+`;

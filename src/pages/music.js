@@ -15,7 +15,7 @@ import { SideBarPageContainer } from '../components/shared/shared';
 const Main = styled.div`
   margin: 3em;
 
-  @media (max-width: 750px) {
+  @media (max-width: 956px) {
     margin: 1em 0 1em 0;
   }
 `;
@@ -41,7 +41,7 @@ const Heading = styled.h3`
   font-style: ${props => props.theme.font.style};
   margin-bottom: 10px;
 
-  @media (max-width: 750px) {
+  @media (max-width: 956px) {
     text-align: center;
   }
 `;
@@ -55,7 +55,7 @@ const Subheading = styled.p`
   width: 50%;
   margin-bottom: 1em;
 
-  @media (max-width: 750px) {
+  @media (max-width: 956px) {
     text-align: center;
     width: 100%;
     padding: 0.5em;
@@ -66,7 +66,7 @@ const SmallPlayerWrap = styled.div`
   margin-bottom: 1em;
   width: 100%;
 
-  @media (max-width: 750px) {
+  @media (max-width: 956px) {
     margin-bottom: 0;
   }
 `;
@@ -76,9 +76,8 @@ const TrackLink = styled(Link)`
 `;
 
 const Music = () => {
-  const biggerThanMobileWidth = useMediaQuery({ query: '(min-width: 750px)' });
-  const mobileWidth = useMediaQuery({ query: '(max-width: 750px)' });
-
+  const biggerThanMobileWidth = useMediaQuery({ query: '(min-width: 956px)' });
+  const mobileWidth = useMediaQuery({ query: '(max-width: 956px)' });
 
   const [tracks, setTracks] = useState([]);
   const [moods, setMoods] = useState([]);
@@ -135,7 +134,7 @@ const Music = () => {
 
   // Initial fetch for tracks, sets footer visibility
   useEffect(() => {
-    setFooterVisibility('auto');
+    setFooterVisibility('flex');
     navigationContext.setBackgroundColor('auto');
     async function fetchData() {
       const res = await axios.get('/api/music');
@@ -236,7 +235,7 @@ const Music = () => {
             genre={data.genre}
             similarArtists={data.similarArtists.join(', ')}
             price={data.price}
-            trackUrl={data.mp3Url || data.wavUrl}
+            trackUrl={data.trackUrl}
             cover={data.imageUrl}
             duration={data.duration}
             moods={data.mood}
@@ -265,11 +264,15 @@ const Music = () => {
       <Main>
         <Heading>{message}</Heading>
         <Subheading>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim{' '}
+          Click or tap on a track to see more details (BPM, genre, duration,
+          license options, etc). Click or tap the thumbnail to play the track.{' '}
         </Subheading>
-        {mobileWidth && <p>Click here to view filters</p>}
+        {mobileWidth && (
+          <p>
+            <img src="https://nf-music-test.s3.amazonaws.com/icon_assets/filterIcon.svg" />
+            Click here to view filters
+          </p>
+        )}
         <Container>
           {createTracks()}
           <Pagination

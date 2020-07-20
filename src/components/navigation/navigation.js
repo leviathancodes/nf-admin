@@ -1,24 +1,21 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faHome,
-  faUpload,
-  faMusic,
-  faChartPie
-} from '@fortawesome/free-solid-svg-icons';
 import { NavigationContext } from '../../context/navigationContext';
 import { AuthContext } from '../../context/authContext';
 import { ShoppingCartContext } from '../../context/shoppingCartContext';
 import NavCart from './cart';
+import { NavStart, NavEnd, NavMenu, NavBrand, NavItem } from '../shared/shared';
 
 const Container = styled.nav`
-  &.navbar {
-    background-color: ${props => (props.color ? props.color : 'auto')};
-    box-shadow: ${props => (props.color !== 'auto' ? 'none' : 'auto')};
-    visibility: ${props => (props.visibility ? props.visibility : 'auto')};
-  }
+  position: relative;
+  top: 0;
+  z-index: 9999;
+  background-color: ${props => (props.color ? props.color : 'white')};
+  box-shadow: ${props => (props.color !== 'auto' ? 'none' : 'auto')};
+  visibility: ${props => (props.visibility ? props.visibility : 'auto')};
+  display: flex;
+  flex-direction: row;
   padding: 0.5em;
   font-size: 16px;
 `;
@@ -31,9 +28,12 @@ const Logo = styled.object`
   width: 100px;
 `;
 
+const NavLinks = styled(NavLink)`
+  padding: 0 1em 0 1em;
+`;
+
 // <LinkName fontColor={props.fontColor}>{page.name}</LinkName>
 // <p>{cart.length}</p>
-
 
 const Nav = props => {
   const context = useContext(NavigationContext);
@@ -45,15 +45,19 @@ const Nav = props => {
     return pages.map(page => {
       if (page.name === 'Cart') {
         return (
-          <NavLink to={page.route} className="navbar-item is-tab is-size-4">
-            <NavCart fontColor={props.fontColor} name={page.name} count={cart.length} />
-          </NavLink>
+          <NavLinks to={page.route} className="navbar-item is-tab is-size-4">
+            <NavCart
+              fontColor={props.fontColor}
+              name={page.name}
+              count={cart.length}
+            />
+          </NavLinks>
         );
       }
       return (
-        <NavLink to={page.route} className="navbar-item is-tab is-size-4">
+        <NavLinks to={page.route} className="navbar-item is-tab is-size-4">
           <LinkName fontColor={props.fontColor}>{page.name}</LinkName>
-        </NavLink>
+        </NavLinks>
       );
     });
   };
@@ -74,32 +78,32 @@ const Nav = props => {
       }
 
       return (
-        <NavLink to={link.route} className="navbar-item is-tab is-size-4">
+        <NavItem to={link.route} className="navbar-item is-tab is-size-4">
           <LinkName fontColor={props.fontColor}>{link.name}</LinkName>
-        </NavLink>
+        </NavItem>
       );
     });
   };
 
   return (
     <Container
-      className="navbar is-transparent"
+      className="navbar"
       role="navigation"
       aria-label="main navigation"
       id="navigation"
       color={props.color}
     >
-      <div className="navbar-brand">
+      <NavBrand className="navbar-brand">
         <NavLink className="navbar-item" to="/">
           <Logo
             data={`${process.env.REACT_APP_NOMAD_MUSIC_S3}/icon_assets/logo_no_text.svg`}
           />
         </NavLink>
-      </div>
-      <div className="navbar-menu">
-        <div className="navbar-start">{createPageOptions()}</div>
-        <div className="navbar-end">{createAuthOptions()}</div>
-      </div>
+      </NavBrand>
+      <NavMenu className="navbar-menu">
+        <NavStart className="navbar-start">{createPageOptions()}</NavStart>
+        <NavEnd className="navbar-end">{createAuthOptions()}</NavEnd>
+      </NavMenu>
     </Container>
   );
 };

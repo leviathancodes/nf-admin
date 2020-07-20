@@ -29,7 +29,7 @@ const Container = styled.div`
   cursor: pointer;
   overflow: none;
 
-  @media (max-width: 750px) {
+  @media (max-width: 956px) {
     padding: 0.5em;
   }
 `;
@@ -91,7 +91,7 @@ const SmallPlayer = ({
 
   const { addItemToCart, removeItemFromCart } = useContext(ShoppingCartContext);
 
-  const biggerThanMobileWidth = useMediaQuery({ query: '(min-width: 750px)' });
+  const biggerThanMobileWidth = useMediaQuery({ query: '(min-width: 956px)' });
 
   useEffect(() => {
     if (context.currentTrack === trackTitle) {

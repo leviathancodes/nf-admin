@@ -11,7 +11,7 @@ const Container = styled.div`
   flex-direction: column;
   position: relative;
 
-  @media (max-width: 992px) {
+  @media (max-width: 1028px) {
     height: 75vh;
   }
 `;
@@ -27,13 +27,9 @@ const ClipPath = styled.div`
 `;
 
 const Heading = styled.h3`
-  font-size: 64px;
+  font-size: 32px;
   text-align: center;
   margin-top: 1em;
-
-  @media (max-width: 992px) {
-    font-size: 32px;
-  }
 `;
 
 const Subheading = styled.p`

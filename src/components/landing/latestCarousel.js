@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Carousel from 'nuka-carousel';
@@ -23,7 +24,7 @@ const NextArrow = styled.img`
 `;
 
 const Heading = styled.h3`
-  font-size: 64px;
+  font-size: 32px;
   margin-bottom: 1em;
   text-align: center;
 `;
@@ -82,11 +83,13 @@ const RainbowStrip = styled.div`
   position: absolute;
 `;
 
-const MobileInfoContainer = styled.div`
-`;
+const MobileInfoContainer = styled.div``;
 
 const LandingCarousel = () => {
   const [latestTracks, setLatestTracks] = useState([]);
+
+  const biggerThanMobileWidth = useMediaQuery({ query: '(min-width: 1028px)' });
+  const mobileWidth = useMediaQuery({ query: '(max-width: 1028px)' });
 
   // Fetches four most recent tracks
   useEffect(() => {
@@ -135,17 +138,15 @@ const LandingCarousel = () => {
                 <SecondOverlay>
                   <RainbowStrip />
                   <PlayerContainer>
-                    {window.innerWidth < 777 ? (
+                    {mobileWidth && (
                       <MobileInfoContainer>
                         <MobileTitle>{track.presentationTitle}</MobileTitle>
                         <MobileTrackInfo>
                           Similar Artists: {track.similarArtists.join(', ')}
                         </MobileTrackInfo>
                       </MobileInfoContainer>
-                    ) : (
-                      <div />
                     )}
-                    {window.innerWidth > 777 ? (
+                    {!mobileWidth ? (
                       <LargePlayer
                         trackTitle={track.presentationTitle}
                         genre={track.genre}

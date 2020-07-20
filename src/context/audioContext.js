@@ -17,11 +17,12 @@ export const AudioProvider = props => {
   const [progress, setProgress] = useState('');
   const [volume, setVolume] = useState(0.5);
   const [duration, setDuration] = useState(0);
-  const [footerVisibility, setFooterVisibility] = useState('auto');
+  const [footerVisibility, setFooterVisibility] = useState('flex');
 
   const { user, setUser } = useContext(UserContext);
 
   const handlePlaying = async (trackTitle, url, trackLength) => {
+    console.log(trackTitle, url, trackLength);
     try {
       if (!currentTrack && !url) {
         return console.log('no song selected');

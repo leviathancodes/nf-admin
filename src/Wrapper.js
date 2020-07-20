@@ -6,12 +6,11 @@ import { NavigationContext } from './context/navigationContext';
 import { ShoppingCartContext } from './context/shoppingCartContext';
 import Landing2 from './pages/landing2';
 import Nav from './components/navigation/navigation';
-import FooterPlayer from './components/audio-player/footerPlayer/footerPlayer';
+import FooterPlayer from './components/audio-player/footerPlayer/footerPlayer2';
 import Upload from './pages/upload';
 import Music from './pages/music';
 import SearchResults from './pages/search';
 import Error404 from './pages/404';
-import TrackEdit from './pages/trackEdit';
 import SignUp from './pages/signup';
 import Login from './pages/login';
 import Profile from './pages/profile';
@@ -25,6 +24,7 @@ const PageWrapper = styled.div`
   transition: all 0.2s ease-in;
   pointer-events: ${props => (props.blurred ? 'none' : 'auto')};
   position: ${props => (props.blurred ? 'fixed' : 'auto')};
+  display: inline;
 `;
 
 const Wrapper = () => {

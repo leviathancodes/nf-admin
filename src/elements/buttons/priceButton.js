@@ -30,6 +30,7 @@ const Container = styled.div`
   @media (max-width: 750px) {
     width: 100px;
     height: 41.66px;
+    font-weight: 500;
   }
 `;
 
@@ -40,6 +41,7 @@ const PriceText = styled.p`
 
   @media (max-width: 750px) {
     font-size: 16px;
+    margin-left: 5px;
   }
 `;
 

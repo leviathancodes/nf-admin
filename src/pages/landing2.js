@@ -24,9 +24,9 @@ const Landing2 = () => {
 
     return function setNavVisibility() {
       navigationContext.setVisibility(true);
-      audioContext.setFooterVisibility('auto');
+      audioContext.setFooterVisibility('flex');
     };
-  }, []);
+  }, [audioContext, navigationContext]);
 
   return (
     <Container>
