@@ -86,7 +86,7 @@ const SingleTrack = ({ match }) => {
             price={track.price}
             duration={track.duration}
             cover={track.imageUrl}
-            trackUrl={track.mp3Url || track.wavUrl}
+            trackUrl={track.trackUrl}
             bpm={track.bpm}
             likedBy={track.likedBy}
           />

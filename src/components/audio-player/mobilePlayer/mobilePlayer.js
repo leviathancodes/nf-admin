@@ -72,7 +72,8 @@ const MobilePlayer = props => {
       return context.handlePlaying(
         props.trackTitle,
         props.trackUrl,
-        props.duration
+        props.duration,
+        props.cover
       );
     }
     if (context.playing && context.currentTrack !== props.trackTitle) {
@@ -80,7 +81,8 @@ const MobilePlayer = props => {
       return context.handlePlaying(
         props.trackTitle,
         props.trackUrl,
-        props.duration
+        props.duration,
+        props.cover
       );
     }
 
@@ -92,13 +94,15 @@ const MobilePlayer = props => {
       return context.handlePlaying(
         props.trackTitle,
         props.trackUrl,
-        props.duration
+        props.duration,
+        props.cover
       );
     }
     return context.handlePlaying(
       props.trackTitle,
       props.trackUrl,
-      props.duration
+      props.duration,
+      props.cover
     );
   };
 

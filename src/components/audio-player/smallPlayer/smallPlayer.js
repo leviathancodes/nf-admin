@@ -91,7 +91,7 @@ const SmallPlayer = ({
 
   const { addItemToCart, removeItemFromCart } = useContext(ShoppingCartContext);
 
-  const biggerThanMobileWidth = useMediaQuery({ query: '(min-width: 956px)' });
+  const biggerThanMobileWidth = useMediaQuery({ query: '(min-width: 1028px)' });
 
   useEffect(() => {
     if (context.currentTrack === trackTitle) {
@@ -120,11 +120,11 @@ const SmallPlayer = ({
 
   const handlePlaying = () => {
     if (!context.currentTrack) {
-      return context.handlePlaying(trackTitle, trackUrl, duration);
+      return context.handlePlaying(trackTitle, trackUrl, duration, cover);
     }
     if (context.playing && context.currentTrack !== trackTitle) {
       context.handleStopping();
-      return context.handlePlaying(trackTitle, trackUrl, duration);
+      return context.handlePlaying(trackTitle, trackUrl, duration, cover);
     }
 
     if (context.playing) {
@@ -132,9 +132,9 @@ const SmallPlayer = ({
     }
     if (context.currentTrack !== trackTitle) {
       context.handleStopping();
-      return context.handlePlaying(trackTitle, trackUrl, duration);
+      return context.handlePlaying(trackTitle, trackUrl, duration, cover);
     }
-    return context.handlePlaying(trackTitle, trackUrl, duration);
+    return context.handlePlaying(trackTitle, trackUrl, duration, cover);
   };
 
   const handleLike = async () => {

@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useState, useEffect } from 'react';
+import React, { useContext, createContext, useState } from 'react';
 import axios from 'axios';
 import _ from 'underscore';
 import { UserContext } from './userContext';
@@ -18,11 +18,12 @@ export const AudioProvider = props => {
   const [volume, setVolume] = useState(0.5);
   const [duration, setDuration] = useState(0);
   const [footerVisibility, setFooterVisibility] = useState('flex');
+  const [cover, setCover] = useState('');
 
   const { user, setUser } = useContext(UserContext);
 
-  const handlePlaying = async (trackTitle, url, trackLength) => {
-    console.log(trackTitle, url, trackLength);
+  const handlePlaying = async (trackTitle, url, trackLength, trackCover) => {
+    console.log(trackTitle, url, trackLength, cover);
     try {
       if (!currentTrack && !url) {
         return console.log('no song selected');
@@ -33,6 +34,9 @@ export const AudioProvider = props => {
         audio.oncanplaythrough = () => {
           audio.play();
           setCurrentTrack(trackTitle);
+          if (trackCover) {
+            setCover(trackCover);
+          }
           return isPlaying(true);
         };
       }
@@ -88,7 +92,8 @@ export const AudioProvider = props => {
           return handlePlaying(
             nextTrack.presentationTitle,
             nextTrack.trackUrl,
-            nextTrack.duration
+            nextTrack.duration,
+            nextTrack.imageUrl
           );
         }
       });
@@ -108,12 +113,17 @@ export const AudioProvider = props => {
           return handlePlaying(
             nextTrack.presentationTitle,
             nextTrack.trackUrl,
-            nextTrack.duration
+            nextTrack.duration,
+            nextTrack.imageUrl
           );
         }
       });
     }
   };
+
+  const getCurrentTrackCover = () => {
+
+  }
 
   audio.ontimeupdate = () => {
     setProgress(audio.currentTime);
@@ -197,7 +207,9 @@ export const AudioProvider = props => {
     setPlaylist,
     footerVisibility,
     setFooterVisibility,
-    handleLiking
+    handleLiking,
+    cover,
+    setCover
   };
 
   return (

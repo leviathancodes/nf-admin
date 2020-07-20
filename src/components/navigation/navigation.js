@@ -19,7 +19,8 @@ const Container = styled.nav`
   flex-direction: row;
   padding: 0.5em;
   font-size: 16px;
-  
+  width: 100vw;
+  overflow: hidden;
 `;
 
 const LinkName = styled.p`

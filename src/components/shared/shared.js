@@ -96,7 +96,7 @@ display: flex;
 flex-direction: row;
 jusitfy-content: flex-start
 margin-right: auto;
-align-items: center;
+align-items:
 `;
 
 export const NavEnd = styled.div`
@@ -117,8 +117,8 @@ export const NavBrand = styled.div``;
 
 export const NavItem = styled(NavLink)`
   display: block
-  flex-grow: 0
-  flex-shrink: 0
+  flex-grow: 0;
+  flex-shrink: 0;
   padding: 0 1em 0 1em;
 `;
 

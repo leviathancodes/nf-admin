@@ -108,7 +108,8 @@ const Playlist = props => {
                   : context.handlePlaying(
                       track.presentationTitle,
                       track.trackUrl,
-                      track.duration
+                      track.duration,
+                      track.imageUrl
                     )
               }
             >
