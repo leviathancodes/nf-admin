@@ -26,7 +26,7 @@ const Container = styled.div`
   height: ${props => (props.playlist ? '0px' : 'auto')};
   padding: 1em;
   bottom: 0;
-  width: 100%
+  width: 100%;
 `;
 
 const CoverContainer = styled.div`
@@ -131,6 +131,13 @@ const PlayerStart = styled(NavStart)`
     width: 90%;
   }
 `;
+
+const PlayerControls = styled(FooterPlayerItem)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const FooterPlayer = props => {
   const context = useContext(AudioContext);
 
@@ -320,7 +327,7 @@ const FooterPlayer = props => {
       </CoverContainer>
       <ControlsContainer id="controls-container" className="navbar-menu">
         <PlayerStart id="nav-start">
-          <FooterPlayerItem className="navbar-item">
+          <PlayerControls className="navbar-item">
             {prevTrackIcon('#818181', '#d3d3d3')}
             {context.playing
               ? pauseIcon('29', '34')
@@ -332,7 +339,7 @@ const FooterPlayer = props => {
                 icon={faRandom}
               />
             )}
-          </FooterPlayerItem>
+          </PlayerControls>
           <SliderContainer className="navbar-item">
             {biggerThanMobileWidth && (
               <TrackProgress>
@@ -371,11 +378,6 @@ const FooterPlayer = props => {
               </TrackDuration>
             )}
           </SliderContainer>
-          {biggerThanMobileWidth && (
-            <FooterPlayerItem className="navbar-item">
-              {volumeIcon()}
-            </FooterPlayerItem>
-          )}
         </PlayerStart>
         <NavEnd>
           <FooterPlayerItem className="navbar-item">

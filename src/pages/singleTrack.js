@@ -11,7 +11,7 @@ import {
 import MoodTag from '../elements/moodTag/moodTag';
 
 const Content = styled.div`
-  height: 100%;
+  height: 150vh;
 `;
 
 const PlayerContainer = styled.div`

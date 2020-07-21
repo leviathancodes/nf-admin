@@ -181,7 +181,8 @@ const LargePlayer = props => {
       return context.handlePlaying(
         props.trackTitle,
         props.trackUrl,
-        props.duration
+        props.duration,
+        props.cover
       );
     }
     if (context.playing && context.currentTrack !== props.trackTitle) {
@@ -189,7 +190,8 @@ const LargePlayer = props => {
       return context.handlePlaying(
         props.trackTitle,
         props.trackUrl,
-        props.duration
+        props.duration,
+        props.cover
       );
     }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';

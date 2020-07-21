@@ -15,15 +15,21 @@ import { SideBarPageContainer } from '../components/shared/shared';
 const Main = styled.div`
   margin: 3em;
 
-  @media (max-width: 956px) {
+  @media (max-width: 1028px) {
     margin: 1em 0 1em 0;
   }
 `;
+
+const PageContainer = styled.div``;
 
 const PageLayout = styled(SideBarPageContainer)`
   border-bottom: solid 2px ${props => props.theme.color.lightGrey};
   margin-bottom: 6em;
   height: auto;
+  filter: ${props => (props.blurred ? 'blur(4px)' : 'none')};
+  transition: all 0.2s ease-in;
+  pointer-events: ${props => (props.blurred ? 'none' : 'auto')};
+  position: ${props => (props.blurred ? 'fixed' : 'auto')};
 `;
 const Container = styled.div`
   display: flex;
@@ -41,7 +47,7 @@ const Heading = styled.h3`
   font-style: ${props => props.theme.font.style};
   margin-bottom: 10px;
 
-  @media (max-width: 956px) {
+  @media (max-width: 1028px) {
     text-align: center;
   }
 `;
@@ -73,6 +79,10 @@ const SmallPlayerWrap = styled.div`
 
 const TrackLink = styled(Link)`
   color: black;
+`;
+
+const FilterIcon = styled.img`
+  cursor: pointer;
 `;
 
 const Music = () => {
@@ -248,8 +258,36 @@ const Music = () => {
   };
 
   return (
-    <PageLayout division={biggerThanMobileWidth ? '25% 75%' : '100%'}>
-      {biggerThanMobileWidth && moods && genre && (
+    <PageContainer>
+      <PageLayout division={biggerThanMobileWidth ? '25% 75%' : '100%'}>
+        {biggerThanMobileWidth && moods && genre && (
+          <Sidebar
+            moods={moods}
+            genres={genre}
+            handleClearAll={handleClearAll}
+            handleCheckboxChange={handleCheckboxChange}
+            handleSelected={handleSelected}
+            handleAddMood={handleAddMood}
+            bpm={bpm}
+            setBPM={setBPM}
+          />
+        )}
+        <Main>
+          <Heading>{message}</Heading>
+          <Subheading>
+            Click or tap on a track to see more details (BPM, genre, duration,
+            license options, etc). Click or tap the thumbnail to play the track.{' '}
+          </Subheading>
+          <Container>
+            {createTracks()}
+            <Pagination
+              pageCount={pageCount}
+              changeHandler={e => setSkip(Number(`${e.selected}0`))}
+            />
+          </Container>
+        </Main>
+      </PageLayout>
+      {mobileWidth && moods && genre && (
         <Sidebar
           moods={moods}
           genres={genre}
@@ -261,27 +299,7 @@ const Music = () => {
           setBPM={setBPM}
         />
       )}
-      <Main>
-        <Heading>{message}</Heading>
-        <Subheading>
-          Click or tap on a track to see more details (BPM, genre, duration,
-          license options, etc). Click or tap the thumbnail to play the track.{' '}
-        </Subheading>
-        {mobileWidth && (
-          <p>
-            <img src="https://nf-music-test.s3.amazonaws.com/icon_assets/filterIcon.svg" />
-            Click here to view filters
-          </p>
-        )}
-        <Container>
-          {createTracks()}
-          <Pagination
-            pageCount={pageCount}
-            changeHandler={e => setSkip(Number(`${e.selected}0`))}
-          />
-        </Container>
-      </Main>
-    </PageLayout>
+    </PageContainer>
   );
 };
 
