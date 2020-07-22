@@ -2,6 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
+// Navigation
+export const LinkName = styled.p`
+  color: ${props => (props.fontColor ? props.fontColor : 'auto')};
+`;
+
 // Elements for Jumbotron Styline - start
 const JumboContainer = styled.div`
   background: url(${props => props.url});
@@ -60,7 +65,6 @@ export const SideBarPageContainer = styled.div`
   grid-template-columns: ${props => props.division};
   margin-bottom: 6em;
 `;
-
 
 export const Bullet = styled.div`
   width: 0.5em;
@@ -130,3 +134,4 @@ export const FooterPlayerItem = styled.div`
   flex-shrink: 0
   padding: 0 1em 0 1em;
 `;
+

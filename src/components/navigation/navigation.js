@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
 import { NavigationContext } from '../../context/navigationContext';
 import { AuthContext } from '../../context/authContext';
 import { ShoppingCartContext } from '../../context/shoppingCartContext';
@@ -29,10 +30,23 @@ const LinkName = styled.p`
 
 const Logo = styled.object`
   width: 100px;
+  cursor: pointer;
 `;
 
 const NavLinks = styled(NavLink)`
   padding: 0 1em 0 1em;
+`;
+
+const MobileMenu = styled.img`
+  cursor: pointer;
+  margin: 1em;
+`;
+
+const MobileMenuContainer = styled.div`
+  height: 100vh;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
 `;
 
 // <LinkName fontColor={props.fontColor}>{page.name}</LinkName>
@@ -42,6 +56,11 @@ const Nav = props => {
   const context = useContext(NavigationContext);
   const authContext = useContext(AuthContext);
   const { cart } = useContext(ShoppingCartContext);
+
+  const [mobileMenu, setMobileMenu] = useState(false);
+
+  const biggerThanMobileWidth = useMediaQuery({ query: '(min-width: 1028px)' });
+  const mobileWidth = useMediaQuery({ query: '(max-width: 1028px)' });
 
   const createPageOptions = () => {
     const { pages } = context.menuOptions;
@@ -88,6 +107,12 @@ const Nav = props => {
     });
   };
 
+  const handleMobileMenu = () => {
+    if (!context.mobileMenu) {
+      return context.setMobileMenu(true);
+    }
+  };
+
   return (
     <Container
       className="navbar"
@@ -97,16 +122,29 @@ const Nav = props => {
       color={props.color}
     >
       <NavBrand className="navbar-brand">
-        <NavLink className="navbar-item" to="/">
+        <NavLink to="/">
           <Logo
             data={`${process.env.REACT_APP_NOMAD_MUSIC_S3}/icon_assets/logo_no_text.svg`}
           />
         </NavLink>
       </NavBrand>
-      <NavMenu className="navbar-menu">
-        <NavStart className="navbar-start">{createPageOptions()}</NavStart>
-        <NavEnd className="navbar-end">{createAuthOptions()}</NavEnd>
-      </NavMenu>
+
+      {biggerThanMobileWidth ? (
+        <NavMenu className="navbar-menu">
+          <NavStart className="navbar-start">{createPageOptions()}</NavStart>
+          <NavEnd className="navbar-end">{createAuthOptions()}</NavEnd>
+        </NavMenu>
+      ) : (
+        <NavMenu>
+          <NavEnd>
+            <MobileMenu
+              alt="hamburger menu"
+              src="https://nf-music-test.s3.amazonaws.com/icon_assets/hamburger-button.svg"
+              onClick={handleMobileMenu}
+            />
+          </NavEnd>
+        </NavMenu>
+      )}
     </Container>
   );
 };

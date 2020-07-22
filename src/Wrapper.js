@@ -6,6 +6,7 @@ import { NavigationContext } from './context/navigationContext';
 import { ShoppingCartContext } from './context/shoppingCartContext';
 import Landing2 from './pages/landing2';
 import Nav from './components/navigation/navigation';
+import MobileMenu from './components/navigation/mobileMenu';
 import FooterPlayer from './components/audio-player/footerPlayer/footerPlayer2';
 import Upload from './pages/upload';
 import Music from './pages/music';
@@ -31,15 +32,24 @@ const Wrapper = () => {
   const audioContext = useContext(AudioContext);
   const navigationContext = useContext(NavigationContext);
   const { licenseModal } = useContext(ShoppingCartContext);
+
   return (
     <Router>
       <PurchaseModal />
       <Playlist />
-      <PageWrapper blurred={audioContext.playlistActive || licenseModal}>
+      <MobileMenu />
+      <PageWrapper
+        blurred={
+          audioContext.playlistActive ||
+          licenseModal ||
+          navigationContext.mobileMenu
+        }
+      >
         {navigationContext.visibility ? (
           <Nav
             visibility={navigationContext.visibility}
             color={navigationContext.backgroundColor}
+            fontColor="black"
           />
         ) : (
           <div />

@@ -22,6 +22,7 @@ export const NavigationProvider = props => {
   const [menuOptions, setMenuOptions] = useState(initialMenuOptions);
   const [backgroundColor, setBackgroundColor] = useState('auto');
   const [visibility, setVisibility] = useState(true);
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
     if (userContext.user) {
@@ -42,7 +43,9 @@ export const NavigationProvider = props => {
     backgroundColor,
     setBackgroundColor,
     visibility,
-    setVisibility
+    setVisibility,
+    mobileMenu,
+    setMobileMenu
   };
   return (
     <NavigationContext.Provider value={navState}>
