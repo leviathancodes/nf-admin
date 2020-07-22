@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const Container = styled.div`
-  height: 50vh;
+  height: 60vh;
   width: 100%;
   display: flex;
   justify-content: center;

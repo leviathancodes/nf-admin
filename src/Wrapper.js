@@ -19,6 +19,7 @@ import Playlist from './components/playlist/playlist';
 import Checkout from './pages/checkout';
 import SingleTrack from './pages/singleTrack';
 import PurchaseModal from './components/modal/purchaseModal';
+import Footer from './components/footer/footer';
 
 const PageWrapper = styled.div`
   filter: ${props => (props.blurred ? 'blur(4px)' : 'none')};
@@ -66,6 +67,7 @@ const Wrapper = () => {
           <Route path="/checkout" exact component={Checkout} />
           <Route component={Error404} />
         </Switch>
+        <Footer />
         <FooterPlayer visibility={audioContext.footerVisibility} />
       </PageWrapper>
     </Router>

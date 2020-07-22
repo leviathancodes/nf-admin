@@ -24,7 +24,7 @@ const PageContainer = styled.div``;
 
 const PageLayout = styled(SideBarPageContainer)`
   border-bottom: solid 2px ${props => props.theme.color.lightGrey};
-  margin-bottom: 6em;
+  margin-bottom: 0;
   height: auto;
   filter: ${props => (props.blurred ? 'blur(4px)' : 'none')};
   transition: all 0.2s ease-in;

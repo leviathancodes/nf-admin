@@ -7,11 +7,13 @@ import Features from '../components/landing/features';
 import SiteDescription from '../components/landing/siteDescription';
 import LandingCarousel from '../components/landing/latestCarousel';
 import ContactSection from '../components/landing/contact';
+import Footer from '../components/footer/footer';
+
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: relative;
   width: 100vw;
 `;
 
