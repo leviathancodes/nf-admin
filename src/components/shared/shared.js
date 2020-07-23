@@ -12,7 +12,7 @@ const JumboContainer = styled.div`
   background: url(${props => props.url});
   background-repeat: no-repeat;
   background-position: 25% 25%;
-  background-size: 100%;
+  background-size: cover;
   position: relative;
   height: ${props => props.height};
 `;
@@ -58,12 +58,12 @@ export const MoodContainer = styled.div`
   align-items: center;
 `;
 
-// Container for any page with a siebar (single track, /music, /checkout)
+// Container for any page with a sidebar (single track, /music, /checkout)
 export const SideBarPageContainer = styled.div`
-  height: 100vh;
+  height: auto;
+  min-height: 100vh;
   display: grid;
   grid-template-columns: ${props => props.division};
-  margin-bottom: 6em;
 `;
 
 export const Bullet = styled.div`
@@ -93,7 +93,7 @@ export const JumboOverlay = ({ url, height, title }) => {
   );
 };
 
-// Shared navigation 
+// Shared navigation
 
 export const NavStart = styled.div`
 display: flex;

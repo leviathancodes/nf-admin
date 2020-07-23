@@ -12,6 +12,7 @@ const Container = styled.div`
   align-items: center;
   box-shadow: 0 -4px 5px 0 #0000004b;
   padding: 0.25em;
+  background: white;
 
   @media (max-width: 1028px) {
     font-size: 24px;
