@@ -164,13 +164,11 @@ const LargePlayer = props => {
   };
 
   const handleDisplayVolume = e => {
-    console.log(e.type);
     if (e.type === 'mouseenter') {
       setDisplayVolume('flex');
     }
     if (e.type === 'mouseleave') {
       setTimeout(() => {
-        console.log('lost focus');
         setDisplayVolume('none');
       }, 3000);
     }
