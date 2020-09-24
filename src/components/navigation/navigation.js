@@ -4,9 +4,11 @@ import { NavLink } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { NavigationContext } from '../../context/navigationContext';
 import { AuthContext } from '../../context/authContext';
+import { UserContext } from '../../context/userContext';
 import { ShoppingCartContext } from '../../context/shoppingCartContext';
 import NavCart from './cart';
 import { NavStart, NavEnd, NavMenu, NavBrand, NavItem } from '../shared/shared';
+import backend from '../../firebase';
 
 const Container = styled.nav`
   position: relative;
@@ -57,10 +59,10 @@ const Nav = props => {
   const authContext = useContext(AuthContext);
   const { cart } = useContext(ShoppingCartContext);
 
-  const [mobileMenu, setMobileMenu] = useState(false);
-
   const biggerThanMobileWidth = useMediaQuery({ query: '(min-width: 1028px)' });
   const mobileWidth = useMediaQuery({ query: '(max-width: 1028px)' });
+
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   const createPageOptions = () => {
     const { pages } = context.menuOptions;
@@ -92,7 +94,7 @@ const Nav = props => {
           <NavLink
             to="/"
             className="navbar-item is-tab is-size-4"
-            onClick={() => authContext.logoutUserLocal()}
+            onClick={() => backend.auth().signOut()}
           >
             <LinkName fontColor={props.fontColor}>{link.name}</LinkName>
           </NavLink>

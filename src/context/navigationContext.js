@@ -25,7 +25,8 @@ export const NavigationProvider = props => {
   const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
-    if (userContext.user) {
+    console.log(userContext.firebaseUser);
+    if (userContext.firebaseUser) {
       setMenuOptions({
         ...menuOptions,
         auth: [
@@ -36,7 +37,7 @@ export const NavigationProvider = props => {
     } else {
       setMenuOptions(initialMenuOptions);
     }
-  }, [userContext.user]);
+  }, [userContext.firebaseUser]);
   const navState = {
     menuOptions,
     setMenuOptions,

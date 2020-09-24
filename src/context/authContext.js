@@ -4,6 +4,7 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from '../utils/setAuthToken';
 import { UserContext } from './userContext';
+import backend from '../firebase';
 
 export const AuthContext = createContext();
 
@@ -36,10 +37,7 @@ export const AuthProvider = props => {
         }
       };
       try {
-        const req = await axios.post(
-          '/api/user/signup/local',
-          reqBody
-        );
+        const req = await axios.post('/api/user/signup/local', reqBody);
         console.log('', req.data);
       } catch (e) {
         console.log(e.response.data);
@@ -69,6 +67,16 @@ export const AuthProvider = props => {
     },
     [initialStatus, submitStatus]
   );
+
+  const registerFirebaseUser = useCallback(async data => {
+    try {
+      await backend
+        .auth()
+        .createUserWithEmailAndPassword(data.email, data.password);
+    } catch (e) {
+      console.log(e);
+    }
+  });
 
   const loginUserLocal = useCallback(
     async data => {
@@ -102,11 +110,26 @@ export const AuthProvider = props => {
     userContext.setUser(false);
   };
 
+  const logoutFirebaseUser = () => {};
+
+  const loginFirebaseUser = useCallback(async data => {
+    try {
+      await backend
+        .auth()
+        .signInWithEmailAndPassword(data.email, data.password);
+      console.log('user set in auth context');
+    } catch (e) {
+      console.log(e);
+    }
+  });
+
   const authState = {
     submitStatus,
     registerUserLocal,
     loginUserLocal,
-    logoutUserLocal
+    logoutUserLocal,
+    registerFirebaseUser,
+    loginFirebaseUser
   };
 
   return (

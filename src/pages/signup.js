@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AuthForm from '../components/form/authForm';
 import { AuthContext } from '../context/authContext';
 import { AudioContext } from '../context/audioContext';
+import backend from '../firebase';
 
 const Container = styled.div`
   height: 150vh;
@@ -27,7 +28,7 @@ const SignUp = () => {
         subheading="Save your favorite beats, get in touch with me faster, and more when you register!"
         authOption="Sign Up"
         signup
-        authHandler={authContext.registerUserLocal}
+        authHandler={authContext.registerFirebaseUser}
       />
     </Container>
   );

@@ -8,6 +8,7 @@ import { AuthProvider } from './context/authContext';
 import { UserProvider } from './context/userContext';
 import { ShoppingCartProvider } from './context/shoppingCartContext';
 import './styles/scss/main.scss';
+import backend from './firebase';
 
 function App() {
   return (

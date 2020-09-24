@@ -11,7 +11,7 @@ const Container = styled.div`
   position: relative;
   height: 90vh;
 
-  @media (max-width: 750px) {
+  @media (max-width: 1028px) {
     background-size: cover;
   }
 `;

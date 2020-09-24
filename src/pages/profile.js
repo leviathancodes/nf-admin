@@ -38,9 +38,7 @@ const LikedAndPurchased = styled.div`
 const Profile = () => {
   const userContext = useContext(UserContext);
 
-  console.log(userContext.user);
-
-  if (!userContext.user && !localStorage.getItem('jwtToken')) {
+  if (!userContext.firebaseUser) {
     return <Redirect to="/login" />;
   }
 
